@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clue 5 – Final Evidence | MysteryBox</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>🔍 Mystery<span>Box</span></h1>
+  </header>
+
+  <div class="container">
+
+    <div class="url-bar">📍 /clue/K8Z41</div>
+
+    <div class="card">
+      <span class="badge">Clue 5 of 5</span>
+      <h2>Final Evidence</h2>
+
+      <p>A final security photograph shows the person leaving the laboratory at <span class="highlight">5:47 PM</span>.</p>
+      <p>The person is wearing the same <span class="highlight">blue hoodie</span> that belongs to Rohan.</p>
+
+      <!-- Answer Section -->
+      <div class="answer-section" id="answerSection">
+        <h3>🔎 Who took the laptop?</h3>
+        <input type="text" class="answer-input" id="answerInput" placeholder="Type the name of the culprit..." />
+        <button class="btn-submit" onclick="checkAnswer()">Submit Answer</button>
+        <div id="feedback"></div>
+      </div>
+
+      <!-- Next Clue (hidden until correct) -->
+      <div class="text-center mt hidden" id="nextClue">
+        <a href="../solution.html" class="btn">Reveal the Full Solution →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>MysteryBox &mdash; College Project Showcase</footer>
+
+  <script>
+    var CORRECT_ANSWERS = ["rohan"];
+    var SUCCESS_MSG = "✅ Correct! Rohan took the laptop. All the evidence points to him.";
+    var SOLVED_KEY = "clue5_solved";
+
+    if (localStorage.getItem(SOLVED_KEY) === "true") {
+      showSolved();
+    }
+
+    function checkAnswer() {
+      var input = document.getElementById("answerInput").value.trim().toLowerCase();
+      var feedback = document.getElementById("feedback");
+
+      if (!input) return;
+
+      var isCorrect = CORRECT_ANSWERS.some(function (ans) {
+        return input === ans.toLowerCase();
+      });
+
+      if (isCorrect) {
+        localStorage.setItem(SOLVED_KEY, "true");
+        showSolved();
+      } else {
+        feedback.className = "feedback error";
+        feedback.textContent = "❌ Incorrect. Look carefully at the evidence and try again.";
+      }
+    }
+
+    function showSolved() {
+      var feedback = document.getElementById("feedback");
+      feedback.className = "feedback success";
+      feedback.textContent = SUCCESS_MSG;
+      document.getElementById("nextClue").classList.remove("hidden");
+      document.getElementById("answerInput").disabled = true;
+      document.querySelector(".btn-submit").disabled = true;
+    }
+
+    document.getElementById("answerInput").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") checkAnswer();
+    });
+  </script>
+
+</body>
+</html>

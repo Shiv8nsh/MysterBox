@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mystery Solved! | MysteryBox</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>🔍 Mystery<span>Box</span></h1>
+  </header>
+
+  <div class="container">
+
+    <div class="solved-banner">
+      <h2>🎉 Mystery Solved!</h2>
+      <p>You've successfully connected all the clues.</p>
+    </div>
+
+    <div class="card">
+      <h2>The Culprit: <span class="highlight">Rohan</span></h2>
+      <p>Rohan, the lab assistant, took the laptop and attempted to create a false alibi by claiming he was in the library.</p>
+
+      <h3>How the Clues Connected</h3>
+      <ul class="evidence-list">
+        <li>His <strong>access card</strong> was used to enter the lab at 5:34 PM.</li>
+        <li>His <strong>phone</strong> sent a message at 5:31 PM saying the lab was empty.</li>
+        <li>His claim about being in the library from 5:15 PM was <strong>false</strong>.</li>
+        <li><strong>Library records</strong> show he entered at 5:42 PM — contradicting his alibi.</li>
+        <li><strong>CCTV footage</strong> shows a person wearing his blue hoodie entering and leaving the lab.</li>
+      </ul>
+    </div>
+
+    <div class="text-center">
+      <button class="btn btn-outline" onclick="resetAndRestart()">← Start Again</button>
+    </div>
+
+  </div>
+
+  <footer>MysteryBox &mdash; College Project Showcase</footer>
+
+  <script>
+    function resetAndRestart() {
+      // Clear all saved clue progress
+      localStorage.removeItem("clue1_solved");
+      localStorage.removeItem("clue2_solved");
+      localStorage.removeItem("clue3_solved");
+      localStorage.removeItem("clue4_solved");
+      localStorage.removeItem("clue5_solved");
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>
