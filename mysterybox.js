@@ -1,10 +1,22 @@
 /**
- * MysteryBox Core Investigation Engine
- * Handles investigation state, live timer, clues, evidence library,
- * suspects dossier, incident timeline, corkboard connections, and final solution validation.
+ * ============================================================================
+ * MYSTERYBOX CORE INVESTIGATION JAVASCRIPT ENGINE
+ * ============================================================================
+ * Beginner-Friendly JavaScript Implementation for MysteryBox.
+ * 
+ * 🎓 Core JavaScript Concepts Used in this Project:
+ * 1. VARIABLES & CONSTANTS (var, const, let)
+ * 2. DATA STRUCTURES (Arrays of Objects for Clues, Evidence, Suspects)
+ * 3. BROWSER STORAGE (localStorage to save progress & notes without a database)
+ * 4. TIMERS (setInterval and Date.now for the live investigation stopwatch)
+ * 5. DOM MANIPULATION (document.getElementById, createElement, innerHTML)
+ * 6. EVENT LISTENERS (click, input, keydown, submit)
+ * 7. FORM VALIDATION & LOGIC (Validating culprit and proof before case closed)
+ * ============================================================================
  */
 
 (function (root, factory) {
+  // Universal Module Definition (UMD) so it works in both Browser and Node.js
   if (typeof module === 'object' && module.exports) {
     module.exports = factory();
   } else {
@@ -13,7 +25,9 @@
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
 
-  // Storage Keys
+  // ==========================================================================
+  // SECTION 1: STORAGE KEYS (Where data is stored in the browser's localStorage)
+  // ==========================================================================
   var STORAGE_KEYS = {
     CLUE_PREFIX: 'clue',
     TIMER_START: 'mb_timer_start',
@@ -24,10 +38,15 @@
     CASE_CLOSED: 'mb_case_closed',
     FINAL_REPORT: 'mb_final_report',
     PINNED_ITEMS: 'mb_pinned_items',
-    SUSPECT_STATUS: 'mb_suspect_status'
+    SUSPECT_STATUS: 'mb_suspect_status',
+    DETECTIVE_NOTES: 'mb_detective_notes' // 📝 Case notes key
   };
 
-  // Clues Metadata
+  // ==========================================================================
+  // SECTION 2: DATA STRUCTURES (Clues, Evidence, Suspects, Timeline)
+  // ==========================================================================
+
+  // Array of 5 Clues
   var CLUES = [
     {
       id: 1,
@@ -91,7 +110,7 @@
     }
   ];
 
-  // Evidence Items
+  // Array of 5 Forensic Evidence Items
   var EVIDENCE = [
     {
       id: 'ev_cctv_entry',
@@ -165,7 +184,7 @@
     }
   ];
 
-  // Suspects Dossier
+  // Array of 3 Suspects
   var SUSPECTS = [
     {
       id: 'rohan',
@@ -213,7 +232,7 @@
     }
   ];
 
-  // Timeline Events
+  // Array of 8 Chronological Events
   var TIMELINE_EVENTS = [
     {
       time: '17:05',
@@ -290,7 +309,7 @@
     }
   ];
 
-  // Corkboard Connections Map
+  // Corkboard (Mind Map) Nodes & Links
   var CORKBOARD_NODES = [
     { id: 'n_rohan', type: 'suspect', title: 'Rohan Patel (Lab Assistant)', x: 180, y: 140, icon: '🧑‍💻', color: '#c0392b' },
     { id: 'n_cctv', type: 'evidence', title: 'Blue Hoodie CCTV (5:32 PM)', x: 440, y: 80, icon: '📹', color: '#2980b9' },
@@ -310,7 +329,9 @@
     { from: 'n_cctv', to: 'n_exit', label: 'Same hoodie matching exit still' }
   ];
 
-  // Helper safe storage methods
+  // ==========================================================================
+  // SECTION 3: STORAGE HELPERS (Safe reading and writing to localStorage)
+  // ==========================================================================
   function getItem(key) {
     try {
       return localStorage.getItem(key);
@@ -331,9 +352,47 @@
     } catch (e) {}
   }
 
-  // State Manager
+  // ==========================================================================
+  // SECTION 4: 📝 DETECTIVE NOTES FEATURE (Beginner-Friendly)
+  // ==========================================================================
+  /**
+   * Notes Manager
+   * Allows the player to write and save detective observations while solving clues.
+   * Auto-saves on every keystroke and syncs across all pages via localStorage!
+   */
+  var Notes = {
+    // Read saved notes from storage
+    getNotes: function () {
+      return getItem(STORAGE_KEYS.DETECTIVE_NOTES) || '';
+    },
+
+    // Save notes to storage
+    saveNotes: function (text) {
+      setItem(STORAGE_KEYS.DETECTIVE_NOTES, text);
+    },
+
+    // Clear all notes
+    clearNotes: function () {
+      removeItem(STORAGE_KEYS.DETECTIVE_NOTES);
+    },
+
+    // Append a quick note with current investigation timestamp
+    appendTimestampedNote: function (extraText) {
+      var currentNotes = Notes.getNotes();
+      var timeSecs = State.getElapsedSeconds();
+      var timeStr = State.formatTime(timeSecs);
+      var line = '[' + timeStr + '] ' + (extraText || 'Note added.') + '\n';
+      var updated = currentNotes ? (currentNotes + '\n' + line) : line;
+      Notes.saveNotes(updated);
+      return updated;
+    }
+  };
+
+  // ==========================================================================
+  // SECTION 5: STATE MANAGER (Game Progress, Timers, Accuracy Score)
+  // ==========================================================================
   var State = {
-    // Check if clue N is solved (checks both clueN_solved and mb_clueN_solved)
+    // Check if clue N is solved (returns true or false)
     isClueSolved: function (clueNum) {
       return (
         getItem('clue' + clueNum + '_solved') === 'true' ||
@@ -341,6 +400,7 @@
       );
     },
 
+    // Save clue N as solved in localStorage
     markClueSolved: function (clueNum) {
       setItem('clue' + clueNum + '_solved', 'true');
       setItem(STORAGE_KEYS.CLUE_PREFIX + clueNum + '_solved', 'true');
@@ -348,11 +408,13 @@
       State.ensureTimerRunning();
     },
 
+    // Reset a single clue
     resetClue: function (clueNum) {
       removeItem('clue' + clueNum + '_solved');
       removeItem(STORAGE_KEYS.CLUE_PREFIX + clueNum + '_solved');
     },
 
+    // Count how many clues are solved (from 0 to 5)
     getSolvedCount: function () {
       var count = 0;
       for (var i = 1; i <= 5; i++) {
@@ -361,11 +423,12 @@
       return count;
     },
 
+    // Returns true if all 5 clues are solved
     areAllCluesSolved: function () {
       return State.getSolvedCount() === 5;
     },
 
-    // Timer logic
+    // Timer: Start stopwatch if not already started
     ensureTimerRunning: function () {
       if (getItem(STORAGE_KEYS.CASE_CLOSED) === 'true') return;
       if (!getItem(STORAGE_KEYS.TIMER_START)) {
@@ -374,6 +437,7 @@
       }
     },
 
+    // Timer: Calculate elapsed seconds
     getElapsedSeconds: function () {
       var startTime = parseInt(getItem(STORAGE_KEYS.TIMER_START), 10);
       var savedElapsed = parseInt(getItem(STORAGE_KEYS.TIMER_ELAPSED) || '0', 10);
@@ -385,6 +449,7 @@
       return Math.floor((now - startTime) / 1000);
     },
 
+    // Timer: Format seconds into MM:SS string (e.g. 125 seconds -> "02:05")
     formatTime: function (totalSeconds) {
       var s = totalSeconds || 0;
       var mins = Math.floor(s / 60);
@@ -395,13 +460,14 @@
       return pad(mins) + ':' + pad(secs);
     },
 
+    // Timer: Stop timer when case is closed
     stopTimer: function () {
       var elapsed = State.getElapsedSeconds();
       setItem(STORAGE_KEYS.TIMER_ELAPSED, elapsed.toString());
       setItem(STORAGE_KEYS.TIMER_RUNNING, 'false');
     },
 
-    // Stats & Attempts
+    // Accuracy Score Calculation
     recordAttempt: function (isCorrect) {
       var total = parseInt(getItem(STORAGE_KEYS.ATTEMPTS) || '0', 10) + 1;
       setItem(STORAGE_KEYS.ATTEMPTS, total.toString());
@@ -441,6 +507,7 @@
       }
     },
 
+    // Clear all storage and start a fresh investigation
     resetAll: function () {
       for (var i = 1; i <= 5; i++) {
         removeItem('clue' + i + '_solved');
@@ -455,12 +522,15 @@
       removeItem(STORAGE_KEYS.FINAL_REPORT);
       removeItem(STORAGE_KEYS.PINNED_ITEMS);
       removeItem(STORAGE_KEYS.SUSPECT_STATUS);
+      removeItem(STORAGE_KEYS.DETECTIVE_NOTES);
     }
   };
 
-  // UI Components Generator
+  // ==========================================================================
+  // SECTION 6: UI GENERATION HELPERS (DOM Manipulation)
+  // ==========================================================================
   var UI = {
-    // Generate the top investigation status bar
+    // Renders the sticky top navigation bar (Timer, Stepper, Case Badge)
     renderTopBar: function (opts) {
       opts = opts || {};
       var activeClueId = opts.activeClueId || 0;
@@ -508,7 +578,7 @@
       return bar;
     },
 
-    // Attach live timer ticking to header
+    // Live timer ticking mechanism
     startTimerTicker: function () {
       State.ensureTimerRunning();
       var timerEl = document.getElementById('mbTimerVal');
@@ -519,9 +589,111 @@
           el.textContent = State.formatTime(State.getElapsedSeconds());
         }
       }, 1000);
+    },
+
+    // 📝 Mount the Floating Detective Notepad Widget on any page
+    mountNotesWidget: function () {
+      // Prevent mounting multiple times
+      if (document.getElementById('mbNotesWidget')) return;
+
+      var container = document.createElement('div');
+      container.className = 'mb-notes-widget';
+      container.id = 'mbNotesWidget';
+
+      container.innerHTML = [
+        '<div class="mb-notes-panel" id="mbNotesPanel">',
+        '  <div class="mb-notes-header">',
+        '    <span>📝 Detective Case Notes</span>',
+        '    <button class="mb-notes-close-btn" id="mbNotesCloseBtn" title="Close Notes">&times;</button>',
+        '  </div>',
+        '  <div class="mb-notes-toolbar">',
+        '    <div>',
+        '      <button class="mb-notes-tool-btn" id="mbNotesTimeBtn">⏱️ Insert Time</button>',
+        '      <button class="mb-notes-tool-btn" id="mbNotesClearBtn">🗑️ Clear</button>',
+        '    </div>',
+        '    <span class="mb-notes-status" id="mbNotesStatus">Saved ✓</span>',
+        '  </div>',
+        '  <textarea class="mb-notes-textarea" id="mbNotesTextarea" placeholder="Jot down suspect alibis, timestamps, inconsistencies, and clues here... (Auto-saves as you type)"></textarea>',
+        '</div>',
+        '<button class="mb-notes-fab" id="mbNotesFab">📝 Case Notes</button>'
+      ].join('\n');
+
+      document.body.appendChild(container);
+
+      // DOM Elements
+      var fab = document.getElementById('mbNotesFab');
+      var panel = document.getElementById('mbNotesPanel');
+      var closeBtn = document.getElementById('mbNotesCloseBtn');
+      var textarea = document.getElementById('mbNotesTextarea');
+      var statusEl = document.getElementById('mbNotesStatus');
+      var timeBtn = document.getElementById('mbNotesTimeBtn');
+      var clearBtn = document.getElementById('mbNotesClearBtn');
+
+      // Load saved notes into textarea
+      textarea.value = Notes.getNotes();
+
+      // Toggle Notes Panel
+      fab.addEventListener('click', function () {
+        panel.classList.toggle('is-open');
+        if (panel.classList.contains('is-open')) {
+          textarea.focus();
+        }
+      });
+
+      closeBtn.addEventListener('click', function () {
+        panel.classList.remove('is-open');
+      });
+
+      // Auto-save on every keystroke
+      textarea.addEventListener('input', function () {
+        Notes.saveNotes(textarea.value);
+        statusEl.textContent = 'Saving...';
+        setTimeout(function () {
+          statusEl.textContent = 'Saved ✓';
+        }, 300);
+
+        // If in-page notes also exist on index.html, keep them synchronized!
+        var pageTextarea = document.getElementById('dashboardNotesTextarea');
+        if (pageTextarea && pageTextarea !== textarea) {
+          pageTextarea.value = textarea.value;
+        }
+      });
+
+      // Insert Current Investigation Timestamp
+      timeBtn.addEventListener('click', function () {
+        var elapsed = State.getElapsedSeconds();
+        var timeStr = State.formatTime(elapsed);
+        var tag = '\n[' + timeStr + '] ';
+        textarea.value += tag;
+        textarea.focus();
+        Notes.saveNotes(textarea.value);
+      });
+
+      // Clear Notes
+      clearBtn.addEventListener('click', function () {
+        if (confirm('Clear all detective notes?')) {
+          textarea.value = '';
+          Notes.clearNotes();
+          statusEl.textContent = 'Cleared';
+          var pageTextarea = document.getElementById('dashboardNotesTextarea');
+          if (pageTextarea) pageTextarea.value = '';
+        }
+      });
     }
   };
 
+  // Automatically mount the notes widget as soon as DOM is ready
+  if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function () {
+        UI.mountNotesWidget();
+      });
+    } else {
+      UI.mountNotesWidget();
+    }
+  }
+
+  // Export public API
   return {
     CLUES: CLUES,
     EVIDENCE: EVIDENCE,
@@ -530,6 +702,7 @@
     CORKBOARD_NODES: CORKBOARD_NODES,
     CORKBOARD_LINKS: CORKBOARD_LINKS,
     State: State,
+    Notes: Notes, // 📝 Beginner-friendly notes API
     UI: UI
   };
 });

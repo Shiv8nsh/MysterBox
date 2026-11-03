@@ -21,6 +21,7 @@
       <button class="mb-nav-tab" data-tab="suspects">👤 Suspect Profiles <span class="mb-tab-badge">3</span></button>
       <button class="mb-nav-tab" data-tab="timeline">⏱️ Incident Timeline <span class="mb-tab-badge">8 Events</span></button>
       <button class="mb-nav-tab" data-tab="corkboard">📌 Crime Board</button>
+      <button class="mb-nav-tab" data-tab="notes">📝 Case Notes</button>
       <button class="mb-nav-tab" data-tab="solution" id="tabSolutionBtn">⚖️ Final Solution</button>
     </nav>
 
@@ -185,7 +186,44 @@
     </section>
 
     <!-- =====================================================================
-         PANEL 7: FINAL SOLUTION & ACCUSATION CHAMBER
+         PANEL 7: 📝 DETECTIVE CASE NOTES (BEGINNER FRIENDLY)
+         ===================================================================== -->
+    <section class="mb-panel" id="panel-notes">
+      <div class="card mb-page-notes-box">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+          <div>
+            <span class="badge" style="background: #2c3e50;">DETECTIVE SCRATCHPAD</span>
+            <h2 style="margin: 4px 0;">📝 Investigation Case Notes</h2>
+            <p style="color: #666; font-size: 0.9rem;">Record observations, compare suspect statements, and track timeline contradictions. Auto-saves directly to browser storage.</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-outline" id="exportNotesBtn" style="font-size: 0.82rem; padding: 6px 14px;">💾 Export .txt</button>
+            <button class="btn btn-outline" id="clearDashboardNotesBtn" style="font-size: 0.82rem; padding: 6px 14px; border-color: #e74c3c; color: #c0392b;">🗑️ Clear Notes</button>
+          </div>
+        </div>
+
+        <!-- Quick Insert Clue Pills -->
+        <div class="mb-notes-quick-inserts">
+          <span style="font-size: 0.8rem; font-weight: bold; color: #64748b; align-self: center;">Quick Inserts:</span>
+          <button class="mb-quick-pill" data-insert="[17:32 CCTV] Figure wearing blue hoodie enters Lab 304.">📹 CCTV Hoodie</button>
+          <button class="mb-quick-pill" data-insert="[17:34 Keycard] Card #4092 belonging to Rohan Patel swiped into Lab 304.">💳 Keycard #4092</button>
+          <button class="mb-quick-pill" data-insert="[17:31 Phone] SMS from Rohan's phone: 'The lab is empty. You can get it now.'">💬 Phone SMS</button>
+          <button class="mb-quick-pill" data-insert="[⚠️ Contradiction] Rohan claims library at 17:15, but turnstile logged at 17:42. 27-min unaccounted gap!">⚠️ Library Contradiction</button>
+          <button class="mb-quick-pill" id="dashboardInsertTimeBtn">⏱️ Current Time</button>
+        </div>
+
+        <div style="position: relative;">
+          <textarea id="dashboardNotesTextarea" class="answer-input" style="height: 260px; font-family: inherit; font-size: 0.95rem; line-height: 1.6; resize: vertical;" placeholder="Type your investigation notes, alibi comparisons, and working theories here..."></textarea>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+            <small style="color: #64748b;">💾 Changes are auto-saved to localStorage on every keystroke.</small>
+            <span id="dashboardNotesStatus" style="font-size: 0.85rem; font-weight: bold; color: #10b981;">Saved ✓</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         PANEL 8: FINAL SOLUTION & ACCUSATION CHAMBER
          ===================================================================== -->
     <section class="mb-panel" id="panel-solution">
       <div class="card" id="solutionChamber">
@@ -229,6 +267,10 @@
         });
         if (tabId === "corkboard") {
           setTimeout(renderCorkboard, 50);
+        }
+        if (tabId === "notes") {
+          var dNotes = document.getElementById("dashboardNotesTextarea");
+          if (dNotes) dNotes.value = MB.Notes.getNotes();
         }
         if (tabId === "solution") {
           renderSolutionChamber();
@@ -743,7 +785,88 @@
         });
       }
 
-      // 10. Global Reset Action
+      // 10. 📝 Detective Case Notes Feature (Beginner Friendly)
+      var dashboardNotes = document.getElementById("dashboardNotesTextarea");
+      var dashboardStatus = document.getElementById("dashboardNotesStatus");
+
+      // Load existing notes from localStorage
+      if (dashboardNotes) {
+        dashboardNotes.value = MB.Notes.getNotes();
+
+        // Listen for typing (input event) and auto-save immediately to localStorage
+        dashboardNotes.addEventListener("input", function () {
+          MB.Notes.saveNotes(dashboardNotes.value);
+          dashboardStatus.textContent = "Saving...";
+          setTimeout(function () {
+            dashboardStatus.textContent = "Saved ✓";
+          }, 300);
+
+          // Keep floating notes textarea in sync
+          var floatingTextarea = document.getElementById("mbNotesTextarea");
+          if (floatingTextarea && floatingTextarea !== dashboardNotes) {
+            floatingTextarea.value = dashboardNotes.value;
+          }
+        });
+      }
+
+      // Quick Insert Buttons (Click to append clue notes)
+      document.querySelectorAll(".mb-quick-pill[data-insert]").forEach(function (pill) {
+        pill.addEventListener("click", function () {
+          var textToInsert = this.dataset.insert;
+          var current = dashboardNotes.value;
+          dashboardNotes.value = current ? (current + "\n" + textToInsert) : textToInsert;
+          dashboardNotes.focus();
+          MB.Notes.saveNotes(dashboardNotes.value);
+          dashboardStatus.textContent = "Saved ✓";
+          var floatingTextarea = document.getElementById("mbNotesTextarea");
+          if (floatingTextarea) floatingTextarea.value = dashboardNotes.value;
+        });
+      });
+
+      // Insert Current Investigation Time Button
+      var insertTimeBtn = document.getElementById("dashboardInsertTimeBtn");
+      if (insertTimeBtn) {
+        insertTimeBtn.addEventListener("click", function () {
+          var timeStr = MB.State.formatTime(MB.State.getElapsedSeconds());
+          var tag = "\n[" + timeStr + "] ";
+          dashboardNotes.value += tag;
+          dashboardNotes.focus();
+          MB.Notes.saveNotes(dashboardNotes.value);
+        });
+      }
+
+      // Export Notes to .txt File
+      var exportBtn = document.getElementById("exportNotesBtn");
+      if (exportBtn) {
+        exportBtn.addEventListener("click", function () {
+          var notesContent = dashboardNotes.value || "No notes recorded.";
+          var blob = new Blob([notesContent], { type: "text/plain;charset=utf-8" });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = "MysteryBox_Detective_Notes.txt";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+        });
+      }
+
+      // Clear Notes Button
+      var clearNotesBtn = document.getElementById("clearDashboardNotesBtn");
+      if (clearNotesBtn) {
+        clearNotesBtn.addEventListener("click", function () {
+          if (confirm("Are you sure you want to clear all your detective notes?")) {
+            dashboardNotes.value = "";
+            MB.Notes.clearNotes();
+            dashboardStatus.textContent = "Cleared";
+            var floatingTextarea = document.getElementById("mbNotesTextarea");
+            if (floatingTextarea) floatingTextarea.value = "";
+          }
+        });
+      }
+
+      // 11. Global Reset Action
       document.getElementById("resetAllBtn").addEventListener("click", function () {
         if (confirm("Are you sure you want to reset all clue progress, evidence, and timer?")) {
           MB.State.resetAll();
