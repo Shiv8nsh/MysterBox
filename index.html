@@ -16,10 +16,11 @@
     <!-- Workstation Navigation Tabs -->
     <nav class="mb-nav-tabs" id="navTabs" role="tablist">
       <button class="mb-nav-tab is-active" data-tab="dossier">📁 Case Dossier</button>
+      <button class="mb-nav-tab" data-tab="cases">🗂️ All Cases <span class="mb-tab-badge">4+1</span></button>
       <button class="mb-nav-tab" data-tab="clues">🔍 Clues Console <span class="mb-tab-badge" id="badgeClues">0/5</span></button>
       <button class="mb-nav-tab" data-tab="evidence">🗃️ Evidence Library <span class="mb-tab-badge" id="badgeEvidence">0/5</span></button>
-      <button class="mb-nav-tab" data-tab="suspects">👤 Suspect Profiles <span class="mb-tab-badge">3</span></button>
-      <button class="mb-nav-tab" data-tab="timeline">⏱️ Incident Timeline <span class="mb-tab-badge">8 Events</span></button>
+      <button class="mb-nav-tab" data-tab="suspects">👤 Suspect Profiles <span class="mb-tab-badge" id="badgeSuspects">4</span></button>
+      <button class="mb-nav-tab" data-tab="timeline">⏱️ Incident Timeline</button>
       <button class="mb-nav-tab" data-tab="corkboard">📌 Crime Board</button>
       <button class="mb-nav-tab" data-tab="notes">📝 Case Notes</button>
       <button class="mb-nav-tab" data-tab="solution" id="tabSolutionBtn">⚖️ Final Solution</button>
@@ -32,27 +33,27 @@
       <div class="card">
         <div class="mb-dossier-header">
           <div>
-            <span class="badge">ACTIVE INVESTIGATION • CASE #304</span>
-            <h2 style="font-size: 1.8rem; margin: 4px 0 8px 0;">The Missing Laptop</h2>
-            <p style="color: #666; font-size: 0.95rem;">A high-spec university laptop containing critical semester project research has disappeared from the computer lab.</p>
+            <span class="badge" id="dossierBadge">CASE 01 • LOCKED-ROOM MYSTERY</span>
+            <h2 style="font-size: 1.8rem; margin: 4px 0 8px 0;" id="dossierTitle">Death at Room 309</h2>
+            <p style="color: #666; font-size: 0.95rem;" id="dossierBriefing">A wealthy businessman is found dead inside his luxury hotel room. The door is locked from the inside, the windows are sealed, and nobody claims to have entered.</p>
           </div>
           <div style="text-align: right;">
-            <a href="clue/X7K92.html" class="btn" id="dossierActionBtn">Start Investigation →</a>
+            <button class="btn" id="dossierStartBtn">Start Investigation →</button>
           </div>
         </div>
 
         <!-- Case Parameters Grid -->
         <div class="mb-dossier-stats-grid">
           <div class="mb-stat-card">
-            <div class="mb-stat-val">17:05 – 18:00</div>
+            <div class="mb-stat-val" id="dossierWindow">11:00 PM – 12:00 AM</div>
             <div class="mb-stat-label">Incident Window</div>
           </div>
           <div class="mb-stat-card">
-            <div class="mb-stat-val">Lab 304</div>
+            <div class="mb-stat-val" id="dossierScene">Grand Sovereign Hotel</div>
             <div class="mb-stat-label">Scene of Incident</div>
           </div>
           <div class="mb-stat-card">
-            <div class="mb-stat-val" style="color: #c0392b;">OPEN</div>
+            <div class="mb-stat-val" style="color: #c0392b;" id="dossierStatus">OPEN</div>
             <div class="mb-stat-label">Investigation Status</div>
           </div>
           <div class="mb-stat-card">
@@ -63,20 +64,18 @@
 
         <div class="mb-grid-2" style="margin-top: 24px;">
           <div>
-            <h3>📋 Incident Summary</h3>
-            <p>The laptop was last verified by team members on Lab Desk #4 at <span class="highlight">5:05 PM</span>. At <span class="highlight">6:00 PM</span>, the lab coordinator found the workstation bare with the security lock severed.</p>
-            <p>Preliminary perimeter sweeps have revealed an electronic card swipe, security camera stills, an encrypted phone transmission, and automated library turnstile records.</p>
-            <blockquote>"Follow the clues across each URL, collect the evidence pieces, cross-examine the suspects' alibis, and submit the final accusation."</blockquote>
+            <h3>📋 Player Objective</h3>
+            <p id="dossierObjective">Discover how the murderer entered and escaped the sealed room, expose the forged timeline, and identify the culprit.</p>
+            <blockquote>"Solve each clue sequentially, uncover forensic evidence in the locker, cross-examine stated alibis on the timeline, and file the formal accusation."</blockquote>
           </div>
           <div>
-            <h3>👥 Prime Suspects</h3>
-            <ul class="suspect-list">
-              <li><strong>Rohan Patel</strong> – Lab Assistant (Had after-hours keycard access & blue hoodie)</li>
-              <li><strong>Arjun Sharma</strong> – CS Student (Working on competing final year submission)</li>
-              <li><strong>Kabir Mehta</strong> – Student & Lab Trainee (Had access to hardware inventory)</li>
+            <h3>👥 Suspect Overview</h3>
+            <ul class="suspect-list" id="dossierSuspectsList">
+              <!-- Dynamically populated -->
             </ul>
-            <div style="margin-top: 16px; background: #fdfefe; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 6px;">
-              <small><strong>💡 Investigation Tip:</strong> Every solved clue unlocks forensic evidence in the Evidence Library and exposes contradictions on the Incident Timeline.</small>
+            <div style="margin-top: 16px; background: #fdfefe; border: 1px dashed #cbd5e1; padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+              <small><strong>💡 Need to switch mystery?</strong> Browse all 4 official cases anytime.</small>
+              <button class="btn btn-outline" onclick="switchTab('cases')" style="padding: 4px 10px; font-size: 0.78rem;">Browse Cases →</button>
             </div>
           </div>
         </div>
@@ -84,16 +83,35 @@
     </section>
 
     <!-- =====================================================================
-         PANEL 2: CLUES CONSOLE
+         PANEL 2: 🗂️ ALL CASES (CASE ARCHIVE GALLERY)
+         ===================================================================== -->
+    <section class="mb-panel" id="panel-cases">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 8px;">
+          <div>
+            <h2>🗂️ MysterBox Case Collection</h2>
+            <p style="color: #666; font-size: 0.92rem;">Select an investigation file to load its dossier, clues, suspects, and forensic evidence.</p>
+          </div>
+          <span style="font-size: 0.85rem; background: #f1f5f9; padding: 6px 12px; border-radius: 20px; font-weight: bold; color: #475569;">4 Official Cases + 1 Demo Case</span>
+        </div>
+
+        <div class="mb-case-grid" id="caseGridContainer">
+          <!-- Dynamically populated by renderCaseGallery() -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         PANEL 3: CLUES CONSOLE
          ===================================================================== -->
     <section class="mb-panel" id="panel-clues">
       <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
           <div>
             <h2>🔍 Investigation Clue Log</h2>
-            <p style="color: #666; font-size: 0.9rem;">Each clue represents a critical lead across the campus network. Follow the chain URL-by-URL.</p>
+            <p style="color: #666; font-size: 0.9rem;">Analyze each clue, deduce the required answer, and submit it below to unlock the next forensic lead.</p>
           </div>
-          <button class="btn btn-outline" id="resetAllBtn" style="font-size: 0.8rem; padding: 6px 14px;">🔄 Reset Investigation</button>
+          <button class="btn btn-outline" id="resetCaseBtn" style="font-size: 0.8rem; padding: 6px 14px;">🔄 Reset This Case</button>
         </div>
 
         <div id="cluesListContainer">
@@ -103,20 +121,19 @@
     </section>
 
     <!-- =====================================================================
-         PANEL 3: EVIDENCE LIBRARY
+         PANEL 4: EVIDENCE LIBRARY
          ===================================================================== -->
     <section class="mb-panel" id="panel-evidence">
       <div class="card">
         <h2>🗃️ Evidence Locker</h2>
-        <p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Forensic assets discovered throughout the investigation. Click any piece of evidence to examine chain-of-custody and details.</p>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Forensic assets discovered throughout the case. Click any piece of evidence to examine chain-of-custody and details.</p>
 
         <!-- Filter & Search Bar -->
         <div class="mb-filter-bar">
           <div class="mb-filter-pills" id="evidenceFilterPills">
             <button class="mb-filter-pill is-active" data-filter="all">All Evidence</button>
-            <button class="mb-filter-pill" data-filter="Digital">Digital & Logs</button>
-            <button class="mb-filter-pill" data-filter="Physical">Physical & CCTV</button>
-            <button class="mb-filter-pill" data-filter="Contradiction">Contradictions</button>
+            <button class="mb-filter-pill" data-filter="Digital">Digital & Records</button>
+            <button class="mb-filter-pill" data-filter="Physical">Physical & Stills</button>
           </div>
           <input type="text" class="mb-search-input" id="evidenceSearchInput" placeholder="🔍 Search evidence..." />
         </div>
@@ -128,12 +145,12 @@
     </section>
 
     <!-- =====================================================================
-         PANEL 4: SUSPECT PROFILES
+         PANEL 5: SUSPECT PROFILES
          ===================================================================== -->
     <section class="mb-panel" id="panel-suspects">
       <div class="card">
         <h2>👤 Suspect Profiles & Alibis</h2>
-        <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">Dossiers compiled on everyone with access to Lab 304 during the incident window.</p>
+        <p style="color: #666; font-size: 0.9rem; margin-bottom: 20px;">Dossiers on individuals connected to the incident. Cross-examine stated whereabouts against physical evidence.</p>
         <div class="mb-grid-3" id="suspectsContainer">
           <!-- Dynamically populated by renderSuspects() -->
         </div>
@@ -141,13 +158,13 @@
     </section>
 
     <!-- =====================================================================
-         PANEL 5: INCIDENT TIMELINE
+         PANEL 6: INCIDENT TIMELINE
          ===================================================================== -->
     <section class="mb-panel" id="panel-timeline">
       <div class="card">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
           <div>
-            <h2>⏱️ Incident Timeline (17:00 – 18:00)</h2>
+            <h2>⏱️ Incident Timeline</h2>
             <p style="color: #666; font-size: 0.9rem;">Cross-reference stated alibis with timestamped forensic logs.</p>
           </div>
           <div class="mb-filter-pills" id="timelineFilterPills">
@@ -164,7 +181,7 @@
     </section>
 
     <!-- =====================================================================
-         PANEL 6: INVESTIGATION CRIME BOARD (CORKBOARD)
+         PANEL 7: INVESTIGATION CRIME BOARD (CORKBOARD)
          ===================================================================== -->
     <section class="mb-panel" id="panel-corkboard">
       <div class="card">
@@ -173,7 +190,7 @@
             <h2>📌 Investigation Crime Board</h2>
             <p style="color: #666; font-size: 0.9rem;">Visual mind map connecting suspects, physical proof, and timing contradictions with red threads.</p>
           </div>
-          <span style="font-size: 0.8rem; background: #f1f2f6; padding: 4px 10px; border-radius: 4px;">Click any card to inspect connection</span>
+          <span style="font-size: 0.8rem; background: #f1f2f6; padding: 4px 10px; border-radius: 4px;">Interactive Forensic Links</span>
         </div>
 
         <div class="mb-corkboard-container">
@@ -186,7 +203,7 @@
     </section>
 
     <!-- =====================================================================
-         PANEL 7: 📝 DETECTIVE CASE NOTES (BEGINNER FRIENDLY)
+         PANEL 8: 📝 DETECTIVE CASE NOTES
          ===================================================================== -->
     <section class="mb-panel" id="panel-notes">
       <div class="card mb-page-notes-box">
@@ -194,7 +211,7 @@
           <div>
             <span class="badge" style="background: #2c3e50;">DETECTIVE SCRATCHPAD</span>
             <h2 style="margin: 4px 0;">📝 Investigation Case Notes</h2>
-            <p style="color: #666; font-size: 0.9rem;">Record observations, compare suspect statements, and track timeline contradictions. Auto-saves directly to browser storage.</p>
+            <p style="color: #666; font-size: 0.9rem;">Record observations, compare suspect statements, and track timeline contradictions. Auto-saves directly to browser storage for this case.</p>
           </div>
           <div style="display: flex; gap: 8px;">
             <button class="btn btn-outline" id="exportNotesBtn" style="font-size: 0.82rem; padding: 6px 14px;">💾 Export .txt</button>
@@ -203,19 +220,15 @@
         </div>
 
         <!-- Quick Insert Clue Pills -->
-        <div class="mb-notes-quick-inserts">
+        <div class="mb-notes-quick-inserts" id="notesQuickInserts">
           <span style="font-size: 0.8rem; font-weight: bold; color: #64748b; align-self: center;">Quick Inserts:</span>
-          <button class="mb-quick-pill" data-insert="[17:32 CCTV] Figure wearing blue hoodie enters Lab 304.">📹 CCTV Hoodie</button>
-          <button class="mb-quick-pill" data-insert="[17:34 Keycard] Card #4092 belonging to Rohan Patel swiped into Lab 304.">💳 Keycard #4092</button>
-          <button class="mb-quick-pill" data-insert="[17:31 Phone] SMS from Rohan's phone: 'The lab is empty. You can get it now.'">💬 Phone SMS</button>
-          <button class="mb-quick-pill" data-insert="[⚠️ Contradiction] Rohan claims library at 17:15, but turnstile logged at 17:42. 27-min unaccounted gap!">⚠️ Library Contradiction</button>
           <button class="mb-quick-pill" id="dashboardInsertTimeBtn">⏱️ Current Time</button>
         </div>
 
         <div style="position: relative;">
           <textarea id="dashboardNotesTextarea" class="answer-input" style="height: 260px; font-family: inherit; font-size: 0.95rem; line-height: 1.6; resize: vertical;" placeholder="Type your investigation notes, alibi comparisons, and working theories here..."></textarea>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-            <small style="color: #64748b;">💾 Changes are auto-saved to localStorage on every keystroke.</small>
+            <small style="color: #64748b;">💾 Auto-saves to localStorage on every keystroke.</small>
             <span id="dashboardNotesStatus" style="font-size: 0.85rem; font-weight: bold; color: #10b981;">Saved ✓</span>
           </div>
         </div>
@@ -223,7 +236,7 @@
     </section>
 
     <!-- =====================================================================
-         PANEL 8: FINAL SOLUTION & ACCUSATION CHAMBER
+         PANEL 9: FINAL SOLUTION & ACCUSATION CHAMBER
          ===================================================================== -->
     <section class="mb-panel" id="panel-solution">
       <div class="card" id="solutionChamber">
@@ -241,24 +254,30 @@
     </div>
   </div>
 
-  <footer>MysteryBox &mdash; College Project Showcase</footer>
+  <footer>MysteryBox &mdash; Mystery Case Showcase</footer>
 
+  <script src="cases.js"></script>
   <script src="mysterybox.js"></script>
   <script>
     (function () {
       var MB = window.MysteryBox;
-      if (!MB) return;
+      var MC = window.MysteryCases;
+      if (!MB || !MC) return;
 
       // 1. Mount Top Bar
       var mount = document.getElementById("topbarMount");
-      mount.appendChild(MB.UI.renderTopBar({ activeClueId: 0, isCluePage: false }));
+      function refreshTopBar() {
+        mount.innerHTML = "";
+        mount.appendChild(MB.UI.renderTopBar({ activeClueId: 0, isCluePage: false }));
+      }
+      refreshTopBar();
       MB.UI.startTimerTicker();
 
       // 2. Tab Navigation
       var navTabs = document.querySelectorAll(".mb-nav-tab");
       var panels = document.querySelectorAll(".mb-panel");
 
-      function switchTab(tabId) {
+      window.switchTab = function (tabId) {
         navTabs.forEach(function (tab) {
           tab.classList.toggle("is-active", tab.dataset.tab === tabId);
         });
@@ -276,60 +295,149 @@
           renderSolutionChamber();
         }
         updateBadges();
-      }
+      };
 
       navTabs.forEach(function (tab) {
         tab.addEventListener("click", function () {
-          switchTab(this.dataset.tab);
+          window.switchTab(this.dataset.tab);
         });
       });
 
-      // Handle direct hash navigation
       if (window.location.hash) {
         var hashTab = window.location.hash.replace("#", "");
         if (document.getElementById("panel-" + hashTab)) {
-          switchTab(hashTab);
+          window.switchTab(hashTab);
         }
       }
 
-      // 3. Update Badges & Counters
+      // 3. Render Case Dossier Hub
+      function renderDossier() {
+        var c = MB.getActiveCase();
+        if (!c) return;
+
+        document.getElementById("dossierBadge").textContent = c.badge;
+        document.getElementById("dossierTitle").textContent = c.title;
+        document.getElementById("dossierBriefing").textContent = c.briefing;
+        document.getElementById("dossierWindow").textContent = c.incidentWindow;
+        document.getElementById("dossierScene").textContent = c.scene;
+        document.getElementById("dossierObjective").textContent = c.objective;
+
+        var isClosed = MB.State.isCaseClosed();
+        var statusEl = document.getElementById("dossierStatus");
+        statusEl.textContent = isClosed ? "CLOSED" : "OPEN";
+        statusEl.style.color = isClosed ? "#27ae60" : "#c0392b";
+
+        var suspectsList = document.getElementById("dossierSuspectsList");
+        suspectsList.innerHTML = "";
+        c.suspects.forEach(function (s) {
+          var li = document.createElement("li");
+          li.innerHTML = "<strong>" + s.name + "</strong> – " + s.role;
+          suspectsList.appendChild(li);
+        });
+
+        var startBtn = document.getElementById("dossierStartBtn");
+        startBtn.onclick = function () {
+          window.switchTab("clues");
+        };
+      }
+
+      // 4. Render All Cases Gallery (Case Collection)
+      function renderCaseGallery() {
+        var container = document.getElementById("caseGridContainer");
+        container.innerHTML = "";
+
+        var allCases = MC.getAllCases();
+        var currentId = MB.getActiveCaseId();
+
+        allCases.forEach(function (c) {
+          var isCurrent = c.id === currentId;
+          var solvedCount = MB.State.getSolvedCount(c.id);
+          var totalClues = c.clues.length;
+          var isClosed = MB.State.isCaseClosed(c.id);
+
+          var diffCls = "is-medium";
+          if (c.difficulty.toLowerCase() === "easy") diffCls = "is-easy";
+          else if (c.difficulty.toLowerCase() === "hard") diffCls = "is-hard";
+          else if (c.difficulty.toLowerCase() === "expert") diffCls = "is-expert";
+          else if (c.difficulty.toLowerCase() === "introductory") diffCls = "is-demo";
+
+          var card = document.createElement("div");
+          card.className = "mb-case-card" + (isCurrent ? " is-active-case" : "");
+
+          var statusBadge = isClosed
+            ? '<span style="color:#27ae60; font-weight:bold; font-size:0.8rem;">✓ SOLVED</span>'
+            : (solvedCount > 0 ? '<span style="color:#e67e22; font-weight:bold; font-size:0.8rem;">● ' + solvedCount + '/' + totalClues + ' Clues</span>' : '<span style="color:#94a3b8; font-size:0.8rem;">Not Started</span>');
+
+          card.innerHTML = [
+            '<div class="mb-case-header-row">',
+            '  <span class="mb-diff-tag ' + diffCls + '">' + c.difficulty + '</span>',
+            '  ' + statusBadge,
+            '</div>',
+            '<h3 class="mb-case-card-title">' + (c.number !== "00" ? 'Case ' + c.number + ': ' : '') + c.title + '</h3>',
+            '<div class="mb-case-card-meta">',
+            '  ⏱️ ' + c.playtime + ' &bull; 🔍 ' + totalClues + ' Clues<br>',
+            '  🎭 <em>' + c.genre + '</em>',
+            '</div>',
+            '<p class="mb-case-card-brief">' + c.briefing.slice(0, 140) + '...</p>',
+            '<div class="mb-case-card-footer">',
+            '  <small style="color:#64748b;"><strong>Mechanic:</strong> ' + c.mechanic + '</small>',
+            '  <button class="btn ' + (isCurrent ? 'btn-outline' : '') + ' select-case-btn" data-cid="' + c.id + '" style="padding:6px 14px; font-size:0.85rem;">',
+            isCurrent ? 'Currently Active ✓' : 'Investigate →',
+            '  </button>',
+            '</div>'
+          ].join("");
+
+          container.appendChild(card);
+        });
+
+        // Wire selection
+        document.querySelectorAll(".select-case-btn").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var cid = this.dataset.cid;
+            selectCase(cid);
+          });
+        });
+      }
+
+      function selectCase(cid) {
+        MB.setActiveCaseId(cid);
+        refreshTopBar();
+        renderDossier();
+        renderCaseGallery();
+        renderCluesList();
+        renderEvidenceGrid();
+        renderSuspects();
+        renderTimeline();
+        updateBadges();
+        window.switchTab("dossier");
+      }
+
+      // 5. Update Badges & Counters
       function updateBadges() {
-        var solved = MB.State.getSolvedCount();
-        document.getElementById("badgeClues").textContent = solved + "/5";
-        document.getElementById("badgeEvidence").textContent = solved + "/5";
-        document.getElementById("dossierProgressVal").textContent = solved + " / 5";
+        var c = MB.getActiveCase();
+        if (!c) return;
 
-        var actionBtn = document.getElementById("dossierActionBtn");
-        if (solved === 0) {
-          actionBtn.textContent = "Start Investigation →";
-          actionBtn.href = "clue/X7K92.html";
-        } else if (solved < 5) {
-          // Find next unsolved clue
-          for (var i = 1; i <= 5; i++) {
-            if (!MB.State.isClueSolved(i)) {
-              actionBtn.textContent = "Resume Clue " + i + " →";
-              actionBtn.href = MB.CLUES[i - 1].url;
-              break;
-            }
-          }
-        } else {
-          actionBtn.textContent = "⚖️ Review Accusation →";
-          actionBtn.href = "#solution";
-          actionBtn.onclick = function (e) {
-            e.preventDefault();
-            switchTab("solution");
-          };
-        }
+        var solved = MB.State.getSolvedCount();
+        var total = c.clues.length;
+
+        document.getElementById("badgeClues").textContent = solved + "/" + total;
+        document.getElementById("badgeEvidence").textContent = solved + "/" + total;
+        document.getElementById("badgeSuspects").textContent = c.suspects.length;
+        document.getElementById("dossierProgressVal").textContent = solved + " / " + total;
       }
 
-      // 4. Render Clues List
+      // 6. Render Clues Console with Inline Verification
       function renderCluesList() {
         var container = document.getElementById("cluesListContainer");
         container.innerHTML = "";
 
-        MB.CLUES.forEach(function (clue) {
+        var c = MB.getActiveCase();
+        if (!c) return;
+
+        c.clues.forEach(function (clue) {
           var isSolved = MB.State.isClueSolved(clue.id);
           var prevSolved = clue.id === 1 || MB.State.isClueSolved(clue.id - 1);
+
           var cardCls = "mb-clue-card";
           if (isSolved) cardCls += " is-solved";
           else if (prevSolved) cardCls += " is-current";
@@ -337,23 +445,29 @@
 
           var card = document.createElement("div");
           card.className = cardCls;
+
           card.innerHTML = [
             '<div class="mb-clue-meta">',
             '  <div>',
-            '    <span class="badge" style="margin-bottom:0;">Clue ' + clue.id + ' of 5</span>',
-            '    <span class="url-bar" style="display:inline-block; padding:3px 8px; margin-left:8px; margin-bottom:0;">📍 /' + clue.url + '</span>',
+            '    <span class="badge" style="margin-bottom:0;">Clue ' + clue.id + ' of ' + c.clues.length + '</span>',
+            '    <span style="font-family:monospace; font-size:0.85rem; color:#c0392b; font-weight:bold; margin-left:8px;">' + clue.time + '</span>',
             '  </div>',
             '  <div>' + (isSolved ? '<strong style="color:#27ae60;">✓ SOLVED</strong>' : (prevSolved ? '<strong style="color:#c0392b;">● IN PROGRESS</strong>' : '<span style="color:#95a5a6;">🔒 LOCKED</span>')) + '</div>',
             '</div>',
-            '<h3 style="margin: 8px 0 4px 0;">' + clue.title + ' <small style="color:#7f8c8d; font-weight:normal;">(' + clue.time + ')</small></h3>',
+            '<h3 style="margin: 8px 0 4px 0;">' + clue.title + '</h3>',
             '<p style="color:#555; margin-bottom: 12px;">' + clue.description + '</p>',
-            '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">',
-            '  <div>',
-            '    <a href="' + clue.url + '" class="btn" style="padding:6px 16px; font-size:0.88rem;">' + (isSolved ? 'Review Clue ' + clue.id : 'Open Clue ' + clue.id + ' →') + '</a>',
-            '    <button class="btn btn-outline toggle-hint-btn" data-hint="' + clue.id + '" style="padding:6px 12px; font-size:0.82rem; margin-left:6px;">💡 Hint</button>',
+            
+            // Inline Answer Section
+            '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:14px; margin:12px 0;">',
+            '  <h4 style="margin-bottom:8px; font-size:0.95rem; color:#2c3e50;">🔎 ' + clue.question + '</h4>',
+            '  <div style="display:flex; gap:8px; flex-wrap:wrap;">',
+            '    <input type="text" class="answer-input inline-clue-input" data-clueid="' + clue.id + '" placeholder="' + (isSolved ? 'Solved!' : 'Type deduction answer...') + '" style="margin-bottom:0; flex:1; min-width:200px;" ' + (isSolved || !prevSolved ? 'disabled' : '') + ' value="' + (isSolved ? clue.answers[0] : '') + '">',
+            '    <button class="btn inline-clue-submit" data-clueid="' + clue.id + '" style="padding:8px 18px; font-size:0.9rem;" ' + (isSolved || !prevSolved ? 'disabled' : '') + '>' + (isSolved ? 'Solved ✓' : 'Submit Answer') + '</button>',
+            '    <button class="btn btn-outline toggle-hint-btn" data-hint="' + clue.id + '" style="padding:8px 12px; font-size:0.85rem;">💡 Hint</button>',
             '  </div>',
-            '  <small style="color:#7f8c8d;">Unlocks: <strong>' + (isSolved ? 'Evidence Added' : 'Locked Evidence') + '</strong></small>',
+            '  <div class="inline-feedback" id="feedback-' + clue.id + '" style="margin-top:8px;"></div>',
             '</div>',
+
             '<div class="mb-clue-hint-box" id="hintBox-' + clue.id + '"><strong>💡 Detective Hint:</strong> ' + clue.hint + '</div>'
           ].join("");
 
@@ -367,9 +481,58 @@
             if (box) box.classList.toggle("is-open");
           });
         });
+
+        // Wire Inline Answers
+        document.querySelectorAll(".inline-clue-submit").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var clueId = parseInt(this.dataset.clueid, 10);
+            handleClueSubmit(clueId);
+          });
+        });
+
+        document.querySelectorAll(".inline-clue-input").forEach(function (input) {
+          input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+              var clueId = parseInt(this.dataset.clueid, 10);
+              handleClueSubmit(clueId);
+            }
+          });
+        });
       }
 
-      // 5. Render Evidence Library
+      function handleClueSubmit(clueId) {
+        var c = MB.getActiveCase();
+        var clue = c.clues.find(function (item) { return item.id === clueId; });
+        if (!clue) return;
+
+        var inputEl = document.querySelector('.inline-clue-input[data-clueid="' + clueId + '"]');
+        var feedbackEl = document.getElementById('feedback-' + clueId);
+        var val = inputEl.value.trim().toLowerCase();
+        if (!val) return;
+
+        var isCorrect = clue.answers.some(function (ans) {
+          return val === ans.toLowerCase() || val.indexOf(ans.toLowerCase()) !== -1;
+        });
+
+        MB.State.recordAttempt(isCorrect);
+
+        if (isCorrect) {
+          MB.State.markClueSolved(clueId);
+          feedbackEl.className = "feedback success";
+          feedbackEl.innerHTML = "✅ <strong>Correct!</strong> Lead confirmed. Unlocked in Evidence Library!";
+          refreshTopBar();
+          updateBadges();
+          setTimeout(function () {
+            renderCluesList();
+            renderEvidenceGrid();
+          }, 800);
+        } else {
+          feedbackEl.className = "feedback error";
+          feedbackEl.innerHTML = "❌ <strong>Incorrect deduction.</strong> Review the clue description and hint, then try again.";
+        }
+      }
+
+      // 7. Render Evidence Library
       var currentEvidenceFilter = "all";
       var currentEvidenceQuery = "";
 
@@ -377,7 +540,10 @@
         var container = document.getElementById("evidenceGridContainer");
         container.innerHTML = "";
 
-        var filtered = MB.EVIDENCE.filter(function (item) {
+        var c = MB.getActiveCase();
+        if (!c) return;
+
+        var filtered = c.evidence.filter(function (item) {
           var matchCat = currentEvidenceFilter === "all" || item.category.toLowerCase().indexOf(currentEvidenceFilter.toLowerCase()) !== -1;
           var matchQuery = !currentEvidenceQuery || item.title.toLowerCase().indexOf(currentEvidenceQuery.toLowerCase()) !== -1 || item.summary.toLowerCase().indexOf(currentEvidenceQuery.toLowerCase()) !== -1;
           return matchCat && matchQuery;
@@ -413,8 +579,8 @@
               '<div class="mb-evidence-locked-overlay">',
               '  <span style="font-size:2rem; margin-bottom:8px;">🔒</span>',
               '  <strong>Evidence Undiscovered</strong>',
-              '  <p style="font-size:0.8rem; color:#666; margin:6px 0 12px 0;">Solve Clue ' + ev.clueId + ' to unlock this critical lead.</p>',
-              '  <a href="' + MB.CLUES[ev.clueId - 1].url + '" class="btn" style="padding:6px 14px; font-size:0.8rem;">Solve Clue ' + ev.clueId + ' →</a>',
+              '  <p style="font-size:0.8rem; color:#666; margin:6px 0 12px 0;">Solve Clue ' + ev.clueId + ' in the Clues Console to unlock.</p>',
+              '  <button class="btn" onclick="switchTab(\'clues\')" style="padding:6px 14px; font-size:0.8rem;">Go to Clues →</button>',
               '</div>'
             ].join(""));
           }
@@ -423,7 +589,6 @@
           container.appendChild(card);
         });
 
-        // Wire modal openers
         document.querySelectorAll(".view-ev-btn").forEach(function (btn) {
           btn.addEventListener("click", function () {
             openEvidenceModal(this.dataset.ev);
@@ -431,9 +596,9 @@
         });
       }
 
-      // Evidence Modal Inspector
       function openEvidenceModal(evId) {
-        var ev = MB.EVIDENCE.find(function (e) { return e.id === evId; });
+        var c = MB.getActiveCase();
+        var ev = c.evidence.find(function (e) { return e.id === evId; });
         if (!ev) return;
 
         var body = document.getElementById("modalBody");
@@ -464,9 +629,7 @@
       });
 
       modalEl.addEventListener("click", function (e) {
-        if (e.target === modalEl) {
-          modalEl.classList.add("hidden");
-        }
+        if (e.target === modalEl) modalEl.classList.add("hidden");
       });
 
       document.addEventListener("keydown", function (e) {
@@ -475,7 +638,6 @@
         }
       });
 
-      // Filter pills listeners
       document.querySelectorAll("#evidenceFilterPills .mb-filter-pill").forEach(function (pill) {
         pill.addEventListener("click", function () {
           document.querySelectorAll("#evidenceFilterPills .mb-filter-pill").forEach(function (p) {
@@ -492,12 +654,15 @@
         renderEvidenceGrid();
       });
 
-      // 6. Render Suspect Profiles
+      // 8. Render Suspect Profiles
       function renderSuspects() {
         var container = document.getElementById("suspectsContainer");
         container.innerHTML = "";
 
-        MB.SUSPECTS.forEach(function (s) {
+        var c = MB.getActiveCase();
+        if (!c) return;
+
+        c.suspects.forEach(function (s) {
           var card = document.createElement("div");
           card.className = "mb-suspect-card" + (s.isCulprit ? " is-culprit-card" : "");
 
@@ -523,15 +688,15 @@
             '  </div>',
             '</div>',
             '<div class="mb-suspect-section">',
-            '  <h4>Stated Alibi</h4>',
+            '  <h4>Stated Whereabouts</h4>',
             '  <p><em>"' + s.statedAlibi + '"</em></p>',
             '</div>',
             '<div class="mb-suspect-section">',
-            '  <h4>Alibi Verification</h4>',
+            '  <h4>Forensic Contradiction</h4>',
             '  <p style="color:' + (s.isCulprit ? '#c0392b; font-weight:600;' : '#27ae60;') + '">' + s.contradiction + '</p>',
             '</div>',
             '<div class="mb-suspect-section">',
-            '  <h4>Potential Motive</h4>',
+            '  <h4>Motive Analysis</h4>',
             '  <p>' + s.motive + '</p>',
             '</div>',
             '<div class="mb-suspect-section">',
@@ -544,14 +709,17 @@
         });
       }
 
-      // 7. Render Incident Timeline
+      // 9. Render Incident Timeline
       var currentTimelineFilter = "all";
 
       function renderTimeline() {
         var container = document.getElementById("timelineContainer");
         container.innerHTML = "";
 
-        var filtered = MB.TIMELINE_EVENTS.filter(function (ev) {
+        var c = MB.getActiveCase();
+        if (!c) return;
+
+        var filtered = c.timeline.filter(function (ev) {
           if (currentTimelineFilter === "contradiction") return ev.type === "contradiction";
           if (currentTimelineFilter === "verified") return ev.type === "verified";
           return true;
@@ -573,7 +741,6 @@
             '  <h4>' + ev.title + '</h4>',
             '  <p style="font-size:0.8rem; color:#7f8c8d; margin-bottom:6px;">📍 ' + ev.location + '</p>',
             '  <p style="font-size:0.9rem; line-height:1.5;">' + ev.description + '</p>',
-            ev.contradictionNote ? '<div style="margin-top:8px; padding:8px 12px; background:#fdedec; border-left:3px solid #e74c3c; font-size:0.85rem; color:#c0392b;"><strong>' + ev.contradictionNote + '</strong></div>' : '',
             '</div>'
           ].join("");
 
@@ -592,25 +759,26 @@
         });
       });
 
-      // 8. Render Crime Board (Corkboard)
+      // 10. Render Crime Board
       function renderCorkboard() {
         var canvas = document.getElementById("corkboardCanvas");
         var svg = document.getElementById("corkboardSvg");
         if (!canvas || !svg) return;
 
-        // Clear existing nodes (except SVG)
         var oldNodes = canvas.querySelectorAll(".mb-corkboard-node");
         oldNodes.forEach(function (n) { n.remove(); });
         svg.innerHTML = "";
+
+        var c = MB.getActiveCase();
+        if (!c || !c.corkboardNodes) return;
 
         var rect = canvas.getBoundingClientRect();
         var scaleX = rect.width / 900;
         if (scaleX <= 0) scaleX = 1;
 
-        // Draw Links
-        MB.CORKBOARD_LINKS.forEach(function (link) {
-          var fromNode = MB.CORKBOARD_NODES.find(function (n) { return n.id === link.from; });
-          var toNode = MB.CORKBOARD_NODES.find(function (n) { return n.id === link.to; });
+        c.corkboardLinks.forEach(function (link) {
+          var fromNode = c.corkboardNodes.find(function (n) { return n.id === link.from; });
+          var toNode = c.corkboardNodes.find(function (n) { return n.id === link.to; });
           if (!fromNode || !toNode) return;
 
           var x1 = fromNode.x * scaleX;
@@ -630,8 +798,7 @@
           svg.appendChild(line);
         });
 
-        // Place Nodes
-        MB.CORKBOARD_NODES.forEach(function (node) {
+        c.corkboardNodes.forEach(function (node) {
           var el = document.createElement("div");
           el.className = "mb-corkboard-node";
           el.style.left = (node.x * scaleX) + "px";
@@ -645,7 +812,7 @@
           ].join("");
 
           el.addEventListener("click", function () {
-            alert("📌 Crime Board Lead:\n" + node.title + "\n\nThis lead ties directly to the case progression.");
+            alert("📌 Crime Board Link:\n" + node.title);
           });
 
           canvas.appendChild(el);
@@ -658,15 +825,17 @@
         }
       });
 
-      // 9. Render Final Solution / Accusation Chamber
+      // 11. Render Final Solution / Accusation Chamber
       function renderSolutionChamber() {
         var container = document.getElementById("solutionChamber");
+        var c = MB.getActiveCase();
+        if (!c) return;
+
         var solvedCount = MB.State.getSolvedCount();
-        var allSolved = solvedCount === 5;
+        var allSolved = solvedCount === c.clues.length;
 
         if (!allSolved) {
-          // Gated Chamber
-          var itemsHtml = MB.CLUES.map(function (clue) {
+          var itemsHtml = c.clues.map(function (clue) {
             var isSolved = MB.State.isClueSolved(clue.id);
             return [
               '<div class="mb-checklist-item">',
@@ -677,7 +846,7 @@
               '  <div>',
               isSolved
                 ? '<span style="color:#27ae60; font-weight:bold;">✓ SOLVED</span>'
-                : '<a href="' + clue.url + '" class="btn" style="padding:4px 12px; font-size:0.8rem;">Solve Clue ' + clue.id + ' →</a>',
+                : '<button class="btn" onclick="switchTab(\'clues\')" style="padding:4px 12px; font-size:0.8rem;">Solve Clue ' + clue.id + ' →</button>',
               '  </div>',
               '</div>'
             ].join("");
@@ -687,20 +856,27 @@
             '<div class="mb-gated-box">',
             '  <div style="font-size:3rem; margin-bottom:12px;">🔒</div>',
             '  <h2>Evidence Threshold Not Met</h2>',
-            '  <p style="color:#666; max-width:540px; margin:8px auto 24px auto;">To prevent premature accusations, all 5 clues must be solved and corroborated before you can file a formal charge with campus security.</p>',
+            '  <p style="color:#666; max-width:540px; margin:8px auto 24px auto;">To prevent false accusations, all ' + c.clues.length + ' clues must be solved and corroborated before you can file formal charges.</p>',
             '  <div style="max-width:540px; margin:0 auto 24px auto;">',
             itemsHtml,
             '  </div>',
-            '  <p style="color:#c0392b; font-weight:bold;">Progress: ' + solvedCount + ' of 5 Clues Verified (' + Math.round((solvedCount / 5) * 100) + '%)</p>',
+            '  <p style="color:#c0392b; font-weight:bold;">Progress: ' + solvedCount + ' of ' + c.clues.length + ' Clues Verified (' + Math.round((solvedCount / c.clues.length) * 100) + '%)</p>',
             '</div>'
           ].join("");
           return;
         }
 
-        // Unlocked Chamber: Theory & Accusation Form
+        var suspectOptionsHtml = c.suspects.map(function (s) {
+          return '<option value="' + s.id + '">' + s.name + ' (' + s.role + ')</option>';
+        }).join("");
+
+        var evidenceOptionsHtml = c.evidence.map(function (ev) {
+          return '<label class="mb-checkbox-label"><input type="checkbox" name="evProof" value="' + ev.id + '" /> ' + ev.icon + ' ' + ev.title + ' (' + ev.timestamp + ')</label>';
+        }).join("");
+
         container.innerHTML = [
           '<div class="mb-chamber-card">',
-          '  <span class="badge" style="background:#27ae60;">EVIDENCE THRESHOLD REACHED (5/5)</span>',
+          '  <span class="badge" style="background:#27ae60;">EVIDENCE THRESHOLD REACHED (' + c.clues.length + '/' + c.clues.length + ')</span>',
           '  <h2 style="font-size:1.6rem; margin:8px 0;">⚖️ Submit Your Final Accusation</h2>',
           '  <p style="color:#666; margin-bottom:24px;">All pieces of evidence have converged. Cross-reference the logs, pinpoint the perpetrator, and file the formal charge.</p>',
           '  <form id="accusationForm">',
@@ -708,76 +884,62 @@
           '      <label for="accusedSuspect">1. Who is the Primary Culprit?</label>',
           '      <select id="accusedSuspect" class="mb-select" required>',
           '        <option value="">-- Select Accused Person --</option>',
-          '        <option value="rohan">Rohan Patel (Lab Assistant)</option>',
-          '        <option value="arjun">Arjun Sharma (CS Student)</option>',
-          '        <option value="kabir">Kabir Mehta (Lab Trainee)</option>',
+          suspectOptionsHtml,
           '      </select>',
           '    </div>',
           '    <div class="mb-form-group">',
-          '      <label for="suspectMotive">2. What was their Motive?</label>',
-          '      <select id="suspectMotive" class="mb-select" required>',
-          '        <option value="">-- Select Motive --</option>',
-          '        <option value="academic">Steal capstone project files to submit as own research</option>',
-          '        <option value="financial">Sell high-spec lab hardware on grey market</option>',
-          '        <option value="prank">Student prank / unintentional borrowing</option>',
-          '      </select>',
-          '    </div>',
-          '    <div class="mb-form-group">',
-          '      <label>3. Select Corroborating Forensic Evidence (Select all that apply):</label>',
+          '      <label>2. Select Corroborating Forensic Proof (Select at least 2):</label>',
           '      <div class="mb-evidence-checkboxes">',
-          '        <label class="mb-checkbox-label"><input type="checkbox" name="evProof" value="cctv_hoodie" /> 📹 CCTV footage confirms person wearing blue hoodie entering at 5:32 PM and exiting at 5:47 PM</label>',
-          '        <label class="mb-checkbox-label"><input type="checkbox" name="evProof" value="keycard" /> 💳 Electronic lock log confirms Rohan\'s keycard #4092 was swiped at 5:34 PM</label>',
-          '        <label class="mb-checkbox-label"><input type="checkbox" name="evProof" value="sms" /> 💬 Encrypted phone text sent from Rohan\'s phone at 5:31 PM ("The lab is empty...")</label>',
-          '        <label class="mb-checkbox-label"><input type="checkbox" name="evProof" value="turnstile" /> 🏛️ Library turnstile proves arrival at 5:42 PM, destroying his 5:15 PM alibi</label>',
+          evidenceOptionsHtml,
           '      </div>',
           '    </div>',
           '    <div class="mb-form-group">',
-          '      <label for="theoryNotes">4. Detective\'s Accusation Brief (Optional Notes):</label>',
+          '      <label for="theoryNotes">3. Accusation Brief & Theory Notes:</label>',
           '      <textarea id="theoryNotes" class="mb-textarea" rows="3" placeholder="Explain how the timeline and evidence connect to prove guilt..."></textarea>',
           '    </div>',
           '    <div id="accusationFeedback" style="margin-bottom:16px;"></div>',
-          '    <button type="submit" class="btn" style="padding:12px 32px; font-size:1.05rem;">Filing Formal Accusation →</button>',
+          '    <button type="submit" class="btn" style="padding:12px 32px; font-size:1.05rem;">File Formal Accusation →</button>',
           '  </form>',
           '</div>'
         ].join("");
 
-        // Handle Accusation Submission
         document.getElementById("accusationForm").addEventListener("submit", function (e) {
           e.preventDefault();
-          var suspect = document.getElementById("accusedSuspect").value;
-          var motive = document.getElementById("suspectMotive").value;
-          var checkedEvidence = Array.from(document.querySelectorAll("input[name='evProof']:checked")).map(function (c) { return c.value; });
+          var accused = document.getElementById("accusedSuspect").value;
+          var checkedProof = Array.from(document.querySelectorAll("input[name='evProof']:checked")).map(function (c) { return c.value; });
           var feedback = document.getElementById("accusationFeedback");
 
-          if (suspect !== "rohan") {
+          if (accused !== c.culpritId) {
             MB.State.recordAttempt(false);
+            var accusedSuspect = c.suspects.find(function (s) { return s.id === accused; });
+            var reason = accusedSuspect ? accusedSuspect.statedAlibi : "Their alibi was verified.";
             feedback.className = "feedback error";
-            feedback.innerHTML = "❌ <strong>Accusation Dismissed:</strong> " + (suspect === "arjun" ? "Arjun has a verified alibi at the cafeteria." : "Kabir was confirmed inside East Wing Dormitory.") + " Re-examine the timeline and electronic access logs.";
+            feedback.innerHTML = "❌ <strong>Accusation Dismissed:</strong> " + reason + " Re-examine the timeline and contradictions.";
             return;
           }
 
-          if (checkedEvidence.length < 2) {
+          if (checkedProof.length < 2) {
             MB.State.recordAttempt(false);
             feedback.className = "feedback error";
             feedback.innerHTML = "❌ <strong>Insufficient Evidence:</strong> You must cite at least two corroborated pieces of forensic evidence to file formal charges.";
             return;
           }
 
-          // Case Solved!
           var elapsedSecs = MB.State.getElapsedSeconds();
           var timeTakenStr = MB.State.formatTime(elapsedSecs);
           var accuracy = MB.State.getAccuracy();
 
           MB.State.closeCase({
-            culprit: "Rohan Patel",
-            motive: motive,
-            evidenceCitations: checkedEvidence,
+            caseId: c.id,
+            caseTitle: c.title,
+            culprit: c.culpritName,
+            solutionSummary: c.solutionSummary,
             timeTaken: timeTakenStr,
             accuracy: accuracy
           });
 
           feedback.className = "feedback success";
-          feedback.innerHTML = "✅ <strong>CASE CLOSED!</strong> Accusation filed with university authorities. Transferring to Case Resolution...";
+          feedback.innerHTML = "✅ <strong>CASE CLOSED!</strong> Accusation verified. Redirecting to Case Resolution...";
 
           setTimeout(function () {
             window.location.href = "solution.html";
@@ -785,15 +947,13 @@
         });
       }
 
-      // 10. 📝 Detective Case Notes Feature (Beginner Friendly)
+      // 12. Detective Case Notes Wiring
       var dashboardNotes = document.getElementById("dashboardNotesTextarea");
       var dashboardStatus = document.getElementById("dashboardNotesStatus");
 
-      // Load existing notes from localStorage
       if (dashboardNotes) {
         dashboardNotes.value = MB.Notes.getNotes();
 
-        // Listen for typing (input event) and auto-save immediately to localStorage
         dashboardNotes.addEventListener("input", function () {
           MB.Notes.saveNotes(dashboardNotes.value);
           dashboardStatus.textContent = "Saving...";
@@ -801,7 +961,6 @@
             dashboardStatus.textContent = "Saved ✓";
           }, 300);
 
-          // Keep floating notes textarea in sync
           var floatingTextarea = document.getElementById("mbNotesTextarea");
           if (floatingTextarea && floatingTextarea !== dashboardNotes) {
             floatingTextarea.value = dashboardNotes.value;
@@ -809,72 +968,53 @@
         });
       }
 
-      // Quick Insert Buttons (Click to append clue notes)
-      document.querySelectorAll(".mb-quick-pill[data-insert]").forEach(function (pill) {
-        pill.addEventListener("click", function () {
-          var textToInsert = this.dataset.insert;
-          var current = dashboardNotes.value;
-          dashboardNotes.value = current ? (current + "\n" + textToInsert) : textToInsert;
-          dashboardNotes.focus();
-          MB.Notes.saveNotes(dashboardNotes.value);
-          dashboardStatus.textContent = "Saved ✓";
-          var floatingTextarea = document.getElementById("mbNotesTextarea");
-          if (floatingTextarea) floatingTextarea.value = dashboardNotes.value;
-        });
+      document.getElementById("dashboardInsertTimeBtn").addEventListener("click", function () {
+        var timeStr = MB.State.formatTime(MB.State.getElapsedSeconds());
+        var tag = "\n[" + timeStr + "] ";
+        dashboardNotes.value += tag;
+        dashboardNotes.focus();
+        MB.Notes.saveNotes(dashboardNotes.value);
       });
 
-      // Insert Current Investigation Time Button
-      var insertTimeBtn = document.getElementById("dashboardInsertTimeBtn");
-      if (insertTimeBtn) {
-        insertTimeBtn.addEventListener("click", function () {
-          var timeStr = MB.State.formatTime(MB.State.getElapsedSeconds());
-          var tag = "\n[" + timeStr + "] ";
-          dashboardNotes.value += tag;
-          dashboardNotes.focus();
-          MB.Notes.saveNotes(dashboardNotes.value);
-        });
-      }
+      document.getElementById("exportNotesBtn").addEventListener("click", function () {
+        var c = MB.getActiveCase();
+        var notesContent = "MYSTERYBOX CASE NOTES - " + (c ? c.title : "Investigation") + "\n\n" + (dashboardNotes.value || "No notes recorded.");
+        var blob = new Blob([notesContent], { type: "text/plain;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = (c ? c.id : "case") + "_detective_notes.txt";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
 
-      // Export Notes to .txt File
-      var exportBtn = document.getElementById("exportNotesBtn");
-      if (exportBtn) {
-        exportBtn.addEventListener("click", function () {
-          var notesContent = dashboardNotes.value || "No notes recorded.";
-          var blob = new Blob([notesContent], { type: "text/plain;charset=utf-8" });
-          var url = URL.createObjectURL(blob);
-          var a = document.createElement("a");
-          a.href = url;
-          a.download = "MysteryBox_Detective_Notes.txt";
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-        });
-      }
+      document.getElementById("clearDashboardNotesBtn").addEventListener("click", function () {
+        if (confirm("Clear notes for this case?")) {
+          dashboardNotes.value = "";
+          MB.Notes.clearNotes();
+          dashboardStatus.textContent = "Cleared";
+          var floatingTextarea = document.getElementById("mbNotesTextarea");
+          if (floatingTextarea) floatingTextarea.value = "";
+        }
+      });
 
-      // Clear Notes Button
-      var clearNotesBtn = document.getElementById("clearDashboardNotesBtn");
-      if (clearNotesBtn) {
-        clearNotesBtn.addEventListener("click", function () {
-          if (confirm("Are you sure you want to clear all your detective notes?")) {
-            dashboardNotes.value = "";
-            MB.Notes.clearNotes();
-            dashboardStatus.textContent = "Cleared";
-            var floatingTextarea = document.getElementById("mbNotesTextarea");
-            if (floatingTextarea) floatingTextarea.value = "";
-          }
-        });
-      }
-
-      // 11. Global Reset Action
-      document.getElementById("resetAllBtn").addEventListener("click", function () {
-        if (confirm("Are you sure you want to reset all clue progress, evidence, and timer?")) {
-          MB.State.resetAll();
-          window.location.reload();
+      // 13. Case Reset Action
+      document.getElementById("resetCaseBtn").addEventListener("click", function () {
+        if (confirm("Reset clue progress and timer for the active case?")) {
+          MB.State.resetActiveCase();
+          refreshTopBar();
+          renderDossier();
+          renderCluesList();
+          renderEvidenceGrid();
+          updateBadges();
         }
       });
 
       // Initial Render
+      renderDossier();
+      renderCaseGallery();
       renderCluesList();
       renderEvidenceGrid();
       renderSuspects();
