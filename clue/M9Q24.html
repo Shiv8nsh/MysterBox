@@ -8,16 +8,22 @@
 </head>
 <body>
 
-  <header>
-    <h1>🔍 Mystery<span>Box</span></h1>
-  </header>
+  <!-- Top Investigation Bar (Live Timer, Stepper, Status) -->
+  <div id="topbarMount"></div>
 
   <div class="container">
 
-    <div class="url-bar">📍 /clue/M9Q24</div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <div class="url-bar" style="margin-bottom: 0;">📍 /clue/M9Q24</div>
+      <a href="../index.html" class="btn btn-outline" style="font-size: 0.8rem; padding: 6px 14px;">📁 Open Case Dossier</a>
+    </div>
 
     <div class="card">
-      <span class="badge">Clue 3 of 5</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span class="badge" style="margin-bottom: 0;">Clue 3 of 5</span>
+        <span style="font-family: monospace; font-size: 0.85rem; color: #c0392b; font-weight: bold;">TIMESTAMP: 5:31 PM</span>
+      </div>
+
       <h2>Chat Message</h2>
 
       <p>A chat message sent at <span class="highlight">5:31 PM</span> says:</p>
@@ -25,17 +31,45 @@
 
       <p>The message was sent from <span class="highlight">Rohan's phone</span>.</p>
 
+      <!-- Forensic Preview Asset -->
+      <div style="background: #1e272e; border-radius: 6px; padding: 16px; margin: 16px 0; text-align: center;">
+        <svg viewBox="0 0 240 100" style="max-width: 100%; height: 90px;">
+          <rect width="240" height="100" fill="#151d24" rx="4"/>
+          <rect x="25" y="15" width="190" height="70" rx="6" fill="#1e272e" stroke="#34495e"/>
+          <rect x="35" y="24" width="170" height="28" rx="4" fill="#27ae60"/>
+          <text x="44" y="38" fill="#fff" font-family="sans-serif" font-size="9" font-weight="bold">The lab is empty.</text>
+          <text x="44" y="47" fill="#fff" font-family="sans-serif" font-size="9" font-weight="bold">You can get it now.</text>
+          <text x="35" y="70" fill="#f1c40f" font-family="monospace" font-size="8">SENDER: ROHAN'S MOBILE</text>
+          <text x="140" y="70" fill="#95a5a6" font-family="monospace" font-size="8">TIME: 17:31:02</text>
+        </svg>
+      </div>
+
+      <!-- Hint Section -->
+      <div style="margin: 12px 0;">
+        <button type="button" class="btn-outline" id="hintToggleBtn" style="font-size: 0.8rem; padding: 5px 12px;">💡 Need a Hint?</button>
+        <div class="mb-clue-hint-box" id="hintBox">
+          <strong>💡 Detective Hint:</strong> Read the cellular transmission report to see who registered the transmitting phone.
+        </div>
+      </div>
+
       <!-- Answer Section -->
       <div class="answer-section" id="answerSection">
         <h3>🔎 Whose phone sent the suspicious message?</h3>
-        <input type="text" class="answer-input" id="answerInput" placeholder="Type your answer..." />
-        <button class="btn-submit" onclick="checkAnswer()">Submit Answer</button>
+        <input type="text" class="answer-input" id="answerInput" placeholder="Type your answer..." autocomplete="off" />
+        <button type="button" class="btn-submit" id="submitBtn">Submit Answer</button>
         <div id="feedback"></div>
       </div>
 
       <!-- Next Clue (hidden until correct) -->
       <div class="text-center mt hidden" id="nextClue">
+        <div style="background: #eafaf1; border: 1px solid #27ae60; padding: 10px; border-radius: 6px; margin-bottom: 14px; font-size: 0.88rem; color: #1e8449;">
+          🗃️ <strong>Evidence Recovered:</strong> "Encrypted SMS / Chat Record" added to your Evidence Library!
+        </div>
         <a href="P3L67.html" class="btn">Discover Next Clue →</a>
+      </div>
+
+      <div class="text-center mt">
+        <button type="button" class="btn-outline" id="resetBtn" style="font-size:0.8rem; padding:6px 14px;">🔄 Reset This Clue</button>
       </div>
     </div>
 
@@ -43,46 +77,97 @@
 
   <footer>MysteryBox &mdash; College Project Showcase</footer>
 
+  <script src="../mysterybox.js"></script>
   <script>
-    var CORRECT_ANSWERS = ["rohan"];
-    var SUCCESS_MSG = "✅ Correct! The message was sent from Rohan's phone.";
-    var SOLVED_KEY = "clue3_solved";
+    (function () {
+      var MB = window.MysteryBox;
+      var CLUE_NUM = 3;
 
-    if (localStorage.getItem(SOLVED_KEY) === "true") {
-      showSolved();
-    }
+      if (MB) {
+        var mount = document.getElementById("topbarMount");
+        mount.appendChild(MB.UI.renderTopBar({ activeClueId: CLUE_NUM, isCluePage: true }));
+        MB.UI.startTimerTicker();
+      }
 
-    function checkAnswer() {
-      var input = document.getElementById("answerInput").value.trim().toLowerCase();
-      var feedback = document.getElementById("feedback");
+      var answerInput = document.getElementById("answerInput");
+      var feedbackEl = document.getElementById("feedback");
+      var submitBtn = document.getElementById("submitBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var hintToggleBtn = document.getElementById("hintToggleBtn");
+      var hintBox = document.getElementById("hintBox");
 
-      if (!input) return;
+      var CORRECT_ANSWERS = ["rohan", "rohan patel", "rohan's phone", "rohans phone"];
+      var SUCCESS_MSG = "✅ Correct! The message was sent from Rohan's phone.";
+      var SOLVED_KEY = "clue3_solved";
 
-      var isCorrect = CORRECT_ANSWERS.some(function (ans) {
-        return input === ans.toLowerCase();
+      hintToggleBtn.addEventListener("click", function () {
+        hintBox.classList.toggle("is-open");
       });
 
-      if (isCorrect) {
-        localStorage.setItem(SOLVED_KEY, "true");
-        showSolved();
-      } else {
-        feedback.className = "feedback error";
-        feedback.textContent = "❌ Incorrect. Look carefully at the evidence and try again.";
+      answerInput.disabled = false;
+      answerInput.readOnly = false;
+
+      try {
+        if ((MB && MB.State.isClueSolved(CLUE_NUM)) || localStorage.getItem(SOLVED_KEY) === "true") {
+          showSolved();
+        }
+      } catch (e) {}
+
+      function checkAnswer() {
+        var input = answerInput.value.trim().toLowerCase();
+        if (!input) return;
+
+        var isCorrect = CORRECT_ANSWERS.some(function (ans) {
+          return input === ans.toLowerCase();
+        });
+
+        if (MB) {
+          MB.State.recordAttempt(isCorrect);
+        }
+
+        if (isCorrect) {
+          if (MB) {
+            MB.State.markClueSolved(CLUE_NUM);
+          } else {
+            try { localStorage.setItem(SOLVED_KEY, "true"); } catch (e) {}
+          }
+          showSolved();
+        } else {
+          feedbackEl.className = "feedback error";
+          feedbackEl.textContent = "❌ Incorrect. Look carefully at the evidence and try again.";
+        }
       }
-    }
 
-    function showSolved() {
-      var feedback = document.getElementById("feedback");
-      feedback.className = "feedback success";
-      feedback.textContent = SUCCESS_MSG;
-      document.getElementById("nextClue").classList.remove("hidden");
-      document.getElementById("answerInput").disabled = true;
-      document.querySelector(".btn-submit").disabled = true;
-    }
+      function showSolved() {
+        feedbackEl.className = "feedback success";
+        feedbackEl.textContent = SUCCESS_MSG;
+        document.getElementById("nextClue").classList.remove("hidden");
+        answerInput.disabled = true;
+        submitBtn.disabled = true;
+      }
 
-    document.getElementById("answerInput").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") checkAnswer();
-    });
+      function resetClue() {
+        if (MB) {
+          MB.State.resetClue(CLUE_NUM);
+        } else {
+          try { localStorage.removeItem(SOLVED_KEY); } catch (e) {}
+        }
+        answerInput.disabled = false;
+        answerInput.readOnly = false;
+        answerInput.value = "";
+        submitBtn.disabled = false;
+        feedbackEl.className = "";
+        feedbackEl.textContent = "";
+        document.getElementById("nextClue").classList.add("hidden");
+        window.location.reload();
+      }
+
+      submitBtn.addEventListener("click", checkAnswer);
+      answerInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") checkAnswer();
+      });
+      resetBtn.addEventListener("click", resetClue);
+    })();
   </script>
 
 </body>

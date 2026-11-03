@@ -8,32 +8,69 @@
 </head>
 <body>
 
-  <header>
-    <h1>🔍 Mystery<span>Box</span></h1>
-  </header>
+  <!-- Top Investigation Bar (Live Timer, Stepper, Status) -->
+  <div id="topbarMount"></div>
 
   <div class="container">
 
-    <div class="url-bar">📍 /clue/K8Z41</div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <div class="url-bar" style="margin-bottom: 0;">📍 /clue/K8Z41</div>
+      <a href="../index.html" class="btn btn-outline" style="font-size: 0.8rem; padding: 6px 14px;">📁 Open Case Dossier</a>
+    </div>
 
     <div class="card">
-      <span class="badge">Clue 5 of 5</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span class="badge" style="margin-bottom: 0;">Clue 5 of 5</span>
+        <span style="font-family: monospace; font-size: 0.85rem; color: #c0392b; font-weight: bold;">TIMESTAMP: 5:47 PM</span>
+      </div>
+
       <h2>Final Evidence</h2>
 
       <p>A final security photograph shows the person leaving the laboratory at <span class="highlight">5:47 PM</span>.</p>
       <p>The person is wearing the same <span class="highlight">blue hoodie</span> that belongs to Rohan.</p>
 
+      <!-- Forensic Preview Asset -->
+      <div style="background: #1e272e; border-radius: 6px; padding: 16px; margin: 16px 0; text-align: center;">
+        <svg viewBox="0 0 240 100" style="max-width: 100%; height: 90px;">
+          <rect width="240" height="100" fill="#151d24" rx="4"/>
+          <rect x="35" y="15" width="55" height="70" fill="#2c3e50" rx="4"/>
+          <circle cx="62" cy="35" r="12" fill="#3498db"/>
+          <rect x="70" y="45" width="18" height="25" rx="3" fill="#d35400"/>
+          <text x="110" y="32" fill="#e74c3c" font-family="monospace" font-size="10">EXIT CAM ● 17:47:33</text>
+          <text x="110" y="50" fill="#ecf0f1" font-family="monospace" font-size="9">TARGET: LAPTOP CASE</text>
+          <text x="110" y="68" fill="#f1c40f" font-family="monospace" font-size="9">MATCH: BLUE HOODIE</text>
+        </svg>
+      </div>
+
+      <!-- Hint Section -->
+      <div style="margin: 12px 0;">
+        <button type="button" class="btn-outline" id="hintToggleBtn" style="font-size: 0.8rem; padding: 5px 12px;">💡 Need a Hint?</button>
+        <div class="mb-clue-hint-box" id="hintBox">
+          <strong>💡 Detective Hint:</strong> The hoodie, the keycard swipe, the phone transmission, and the shattered alibi all point to the lab assistant.
+        </div>
+      </div>
+
       <!-- Answer Section -->
       <div class="answer-section" id="answerSection">
         <h3>🔎 Who took the laptop?</h3>
-        <input type="text" class="answer-input" id="answerInput" placeholder="Type the name of the culprit..." />
-        <button class="btn-submit" onclick="checkAnswer()">Submit Answer</button>
+        <input type="text" class="answer-input" id="answerInput" placeholder="Type the name of the culprit..." autocomplete="off" />
+        <button type="button" class="btn-submit" id="submitBtn">Submit Answer</button>
         <div id="feedback"></div>
       </div>
 
       <!-- Next Clue (hidden until correct) -->
       <div class="text-center mt hidden" id="nextClue">
-        <a href="../solution.html" class="btn">Reveal the Full Solution →</a>
+        <div style="background: #eafaf1; border: 1px solid #27ae60; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 0.9rem; color: #1e8449;">
+          🎉 <strong>All 5 Clues Solved!</strong> Final forensic evidence unlocked in your locker. The Final Accusation Chamber is now ready!
+        </div>
+        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+          <a href="../solution.html" class="btn">View Case Closed Report →</a>
+          <a href="../index.html#solution" class="btn btn-outline">Go to Accusation Chamber →</a>
+        </div>
+      </div>
+
+      <div class="text-center mt">
+        <button type="button" class="btn-outline" id="resetBtn" style="font-size:0.8rem; padding:6px 14px;">🔄 Reset This Clue</button>
       </div>
     </div>
 
@@ -41,46 +78,97 @@
 
   <footer>MysteryBox &mdash; College Project Showcase</footer>
 
+  <script src="../mysterybox.js"></script>
   <script>
-    var CORRECT_ANSWERS = ["rohan"];
-    var SUCCESS_MSG = "✅ Correct! Rohan took the laptop. All the evidence points to him.";
-    var SOLVED_KEY = "clue5_solved";
+    (function () {
+      var MB = window.MysteryBox;
+      var CLUE_NUM = 5;
 
-    if (localStorage.getItem(SOLVED_KEY) === "true") {
-      showSolved();
-    }
+      if (MB) {
+        var mount = document.getElementById("topbarMount");
+        mount.appendChild(MB.UI.renderTopBar({ activeClueId: CLUE_NUM, isCluePage: true }));
+        MB.UI.startTimerTicker();
+      }
 
-    function checkAnswer() {
-      var input = document.getElementById("answerInput").value.trim().toLowerCase();
-      var feedback = document.getElementById("feedback");
+      var answerInput = document.getElementById("answerInput");
+      var feedbackEl = document.getElementById("feedback");
+      var submitBtn = document.getElementById("submitBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var hintToggleBtn = document.getElementById("hintToggleBtn");
+      var hintBox = document.getElementById("hintBox");
 
-      if (!input) return;
+      var CORRECT_ANSWERS = ["rohan", "rohan patel"];
+      var SUCCESS_MSG = "✅ Correct! Rohan took the laptop. All the evidence points to him.";
+      var SOLVED_KEY = "clue5_solved";
 
-      var isCorrect = CORRECT_ANSWERS.some(function (ans) {
-        return input === ans.toLowerCase();
+      hintToggleBtn.addEventListener("click", function () {
+        hintBox.classList.toggle("is-open");
       });
 
-      if (isCorrect) {
-        localStorage.setItem(SOLVED_KEY, "true");
-        showSolved();
-      } else {
-        feedback.className = "feedback error";
-        feedback.textContent = "❌ Incorrect. Look carefully at the evidence and try again.";
+      answerInput.disabled = false;
+      answerInput.readOnly = false;
+
+      try {
+        if ((MB && MB.State.isClueSolved(CLUE_NUM)) || localStorage.getItem(SOLVED_KEY) === "true") {
+          showSolved();
+        }
+      } catch (e) {}
+
+      function checkAnswer() {
+        var input = answerInput.value.trim().toLowerCase();
+        if (!input) return;
+
+        var isCorrect = CORRECT_ANSWERS.some(function (ans) {
+          return input === ans.toLowerCase();
+        });
+
+        if (MB) {
+          MB.State.recordAttempt(isCorrect);
+        }
+
+        if (isCorrect) {
+          if (MB) {
+            MB.State.markClueSolved(CLUE_NUM);
+          } else {
+            try { localStorage.setItem(SOLVED_KEY, "true"); } catch (e) {}
+          }
+          showSolved();
+        } else {
+          feedbackEl.className = "feedback error";
+          feedbackEl.textContent = "❌ Incorrect. Look carefully at the evidence and try again.";
+        }
       }
-    }
 
-    function showSolved() {
-      var feedback = document.getElementById("feedback");
-      feedback.className = "feedback success";
-      feedback.textContent = SUCCESS_MSG;
-      document.getElementById("nextClue").classList.remove("hidden");
-      document.getElementById("answerInput").disabled = true;
-      document.querySelector(".btn-submit").disabled = true;
-    }
+      function showSolved() {
+        feedbackEl.className = "feedback success";
+        feedbackEl.textContent = SUCCESS_MSG;
+        document.getElementById("nextClue").classList.remove("hidden");
+        answerInput.disabled = true;
+        submitBtn.disabled = true;
+      }
 
-    document.getElementById("answerInput").addEventListener("keydown", function (e) {
-      if (e.key === "Enter") checkAnswer();
-    });
+      function resetClue() {
+        if (MB) {
+          MB.State.resetClue(CLUE_NUM);
+        } else {
+          try { localStorage.removeItem(SOLVED_KEY); } catch (e) {}
+        }
+        answerInput.disabled = false;
+        answerInput.readOnly = false;
+        answerInput.value = "";
+        submitBtn.disabled = false;
+        feedbackEl.className = "";
+        feedbackEl.textContent = "";
+        document.getElementById("nextClue").classList.add("hidden");
+        window.location.reload();
+      }
+
+      submitBtn.addEventListener("click", checkAnswer);
+      answerInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") checkAnswer();
+      });
+      resetBtn.addEventListener("click", resetClue);
+    })();
   </script>
 
 </body>
