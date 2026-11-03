@@ -247,7 +247,7 @@
   </div>
 
   <!-- Evidence Inspector Modal -->
-  <div class="mb-modal-backdrop hidden" id="evidenceModal">
+  <div class="mb-modal-backdrop hidden" id="evidenceModal" style="display: none;">
     <div class="mb-modal-content">
       <button class="mb-modal-close" id="modalCloseBtn">&times;</button>
       <div id="modalBody"></div>
@@ -596,6 +596,14 @@
         });
       }
 
+      function closeEvidenceModal() {
+        var m = document.getElementById("evidenceModal");
+        if (m) {
+          m.classList.add("hidden");
+          m.style.display = "none";
+        }
+      }
+
       function openEvidenceModal(evId) {
         var c = MB.getActiveCase();
         var ev = c.evidence.find(function (e) { return e.id === evId; });
@@ -616,26 +624,27 @@
           '</div>',
           '<div style="display:flex; justify-content:space-between; align-items:center;">',
           '  <span style="font-size:0.85rem; color:#27ae60;">✓ Evidence Verified by Forensic System</span>',
-          '  <button class="btn" onclick="document.getElementById(\'evidenceModal\').classList.add(\'hidden\')">Close Inspector</button>',
+          '  <button class="btn" id="modalBottomCloseBtn">Close Inspector</button>',
           '</div>'
         ].join("");
 
-        document.getElementById("evidenceModal").classList.remove("hidden");
+        var m = document.getElementById("evidenceModal");
+        m.classList.remove("hidden");
+        m.style.display = "flex";
+
+        var bBtn = document.getElementById("modalBottomCloseBtn");
+        if (bBtn) bBtn.addEventListener("click", closeEvidenceModal);
       }
 
       var modalEl = document.getElementById("evidenceModal");
-      document.getElementById("modalCloseBtn").addEventListener("click", function () {
-        modalEl.classList.add("hidden");
-      });
+      document.getElementById("modalCloseBtn").addEventListener("click", closeEvidenceModal);
 
       modalEl.addEventListener("click", function (e) {
-        if (e.target === modalEl) modalEl.classList.add("hidden");
+        if (e.target === modalEl) closeEvidenceModal();
       });
 
       document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && !modalEl.classList.contains("hidden")) {
-          modalEl.classList.add("hidden");
-        }
+        if (e.key === "Escape") closeEvidenceModal();
       });
 
       document.querySelectorAll("#evidenceFilterPills .mb-filter-pill").forEach(function (pill) {

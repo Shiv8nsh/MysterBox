@@ -1,5 +1,9 @@
-/* ===== MysteryBox – Shared Styles ===== */
+/* ==========================================================================
+   MYSTERYBOX — CORE STYLESHEET
+   Clean, unified styling for the investigation workstation and cases.
+   ========================================================================== */
 
+/* ---------- Base & Reset ---------- */
 * {
   margin: 0;
   padding: 0;
@@ -8,92 +12,93 @@
 
 body {
   font-family: "Segoe UI", Arial, sans-serif;
-  background: #f5f5f5;
-  color: #222;
+  background: #f4f6f8;
+  color: #1e293b;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-/* ---------- Header ---------- */
-header {
-  width: 100%;
-  background: #fff;
-  border-bottom: 2px solid #e0e0e0;
-  padding: 18px 0;
-  text-align: center;
-}
-
-header h1 {
-  font-size: 1.6rem;
-  letter-spacing: 2px;
-}
-
-header h1 span {
-  color: #c0392b;
-}
-
-/* ---------- Main Container ---------- */
-.container {
-  max-width: 640px;
-  width: 90%;
-  margin: 40px auto;
+/* ---------- Containers & Grid ---------- */
+.container-wide {
+  max-width: 1060px;
+  width: 94%;
+  margin: 24px auto 60px auto;
   flex: 1;
 }
 
-/* ---------- Card ---------- */
+.mb-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.mb-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 800px) {
+  .mb-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Cards & Typography ---------- */
 .card {
   background: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 32px;
+  padding: 28px;
   margin-bottom: 24px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .card h2 {
-  font-size: 1.35rem;
-  margin-bottom: 12px;
+  font-size: 1.4rem;
+  color: #0f172a;
+  margin-bottom: 10px;
 }
 
 .card h3 {
   font-size: 1.1rem;
+  color: #1e293b;
   margin-bottom: 8px;
-  color: #444;
 }
 
 .card p {
   line-height: 1.7;
+  color: #334155;
   margin-bottom: 10px;
 }
 
-/* ---------- Tags / Badges ---------- */
-.badge {
-  display: inline-block;
-  background: #c0392b;
-  color: #fff;
-  font-size: 0.75rem;
-  padding: 4px 12px;
-  border-radius: 20px;
-  margin-bottom: 16px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-/* ---------- Blockquote ---------- */
 blockquote {
   border-left: 4px solid #c0392b;
   background: #fafafa;
   padding: 12px 16px;
   margin: 12px 0;
   font-style: italic;
-  color: #555;
+  color: #475569;
 }
 
-/* ---------- Highlight ---------- */
 .highlight {
   font-weight: 700;
   color: #c0392b;
+}
+
+/* ---------- Badges & Tags ---------- */
+.badge {
+  display: inline-block;
+  background: #c0392b;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
 }
 
 /* ---------- Buttons ---------- */
@@ -102,16 +107,24 @@ blockquote {
   text-decoration: none;
   background: #c0392b;
   color: #fff;
-  padding: 12px 28px;
+  padding: 10px 22px;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.92rem;
+  font-weight: 600;
   border: none;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.15s;
 }
 
 .btn:hover {
   background: #a93226;
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .btn-outline {
@@ -125,173 +138,40 @@ blockquote {
   color: #fff;
 }
 
-/* ---------- URL Display ---------- */
-.url-bar {
-  background: #2c3e50;
-  color: #ecf0f1;
-  font-family: "Consolas", "Courier New", monospace;
-  font-size: 0.85rem;
-  padding: 10px 16px;
-  border-radius: 6px;
-  margin-bottom: 20px;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* ---------- Steps (How it Works) ---------- */
-.steps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  margin: 16px 0;
-}
-
-.step {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 10px 14px;
-  font-size: 0.85rem;
-  text-align: center;
-}
-
-.step-arrow {
-  font-size: 1.2rem;
-  color: #c0392b;
-}
-
-/* ---------- Suspect List ---------- */
-.suspect-list {
-  list-style: none;
-  padding: 0;
-}
-
-.suspect-list li {
-  padding: 6px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.suspect-list li:last-child {
-  border-bottom: none;
-}
-
-/* ---------- Evidence List (Solution) ---------- */
-.evidence-list {
-  list-style: disc;
-  padding-left: 20px;
-  margin: 12px 0;
-}
-
-.evidence-list li {
-  padding: 4px 0;
-  line-height: 1.6;
-}
-
-/* ---------- Solution Banner ---------- */
-.solved-banner {
-  text-align: center;
-  padding: 24px;
-  background: #27ae60;
-  color: #fff;
-  border-radius: 8px;
-  margin-bottom: 24px;
-}
-
-.solved-banner h2 {
-  font-size: 1.8rem;
-  margin-bottom: 4px;
-  color: #fff;
-}
-
-/* ---------- Footer ---------- */
-footer {
-  width: 100%;
-  text-align: center;
-  padding: 16px;
-  font-size: 0.8rem;
-  color: #999;
-  border-top: 1px solid #e0e0e0;
-  margin-top: auto;
-}
-
-/* ---------- Center helper ---------- */
-.text-center {
-  text-align: center;
-}
-
-.mt {
-  margin-top: 20px;
-}
-
-/* ---------- Answer Section ---------- */
-.answer-section {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
-  position: relative;
-  z-index: 5;
-}
-
-.answer-section h3 {
-  margin-bottom: 12px;
-}
-
-.answer-input {
+/* ---------- Form Inputs & Feedback ---------- */
+.answer-input,
+.mb-select,
+.mb-textarea {
   width: 100%;
   padding: 10px 14px;
-  font-size: 1rem;
-  border: 2px solid #ddd;
+  font-size: 0.95rem;
+  border: 2px solid #cbd5e1;
   border-radius: 6px;
-  margin-bottom: 12px;
   font-family: inherit;
-  position: relative;
-  z-index: 10;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
   background: #fff;
-  color: #222;
-  opacity: 1;
-  -webkit-user-select: text;
-  user-select: text;
-  touch-action: manipulation;
+  color: #0f172a;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
 }
 
-.answer-input:focus {
+.answer-input:focus,
+.mb-select:focus,
+.mb-textarea:focus {
   outline: none;
   border-color: #c0392b;
 }
 
 .answer-input:disabled {
-  opacity: 0.6;
-  background: #f0f0f0;
+  background: #f1f5f9;
   cursor: not-allowed;
+  opacity: 0.8;
 }
 
-.btn-submit {
-  display: inline-block;
-  background: #2c3e50;
-  color: #fff;
-  padding: 10px 24px;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-submit:hover {
-  background: #1a252f;
-}
-
-/* ---------- Feedback Messages ---------- */
 .feedback {
-  margin-top: 16px;
+  margin-top: 12px;
   padding: 12px 16px;
   border-radius: 6px;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
 }
 
 .feedback.success {
@@ -306,36 +186,49 @@ footer {
   color: #c0392b;
 }
 
-/* ---------- Hidden ---------- */
 .hidden,
 .mb-modal-backdrop.hidden {
   display: none !important;
 }
 
-
-/* ==========================================================================
-   MYSTERYBOX WORKSTATION & ADVANCED INVESTIGATION FEATURES
-   ========================================================================== */
-
-/* ---------- Container Variants ---------- */
-.container-wide {
-  max-width: 1040px;
-  width: 94%;
-  margin: 28px auto 60px auto;
-  flex: 1;
+/* ---------- Lists ---------- */
+.suspect-list {
+  list-style: none;
+  padding: 0;
 }
 
-/* ---------- Top Investigation Bar ---------- */
+.suspect-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.9rem;
+}
+
+.suspect-list li:last-child {
+  border-bottom: none;
+}
+
+.evidence-list {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 12px 0;
+}
+
+.evidence-list li {
+  padding: 6px 0;
+  line-height: 1.6;
+}
+
+/* ---------- Sticky Topbar & Stepper ---------- */
 .mb-topbar {
   width: 100%;
   background: #1e272e;
   color: #ecf0f1;
   border-bottom: 2px solid #2c3e50;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
   padding: 10px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .mb-topbar-inner {
@@ -382,6 +275,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
 }
 
 .mb-step {
@@ -395,7 +289,7 @@ footer {
   padding: 4px 8px;
   border-radius: 4px;
   border: 1px solid #34495e;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
 .mb-step:hover {
@@ -407,7 +301,6 @@ footer {
   background: #c0392b;
   color: #fff;
   border-color: #e74c3c;
-  font-weight: 600;
 }
 
 .mb-step.is-solved {
@@ -422,7 +315,7 @@ footer {
 
 .mb-step-line {
   display: inline-block;
-  width: 10px;
+  width: 8px;
   height: 2px;
   background: #34495e;
 }
@@ -453,34 +346,7 @@ footer {
   color: #ecf0f1;
 }
 
-.mb-solve-btn {
-  background: #34495e;
-  color: #bdc3c7;
-  padding: 5px 12px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.2s;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.mb-solve-btn.is-ready {
-  background: #27ae60;
-  color: #fff;
-  box-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
-  animation: pulse-ready 2s infinite;
-}
-
-@keyframes pulse-ready {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
-}
-
-/* ---------- Navigation Tabs Strip ---------- */
+/* ---------- Tabs Strip ---------- */
 .mb-nav-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -488,36 +354,36 @@ footer {
   background: #fff;
   padding: 10px 14px;
   border-radius: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #e2e8f0;
   margin-bottom: 24px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .mb-nav-tab {
-  background: #f8f9fa;
+  background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 8px 14px;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  color: #4a5568;
+  color: #475569;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
 .mb-nav-tab:hover {
   background: #edf2f7;
-  color: #2d3748;
+  color: #1e293b;
 }
 
 .mb-nav-tab.is-active {
   background: #c0392b;
   color: #fff;
   border-color: #c0392b;
-  box-shadow: 0 2px 6px rgba(192, 57, 43, 0.3);
+  box-shadow: 0 2px 6px rgba(192, 57, 43, 0.25);
 }
 
 .mb-tab-badge {
@@ -532,32 +398,12 @@ footer {
   color: #fff;
 }
 
-/* ---------- Tab Panels Container ---------- */
 .mb-panel {
   display: none;
 }
 
 .mb-panel.is-active {
   display: block;
-}
-
-/* ---------- Grid Layouts ---------- */
-.mb-grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.mb-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-@media (max-width: 800px) {
-  .mb-grid-2 {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ---------- Case Dossier Hub ---------- */
@@ -569,7 +415,7 @@ footer {
   gap: 14px;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .mb-dossier-stats-grid {
@@ -588,17 +434,98 @@ footer {
 }
 
 .mb-stat-val {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: #1e293b;
   margin-bottom: 4px;
 }
 
 .mb-stat-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #718096;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* ---------- Case Gallery Grid ---------- */
+.mb-case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.mb-case-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.mb-case-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
+
+.mb-case-card.is-active-case {
+  border: 2px solid #c0392b;
+  background: #fffcfc;
+}
+
+.mb-case-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.mb-diff-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.mb-diff-tag.is-easy { background: #eafaf1; color: #27ae60; }
+.mb-diff-tag.is-medium { background: #ebf5fb; color: #2980b9; }
+.mb-diff-tag.is-hard { background: #fef5e7; color: #d35400; }
+.mb-diff-tag.is-expert { background: #fdedec; color: #c0392b; }
+.mb-diff-tag.is-demo { background: #f4f6f7; color: #7f8c8d; }
+
+.mb-case-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.mb-case-card-meta {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.mb-case-card-brief {
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.mb-case-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 14px;
+  margin-top: auto;
 }
 
 /* ---------- Clues Console ---------- */
@@ -608,13 +535,7 @@ footer {
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 16px;
-  transition: transform 0.2s, box-shadow 0.2s;
-  position: relative;
-}
-
-.mb-clue-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s;
 }
 
 .mb-clue-card.is-solved {
@@ -624,11 +545,10 @@ footer {
 
 .mb-clue-card.is-current {
   border-left: 5px solid #c0392b;
-  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.08);
 }
 
 .mb-clue-card.is-locked {
-  border-left: 5px solid #bdc3c7;
+  border-left: 5px solid #cbd5e1;
   opacity: 0.75;
 }
 
@@ -646,7 +566,7 @@ footer {
   padding: 10px 14px;
   border-radius: 6px;
   font-size: 0.88rem;
-  margin: 12px 0;
+  margin-top: 10px;
   display: none;
 }
 
@@ -689,8 +609,8 @@ footer {
 }
 
 .mb-search-input {
-  padding: 6px 12px;
-  border: 1px solid #ccc;
+  padding: 6px 14px;
+  border: 1px solid #cbd5e1;
   border-radius: 20px;
   font-size: 0.85rem;
   width: 220px;
@@ -703,14 +623,8 @@ footer {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
   position: relative;
-}
-
-.mb-evidence-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
 }
 
 .mb-evidence-thumb {
@@ -719,14 +633,12 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   overflow: hidden;
 }
 
 .mb-evidence-thumb svg {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
 .mb-evidence-body {
@@ -740,15 +652,14 @@ footer {
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
-  color: #7f8c8d;
-  letter-spacing: 0.5px;
+  color: #64748b;
   margin-bottom: 6px;
 }
 
 .mb-evidence-title {
   font-size: 1.05rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: #1e293b;
   margin-bottom: 8px;
 }
 
@@ -762,7 +673,7 @@ footer {
 
 .mb-evidence-summary {
   font-size: 0.88rem;
-  color: #555;
+  color: #475569;
   line-height: 1.5;
   margin-bottom: 14px;
   flex: 1;
@@ -774,7 +685,7 @@ footer {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(245, 247, 250, 0.94);
+  background: rgba(248, 250, 252, 0.95);
   backdrop-filter: blur(2px);
   display: flex;
   flex-direction: column;
@@ -794,11 +705,16 @@ footer {
   bottom: 0;
   background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(4px);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 2000;
   padding: 16px;
+}
+
+.mb-modal-backdrop:not(.hidden),
+.mb-modal-backdrop.is-open {
+  display: flex !important;
 }
 
 .mb-modal-content {
@@ -820,12 +736,8 @@ footer {
   background: none;
   border: none;
   font-size: 1.4rem;
-  color: #7f8c8d;
+  color: #64748b;
   cursor: pointer;
-}
-
-.mb-modal-close:hover {
-  color: #2c3e50;
 }
 
 /* ---------- Suspect Profiles ---------- */
@@ -833,11 +745,10 @@ footer {
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 24px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .mb-suspect-card.is-culprit-card {
@@ -847,50 +758,47 @@ footer {
 .mb-suspect-header {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 14px;
+  margin-bottom: 14px;
 }
 
 .mb-suspect-avatar {
-  width: 64px;
-  height: 64px;
-  background: #f1f2f6;
-  border: 2px solid #dfe4ea;
+  width: 58px;
+  height: 58px;
+  background: #f1f5f9;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   flex-shrink: 0;
 }
 
 .mb-suspect-name {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 2px;
+  color: #0f172a;
 }
 
 .mb-suspect-role {
   font-size: 0.82rem;
-  color: #7f8c8d;
-  font-weight: 600;
+  color: #64748b;
 }
 
 .mb-suspicion-bar-wrap {
-  margin: 14px 0;
+  margin: 12px 0;
 }
 
 .mb-suspicion-label {
   display: flex;
   justify-content: space-between;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .mb-suspicion-progress {
-  height: 8px;
+  height: 7px;
   background: #eee;
   border-radius: 4px;
   overflow: hidden;
@@ -898,38 +806,30 @@ footer {
 
 .mb-suspicion-fill {
   height: 100%;
-  border-radius: 4px;
 }
 
-.mb-suspicion-fill.is-high {
-  background: #e74c3c;
-}
-
-.mb-suspicion-fill.is-low {
-  background: #2ecc71;
-}
+.mb-suspicion-fill.is-high { background: #e74c3c; }
+.mb-suspicion-fill.is-low { background: #2ecc71; }
 
 .mb-suspect-section {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #f1f2f6;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
   font-size: 0.88rem;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .mb-suspect-section h4 {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   text-transform: uppercase;
-  color: #4a5568;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
+  color: #475569;
+  margin-bottom: 4px;
 }
 
-/* ---------- Incident Timeline ---------- */
+/* ---------- Timeline ---------- */
 .mb-timeline {
   position: relative;
-  padding: 20px 0;
-  margin-top: 10px;
+  padding: 16px 0;
 }
 
 .mb-timeline::before {
@@ -937,93 +837,82 @@ footer {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 100px;
-  width: 3px;
+  left: 95px;
+  width: 2px;
   background: #e2e8f0;
 }
 
 .mb-timeline-item {
   position: relative;
   display: flex;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .mb-timeline-time {
-  width: 85px;
+  width: 80px;
   font-family: monospace;
   font-weight: 700;
-  color: #2c3e50;
-  font-size: 0.92rem;
-  padding-top: 8px;
+  color: #1e293b;
+  font-size: 0.88rem;
+  padding-top: 6px;
   text-align: right;
   padding-right: 16px;
 }
 
 .mb-timeline-marker {
   position: absolute;
-  left: 95px;
-  top: 12px;
-  width: 14px;
-  height: 14px;
+  left: 91px;
+  top: 10px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: #fff;
-  border: 3px solid #3498db;
+  background: #3498db;
   z-index: 2;
 }
 
 .mb-timeline-item.is-contradiction .mb-timeline-marker {
-  border-color: #e74c3c;
   background: #e74c3c;
-  box-shadow: 0 0 8px rgba(231, 76, 60, 0.6);
+  box-shadow: 0 0 6px rgba(231, 76, 60, 0.6);
 }
 
 .mb-timeline-card {
-  margin-left: 36px;
+  margin-left: 32px;
   flex: 1;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 16px 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  border-radius: 6px;
+  padding: 14px 18px;
 }
 
 .mb-timeline-item.is-contradiction .mb-timeline-card {
   border: 2px solid #e74c3c;
-  background: #fffafa;
-}
-
-.mb-timeline-card h4 {
-  font-size: 1.05rem;
-  color: #2c3e50;
-  margin-bottom: 6px;
+  background: #fffcfc;
 }
 
 .mb-contradiction-flag {
   display: inline-block;
   background: #fdedec;
   color: #c0392b;
-  border: 1px solid #f5b7b1;
   font-weight: 700;
   font-size: 0.72rem;
-  padding: 3px 8px;
+  padding: 2px 6px;
   border-radius: 4px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
-/* ---------- Corkboard (Investigation Board) ---------- */
+/* ---------- Corkboard ---------- */
 .mb-corkboard-container {
   background: #2f3640;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  padding: 16px;
   position: relative;
-  min-height: 480px;
+  min-height: 440px;
   overflow: hidden;
 }
 
 .mb-corkboard-canvas {
   width: 100%;
-  height: 480px;
+  height: 440px;
   position: relative;
 }
 
@@ -1039,59 +928,51 @@ footer {
 
 .mb-corkboard-node {
   position: absolute;
-  width: 170px;
+  width: 160px;
   background: #fff;
   border-radius: 6px;
-  padding: 10px 12px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+  padding: 8px 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   z-index: 10;
   cursor: pointer;
   transform: translate(-50%, -50%);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.mb-corkboard-node:hover {
-  transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45);
 }
 
 .mb-corkboard-pin {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   background: #e74c3c;
   border-radius: 50%;
   position: absolute;
-  top: -5px;
+  top: -4px;
   left: 50%;
   transform: translateX(-50%);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .mb-corkboard-node-title {
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  color: #2c3e50;
-  line-height: 1.3;
+  color: #1e293b;
 }
 
-/* ---------- Final Accusation Chamber ---------- */
+/* ---------- Final Solution Chamber ---------- */
 .mb-chamber-card {
   background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 32px;
+  padding: 28px;
 }
 
 .mb-gated-box {
   text-align: center;
-  padding: 36px 20px;
+  padding: 30px 20px;
 }
 
 .mb-checklist-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 10px 14px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
@@ -1099,38 +980,21 @@ footer {
 }
 
 .mb-form-group {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .mb-form-group label {
   display: block;
   font-weight: 700;
-  color: #2c3e50;
-  font-size: 0.95rem;
-  margin-bottom: 8px;
-}
-
-.mb-select,
-.mb-textarea {
-  width: 100%;
-  padding: 10px 14px;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-family: inherit;
-  background: #fff;
-}
-
-.mb-select:focus,
-.mb-textarea:focus {
-  outline: none;
-  border-color: #c0392b;
+  color: #1e293b;
+  font-size: 0.92rem;
+  margin-bottom: 6px;
 }
 
 .mb-evidence-checkboxes {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 10px;
+  gap: 8px;
 }
 
 .mb-checkbox-label {
@@ -1139,67 +1003,57 @@ footer {
   gap: 10px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
-.mb-checkbox-label:hover {
-  background: #edf2f7;
-}
-
-/* ---------- Case Closed Stamp & Verdict ---------- */
+/* ---------- Verdict Stamp & Metrics ---------- */
 .mb-verdict-stamp {
   display: inline-block;
   border: 4px solid #c0392b;
   color: #c0392b;
   font-weight: 900;
-  font-size: 1.6rem;
-  letter-spacing: 3px;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  padding: 8px 24px;
-  border-radius: 8px;
-  transform: rotate(-4deg);
-  margin-bottom: 24px;
-  box-shadow: 0 4px 10px rgba(192, 57, 43, 0.15);
+  padding: 6px 20px;
+  border-radius: 6px;
+  transform: rotate(-3deg);
+  margin-bottom: 20px;
 }
 
 .mb-metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 14px;
-  margin: 20px 0;
+  gap: 12px;
+  margin: 16px 0;
 }
 
 .mb-metric-box {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
-  padding: 16px;
+  padding: 14px;
   text-align: center;
 }
 
 .mb-metric-num {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: #c0392b;
   margin-bottom: 4px;
 }
 
 .mb-metric-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  color: #718096;
+  color: #64748b;
   font-weight: 600;
 }
 
-
-/* ==========================================================================
-   📝 DETECTIVE NOTES FEATURE (BEGINNER FRIENDLY COMPONENT)
-   ========================================================================== */
-
-/* Floating Notes Action Button (FAB) */
+/* ---------- Detective Notes ---------- */
 .mb-notes-widget {
   position: fixed;
   bottom: 20px;
@@ -1213,23 +1067,18 @@ footer {
   border: none;
   border-radius: 30px;
   padding: 10px 18px;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 4px 14px rgba(192, 57, 43, 0.4);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, background 0.2s;
 }
 
 .mb-notes-fab:hover {
   background: #a93226;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(192, 57, 43, 0.5);
 }
 
-/* Floating Notepad Drawer */
 .mb-notes-panel {
   position: absolute;
   bottom: 50px;
@@ -1243,22 +1092,10 @@ footer {
   display: none;
   flex-direction: column;
   overflow: hidden;
-  animation: mbSlideUp 0.25s ease forwards;
 }
 
 .mb-notes-panel.is-open {
   display: flex;
-}
-
-@keyframes mbSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .mb-notes-header {
@@ -1278,11 +1115,6 @@ footer {
   color: #bdc3c7;
   font-size: 1.2rem;
   cursor: pointer;
-  line-height: 1;
-}
-
-.mb-notes-close-btn:hover {
-  color: #fff;
 }
 
 .mb-notes-toolbar {
@@ -1292,7 +1124,6 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.78rem;
 }
 
 .mb-notes-tool-btn {
@@ -1302,14 +1133,6 @@ footer {
   padding: 3px 8px;
   font-size: 0.75rem;
   cursor: pointer;
-  color: #475569;
-  font-weight: 600;
-  transition: background 0.15s;
-}
-
-.mb-notes-tool-btn:hover {
-  background: #e2e8f0;
-  color: #1e293b;
 }
 
 .mb-notes-status {
@@ -1326,13 +1149,10 @@ footer {
   outline: none;
   font-family: inherit;
   font-size: 0.9rem;
-  line-height: 1.5;
   resize: vertical;
-  background: #fff;
   box-sizing: border-box;
 }
 
-/* Fullscreen/In-page Notes Panel in index.html */
 .mb-page-notes-box {
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -1361,116 +1181,16 @@ footer {
 .mb-quick-pill:hover {
   background: #2c3e50;
   color: #fff;
-  border-color: #2c3e50;
 }
 
-
-/* ==========================================================================
-   🗂️ MULTI-CASE COLLECTION GALLERY & SELECTOR
-   ========================================================================== */
-
-.mb-case-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-  gap: 20px;
-  margin: 20px 0;
-}
-
-.mb-case-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.mb-case-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
-
-.mb-case-card.is-active-case {
-  border: 2px solid #c0392b;
-  background: #fffcfc;
-}
-
-.mb-case-header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.mb-diff-tag {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: 4px;
-  letter-spacing: 0.5px;
-}
-
-.mb-diff-tag.is-easy {
-  background: #eafaf1;
-  color: #27ae60;
-  border: 1px solid #a3e4d7;
-}
-
-.mb-diff-tag.is-medium {
-  background: #ebf5fb;
-  color: #2980b9;
-  border: 1px solid #aed6f1;
-}
-
-.mb-diff-tag.is-hard {
-  background: #fef5e7;
-  color: #d35400;
-  border: 1px solid #f8c471;
-}
-
-.mb-diff-tag.is-expert {
-  background: #fdedec;
-  color: #c0392b;
-  border: 1px solid #f5b7b1;
-}
-
-.mb-diff-tag.is-demo {
-  background: #f4f6f7;
-  color: #7f8c8d;
-  border: 1px solid #bdc3c7;
-}
-
-.mb-case-card-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 6px;
-}
-
-.mb-case-card-meta {
-  font-size: 0.82rem;
-  color: #64748b;
-  margin-bottom: 12px;
-  line-height: 1.4;
-}
-
-.mb-case-card-brief {
-  font-size: 0.88rem;
-  color: #555;
-  line-height: 1.5;
-  margin-bottom: 16px;
-  flex: 1;
-}
-
-.mb-case-card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #f1f5f9;
-  padding-top: 14px;
+/* ---------- Footer ---------- */
+footer {
+  width: 100%;
+  text-align: center;
+  padding: 18px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  border-top: 1px solid #e2e8f0;
   margin-top: auto;
+  background: #fff;
 }
