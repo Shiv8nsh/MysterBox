@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clue 1 – CCTV | MysteryBox</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+
+  <!-- Top Investigation Bar (Live Timer, Stepper, Status) -->
+  <div id="topbarMount"></div>
+
+  <div class="container">
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <div class="url-bar" style="margin-bottom: 0;">📍 /clue/X7K92</div>
+      <a href="../index.html" class="btn btn-outline" style="font-size: 0.8rem; padding: 6px 14px;">📁 Open Case Dossier</a>
+    </div>
+
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <span class="badge" style="margin-bottom: 0;">Clue 1 of 5</span>
+        <span style="font-family: monospace; font-size: 0.85rem; color: #c0392b; font-weight: bold;">TIMESTAMP: 5:32 PM</span>
+      </div>
+
+      <h2>CCTV Footage</h2>
+
+      <p>The CCTV camera shows someone entering the computer lab at <span class="highlight">5:32 PM</span>.</p>
+      <p>The person's face cannot be clearly identified, but they are wearing a <span class="highlight">blue hoodie</span>.</p>
+
+      <!-- Forensic Preview Asset -->
+      <div style="background: #1e272e; border-radius: 6px; padding: 16px; margin: 16px 0; text-align: center;">
+        <svg viewBox="0 0 240 100" style="max-width: 100%; height: 90px;">
+          <rect width="240" height="100" fill="#151d24" rx="4"/>
+          <circle cx="120" cy="40" r="18" fill="#3498db"/>
+          <path d="M96 85 Q120 55 144 85 Z" fill="#2980b9"/>
+          <rect x="110" y="70" width="20" height="4" fill="#ecf0f1"/>
+          <text x="14" y="22" fill="#27ae60" font-family="monospace" font-size="11">CAM 04 ● REC 17:32:14</text>
+          <text x="14" y="90" fill="#7f8c8d" font-family="monospace" font-size="10">CORRIDOR 304 ENTRANCE</text>
+        </svg>
+      </div>
+
+      <!-- Hint Section -->
+      <div style="margin: 12px 0;">
+        <button type="button" class="btn-outline" id="hintToggleBtn" style="font-size: 0.8rem; padding: 5px 12px;">💡 Need a Hint?</button>
+        <div class="mb-clue-hint-box" id="hintBox">
+          <strong>💡 Detective Hint:</strong> Inspect what article of clothing and color the figure was wearing as they entered at 5:32 PM.
+        </div>
+      </div>
+
+      <!-- Answer Section -->
+      <div class="answer-section" id="answerSection">
+        <h3>🔎 What was the person in the CCTV wearing?</h3>
+        <input type="text" class="answer-input" id="answerInput" placeholder="Type your answer..." autocomplete="off" />
+        <button type="button" class="btn-submit" id="submitBtn">Submit Answer</button>
+        <div id="feedback"></div>
+      </div>
+
+      <!-- Next Clue (hidden until correct) -->
+      <div class="text-center mt hidden" id="nextClue">
+        <div style="background: #eafaf1; border: 1px solid #27ae60; padding: 10px; border-radius: 6px; margin-bottom: 14px; font-size: 0.88rem; color: #1e8449;">
+          🗃️ <strong>Evidence Recovered:</strong> "CCTV Surveillance: Entrance Feed" added to your Evidence Library!
+        </div>
+        <a href="A4P81.html" class="btn">Discover Next Clue →</a>
+      </div>
+
+      <div class="text-center mt">
+        <button type="button" class="btn-outline" id="resetBtn" style="font-size:0.8rem; padding:6px 14px;">🔄 Reset This Clue</button>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>MysteryBox &mdash; College Project Showcase</footer>
+
+  <script src="../mysterybox.js"></script>
+  <script>
+    (function () {
+      var MB = window.MysteryBox;
+      var CLUE_NUM = 1;
+
+      // Mount topbar
+      if (MB) {
+        var mount = document.getElementById("topbarMount");
+        mount.appendChild(MB.UI.renderTopBar({ activeClueId: CLUE_NUM, isCluePage: true }));
+        MB.UI.startTimerTicker();
+      }
+
+      var answerInput = document.getElementById("answerInput");
+      var feedbackEl = document.getElementById("feedback");
+      var submitBtn = document.getElementById("submitBtn");
+      var resetBtn = document.getElementById("resetBtn");
+      var hintToggleBtn = document.getElementById("hintToggleBtn");
+      var hintBox = document.getElementById("hintBox");
+
+      var CORRECT_ANSWERS = ["blue hoodie", "a blue hoodie", "hoodie", "blue hoody"];
+      var SUCCESS_MSG = "✅ Correct! The person was wearing a blue hoodie.";
+      var SOLVED_KEY = "clue1_solved";
+
+      hintToggleBtn.addEventListener("click", function () {
+        hintBox.classList.toggle("is-open");
+      });
+
+      // Ensure input is enabled by default
+      answerInput.disabled = false;
+      answerInput.readOnly = false;
+
+      // Check saved state
+      try {
+        if ((MB && MB.State.isClueSolved(CLUE_NUM)) || localStorage.getItem(SOLVED_KEY) === "true") {
+          showSolved();
+        }
+      } catch (e) {}
+
+      function checkAnswer() {
+        var input = answerInput.value.trim().toLowerCase();
+        if (!input) return;
+
+        var isCorrect = CORRECT_ANSWERS.some(function (ans) {
+          return input === ans.toLowerCase();
+        });
+
+        if (MB) {
+          MB.State.recordAttempt(isCorrect);
+        }
+
+        if (isCorrect) {
+          if (MB) {
+            MB.State.markClueSolved(CLUE_NUM);
+          } else {
+            try { localStorage.setItem(SOLVED_KEY, "true"); } catch (e) {}
+          }
+          showSolved();
+        } else {
+          feedbackEl.className = "feedback error";
+          feedbackEl.textContent = "❌ Incorrect. Look carefully at the evidence and try again.";
+        }
+      }
+
+      function showSolved() {
+        feedbackEl.className = "feedback success";
+        feedbackEl.textContent = SUCCESS_MSG;
+        document.getElementById("nextClue").classList.remove("hidden");
+        answerInput.disabled = true;
+        submitBtn.disabled = true;
+      }
+
+      function resetClue() {
+        if (MB) {
+          MB.State.resetClue(CLUE_NUM);
+        } else {
+          try { localStorage.removeItem(SOLVED_KEY); } catch (e) {}
+        }
+        answerInput.disabled = false;
+        answerInput.readOnly = false;
+        answerInput.value = "";
+        submitBtn.disabled = false;
+        feedbackEl.className = "";
+        feedbackEl.textContent = "";
+        document.getElementById("nextClue").classList.add("hidden");
+        window.location.reload();
+      }
+
+      submitBtn.addEventListener("click", checkAnswer);
+      answerInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") checkAnswer();
+      });
+      resetBtn.addEventListener("click", resetClue);
+    })();
+  </script>
+
+</body>
+</html>

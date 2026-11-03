@@ -99,6 +99,7 @@
         {
           id: 1,
           code: 'RM309-1',
+          url: 'clue_c1_1.html',
           title: 'Electronic Access Log',
           time: '11:38 PM',
           question: 'What time was the second unauthorized keycard swipe recorded at Room 309?',
@@ -110,6 +111,7 @@
         {
           id: 2,
           code: 'RM309-2',
+          url: 'clue_c1_2.html',
           title: 'Broken Wristwatch',
           time: '11:42 PM',
           question: 'What time was displayed on Arthur Vance\'s damaged wristwatch?',
@@ -121,6 +123,7 @@
         {
           id: 3,
           code: 'RM309-3',
+          url: 'clue_c1_3.html',
           title: 'Housekeeping Request',
           time: '11:30 PM',
           question: 'Who dispatched the unusual housekeeping diversion from the front desk?',
@@ -132,6 +135,7 @@
         {
           id: 4,
           code: 'RM309-4',
+          url: 'clue_c1_4.html',
           title: 'Duplicate Keycard Record',
           time: '6:15 PM',
           question: 'Whose manager authorization code created the duplicate master card at 6:15 PM?',
@@ -143,6 +147,7 @@
         {
           id: 5,
           code: 'RM309-5',
+          url: 'clue_c1_5.html',
           title: 'CCTV Gap',
           time: '11:35 PM – 11:42 PM',
           question: 'Who is the culprit behind the locked-room murder of Arthur Vance?',
@@ -348,6 +353,7 @@
         {
           id: 1,
           code: 'AUC-1',
+          url: 'clue_c2_1.html',
           title: 'Guest List & Badges',
           time: '9:00 PM',
           question: 'What was the badge number of the official event photographer on the VIP registry?',
@@ -359,6 +365,7 @@
         {
           id: 2,
           code: 'AUC-2',
+          url: 'clue_c2_2.html',
           title: 'Unusual Reflection',
           time: '9:27 PM',
           question: 'What tool was reflected in the champagne glass during the display tampering?',
@@ -370,6 +377,7 @@
         {
           id: 3,
           code: 'AUC-3',
+          url: 'clue_c2_3.html',
           title: 'Modified Receipt',
           time: '9:15 PM',
           question: 'What altered weight was forged onto the catalog receipt?',
@@ -381,6 +389,7 @@
         {
           id: 4,
           code: 'AUC-4',
+          url: 'clue_c2_4.html',
           title: 'Security Access Record',
           time: '9:26 PM',
           question: 'Whose equipment was plugged into the blind-spot terminal at 9:26 PM?',
@@ -392,6 +401,7 @@
         {
           id: 5,
           code: 'AUC-5',
+          url: 'clue_c2_5.html',
           title: 'Phone Transcript',
           time: '9:45 PM',
           question: 'Where was the stolen diamond concealed to bypass the security search?',
@@ -596,6 +606,7 @@
         {
           id: 1,
           code: 'INC217-1',
+          url: 'clue_c3_1.html',
           title: 'Laboratory Access Log',
           time: '2:10 AM',
           question: 'What level of access authorization swiped into Biochem Lab 4 at 2:10 AM?',
@@ -607,6 +618,7 @@
         {
           id: 2,
           code: 'INC217-2',
+          url: 'clue_c3_2.html',
           title: 'Encrypted Research Document',
           time: '2:14 AM',
           question: 'What is the decoded keyword of the encrypted synthesis document?',
@@ -618,6 +630,7 @@
         {
           id: 3,
           code: 'INC217-3',
+          url: 'clue_c3_3.html',
           title: 'Recovered Email Draft',
           time: '1:55 AM',
           question: 'Who was Professor Finch preparing to report to the ethics board?',
@@ -629,6 +642,7 @@
         {
           id: 4,
           code: 'INC217-4',
+          url: 'clue_c3_4.html',
           title: 'Chemical Inventory Audit',
           time: '2:00 AM',
           question: 'What chemical compound was missing from the locked toxin cabinet?',
@@ -640,6 +654,7 @@
         {
           id: 5,
           code: 'INC217-5',
+          url: 'clue_c3_5.html',
           title: 'Coded Handwritten Note',
           time: '2:16 AM',
           question: 'What name is encoded in the hex sequence 4F 4C 49 56 49 41?',
@@ -651,6 +666,7 @@
         {
           id: 6,
           code: 'INC217-6',
+          url: 'clue_c3_6.html',
           title: 'Conflicting Cellular Ping',
           time: '2:17 AM',
           question: 'Who was responsible for the 2:17 AM incident in Biochem Lab 4?',
@@ -871,6 +887,7 @@
         {
           id: 1,
           code: 'BW-1',
+          url: 'clue_c4_1.html',
           title: 'Passenger Manifest',
           time: '11:30 PM',
           question: 'Which seat in Coach C was assigned to Julian Vance?',
@@ -882,6 +899,7 @@
         {
           id: 2,
           code: 'BW-2',
+          url: 'clue_c4_2.html',
           title: 'Mismatched Ticket',
           time: '11:45 PM',
           question: 'What non-existent decommissioned station was printed on the forged ticket?',
@@ -893,6 +911,7 @@
         {
           id: 3,
           code: 'BW-3',
+          url: 'clue_c4_3.html',
           title: 'Voice Recording',
           time: '12:14 AM',
           question: 'What time did the train make the unscheduled stop at the freight siding?',
@@ -904,6 +923,7 @@
         {
           id: 4,
           code: 'BW-4',
+          url: 'clue_c4_4.html',
           title: 'Timetable Discrepancy',
           time: '12:14 AM – 12:20 AM',
           question: 'At which junction siding did the unscheduled 6-minute halt take place?',
@@ -915,6 +935,7 @@
         {
           id: 5,
           code: 'BW-5',
+          url: 'clue_c4_5.html',
           title: 'Station Platform Photograph',
           time: '12:17 AM',
           question: 'Which railway officer is identified in the junction platform surveillance still?',
@@ -926,6 +947,7 @@
         {
           id: 6,
           code: 'BW-6',
+          url: 'clue_c4_6.html',
           title: 'Encrypted Radio Transmission',
           time: '12:21 AM',
           question: 'What two words were transmitted on security channel 4 after the siding stop?',
@@ -937,6 +959,7 @@
         {
           id: 7,
           code: 'BW-7',
+          url: 'clue_c4_7.html',
           title: 'Journalist\'s Hidden Notebook',
           time: '12:10 AM',
           question: 'Who orchestrated Julian Vance\'s abduction on the train to Blackwood?',
@@ -1145,6 +1168,7 @@
         {
           id: 1,
           code: 'X7K92',
+          url: 'clue/X7K92.html',
           title: 'CCTV Footage',
           time: '5:32 PM',
           question: 'What was the person in the CCTV wearing?',
@@ -1156,6 +1180,7 @@
         {
           id: 2,
           code: 'A4P81',
+          url: 'clue/A4P81.html',
           title: 'Security Log',
           time: '5:34 PM',
           question: 'Whose access card was used to enter the lab?',
@@ -1167,6 +1192,7 @@
         {
           id: 3,
           code: 'M9Q24',
+          url: 'clue/M9Q24.html',
           title: 'Chat Message',
           time: '5:31 PM',
           question: 'Whose phone sent the suspicious message?',
@@ -1178,6 +1204,7 @@
         {
           id: 4,
           code: 'P3L67',
+          url: 'clue/P3L67.html',
           title: 'Time Contradiction',
           time: '5:42 PM',
           question: 'What time did Rohan actually enter the library?',
@@ -1189,6 +1216,7 @@
         {
           id: 5,
           code: 'K8Z41',
+          url: 'clue/K8Z41.html',
           title: 'Final Evidence',
           time: '5:47 PM',
           question: 'Who took the laptop?',
