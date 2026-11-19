@@ -1,0 +1,13 @@
+# Use this workspace to collaborate
+workspace:
+  id: 5069bd3a-99b9-4845-862b-e04220af5bd9
+
+localResources:
+  collections:
+    - ../MysteryBox.postman_collection.json
+  environments:
+    - ../MysteryBox.postman_environment.json
+
+cloudResources:
+  collections:
+    ../postman/collections/MysteryBox API: 67dee6ab-90c8-4a30-9c79-f3136a0a1f51

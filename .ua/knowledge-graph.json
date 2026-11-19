@@ -1,0 +1,1628 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "mysterbox",
+    "languages": [
+      "config",
+      "css",
+      "html",
+      "javascript",
+      "json",
+      "markdown"
+    ],
+    "frameworks": [
+      "express",
+      "mongoose"
+    ],
+    "description": "MysteryBox is an interactive detective puzzle workstation featuring local authentication, suspect interrogations, and case accusations powered by an Express.js API and MongoDB.",
+    "analyzedAt": "2026-11-19T04:54:26.051Z",
+    "gitCommitHash": "2d79db663fa7067a5bb05d13ec6d6908abfd7f52"
+  },
+  "nodes": [
+    {
+      "id": "file:interrogations.js",
+      "type": "file",
+      "name": "interrogations.js",
+      "path": "interrogations.js",
+      "filePath": "interrogations.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 298,
+      "complexity": "moderate",
+      "summary": "Suspect interrogation question-and-answer database and pick-2 rules for all 5 cases.",
+      "tags": [
+        "data-model",
+        "interrogation",
+        "puzzle-content",
+        "server-shared"
+      ]
+    },
+    {
+      "id": "function:interrogations.js:getQuestions",
+      "type": "function",
+      "name": "getQuestions",
+      "path": "interrogations.js",
+      "filePath": "interrogations.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 15,
+      "complexity": "simple",
+      "summary": "Retrieves the 4 available interrogation questions for a given case and suspect.",
+      "tags": [
+        "utility",
+        "interrogation",
+        "query"
+      ]
+    },
+    {
+      "id": "file:models/Feedback.js",
+      "type": "file",
+      "name": "Feedback.js",
+      "path": "models/Feedback.js",
+      "filePath": "models/Feedback.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 54,
+      "complexity": "simple",
+      "summary": "Mongoose schema and model for user feedback, ratings (1-5), and categorized reviews.",
+      "tags": [
+        "data-model",
+        "mongoose",
+        "schema",
+        "feedback"
+      ]
+    },
+    {
+      "id": "file:models/Interrogation.js",
+      "type": "file",
+      "name": "Interrogation.js",
+      "path": "models/Interrogation.js",
+      "filePath": "models/Interrogation.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 51,
+      "complexity": "simple",
+      "summary": "Mongoose schema and model for suspect interrogation sessions, Q&A pairs, and archive states.",
+      "tags": [
+        "data-model",
+        "mongoose",
+        "schema",
+        "interrogation"
+      ]
+    },
+    {
+      "id": "file:routes/interrogations.js",
+      "type": "file",
+      "name": "interrogations.js",
+      "path": "routes/interrogations.js",
+      "filePath": "routes/interrogations.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 138,
+      "complexity": "moderate",
+      "summary": "Express router managing interrogation transcripts, question submission validation, and resets.",
+      "tags": [
+        "api-handler",
+        "routes",
+        "interrogation",
+        "validation"
+      ]
+    },
+    {
+      "id": "file:routes/profile.js",
+      "type": "file",
+      "name": "profile.js",
+      "path": "routes/profile.js",
+      "filePath": "routes/profile.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 41,
+      "complexity": "simple",
+      "summary": "Express router aggregating detective stats, solved case tallies, and past interrogations.",
+      "tags": [
+        "api-handler",
+        "routes",
+        "profile",
+        "aggregation"
+      ]
+    },
+    {
+      "id": "file:scripts/migrate-json-to-mongo.js",
+      "type": "file",
+      "name": "migrate-json-to-mongo.js",
+      "path": "scripts/migrate-json-to-mongo.js",
+      "filePath": "scripts/migrate-json-to-mongo.js",
+      "language": "javascript",
+      "fileCategory": "script",
+      "lines": 95,
+      "complexity": "moderate",
+      "summary": "Migration script that reads legacy ./data/*.json files and imports them into MongoDB collections.",
+      "tags": [
+        "migration",
+        "database",
+        "script",
+        "mongo-import"
+      ]
+    },
+    {
+      "id": "file:middleware/auth.js",
+      "type": "file",
+      "name": "auth.js",
+      "path": "middleware/auth.js",
+      "filePath": "middleware/auth.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 39,
+      "complexity": "simple",
+      "summary": "Express middleware verifying Bearer tokens, token SHA-256 hashes, and session TTL in MongoDB.",
+      "tags": [
+        "middleware",
+        "authentication",
+        "security",
+        "bearer-token"
+      ]
+    },
+    {
+      "id": "function:middleware/auth.js:authMiddleware",
+      "type": "function",
+      "name": "authMiddleware",
+      "path": "middleware/auth.js",
+      "filePath": "middleware/auth.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 30,
+      "complexity": "simple",
+      "summary": "Validates Authorization headers against active MongoDB sessions and attaches authenticated user.",
+      "tags": [
+        "middleware",
+        "security",
+        "session-check"
+      ]
+    },
+    {
+      "id": "file:models/Session.js",
+      "type": "file",
+      "name": "Session.js",
+      "path": "models/Session.js",
+      "filePath": "models/Session.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 28,
+      "complexity": "simple",
+      "summary": "Mongoose schema for active sessions with token hashes and automatic MongoDB TTL expiration index.",
+      "tags": [
+        "data-model",
+        "mongoose",
+        "session",
+        "ttl-index"
+      ]
+    },
+    {
+      "id": "file:models/User.js",
+      "type": "file",
+      "name": "User.js",
+      "path": "models/User.js",
+      "filePath": "models/User.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 48,
+      "complexity": "simple",
+      "summary": "Mongoose schema for registered detectives with unique email indexing and scrypt password hashing.",
+      "tags": [
+        "data-model",
+        "mongoose",
+        "user",
+        "credentials"
+      ]
+    },
+    {
+      "id": "file:routes/auth.js",
+      "type": "file",
+      "name": "auth.js",
+      "path": "routes/auth.js",
+      "filePath": "routes/auth.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 135,
+      "complexity": "moderate",
+      "summary": "Express router managing user registration, login with brute-force protection, logout, and profile me.",
+      "tags": [
+        "api-handler",
+        "routes",
+        "authentication",
+        "session"
+      ]
+    },
+    {
+      "id": "file:tests/helpers.test.js",
+      "type": "file",
+      "name": "helpers.test.js",
+      "path": "tests/helpers.test.js",
+      "filePath": "tests/helpers.test.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 77,
+      "complexity": "simple",
+      "summary": "Automated test suite verifying scrypt password hashing, verification, input cleaning, and validation.",
+      "tags": [
+        "test",
+        "unit-test",
+        "security",
+        "validation"
+      ]
+    },
+    {
+      "id": "file:utils/helpers.js",
+      "type": "file",
+      "name": "helpers.js",
+      "path": "utils/helpers.js",
+      "filePath": "utils/helpers.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 104,
+      "complexity": "moderate",
+      "summary": "Security and crypto utilities for scrypt password hashing, timing-safe checks, and session generation.",
+      "tags": [
+        "utility",
+        "crypto",
+        "scrypt",
+        "validation",
+        "tested"
+      ]
+    },
+    {
+      "id": "function:utils/helpers.js:hashPassword",
+      "type": "function",
+      "name": "hashPassword",
+      "path": "utils/helpers.js",
+      "filePath": "utils/helpers.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 8,
+      "complexity": "simple",
+      "summary": "Generates a random salt and computes a secure 64-byte scrypt password hash.",
+      "tags": [
+        "utility",
+        "security",
+        "hashing"
+      ]
+    },
+    {
+      "id": "function:utils/helpers.js:verifyPassword",
+      "type": "function",
+      "name": "verifyPassword",
+      "path": "utils/helpers.js",
+      "filePath": "utils/helpers.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 7,
+      "complexity": "simple",
+      "summary": "Validates a password against its salt and known hash using crypto.timingSafeEqual.",
+      "tags": [
+        "utility",
+        "security",
+        "timing-safe"
+      ]
+    },
+    {
+      "id": "file:config/db.js",
+      "type": "file",
+      "name": "db.js",
+      "path": "config/db.js",
+      "filePath": "config/db.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 45,
+      "complexity": "simple",
+      "summary": "MongoDB database connector using Mongoose with connection status monitoring and troubleshooting guides.",
+      "tags": [
+        "database",
+        "config",
+        "mongoose",
+        "connector"
+      ]
+    },
+    {
+      "id": "function:config/db.js:connectDB",
+      "type": "function",
+      "name": "connectDB",
+      "path": "config/db.js",
+      "filePath": "config/db.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 20,
+      "complexity": "simple",
+      "summary": "Establishes asynchronous connection to MongoDB and handles failover logging.",
+      "tags": [
+        "database",
+        "initialization"
+      ]
+    },
+    {
+      "id": "file:models/Result.js",
+      "type": "file",
+      "name": "Result.js",
+      "path": "models/Result.js",
+      "filePath": "models/Result.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 57,
+      "complexity": "simple",
+      "summary": "Mongoose schema and model for case accusation records, evidence links, theories, and accuracy scoring.",
+      "tags": [
+        "data-model",
+        "mongoose",
+        "schema",
+        "verdicts"
+      ]
+    },
+    {
+      "id": "file:routes/results.js",
+      "type": "file",
+      "name": "results.js",
+      "path": "routes/results.js",
+      "filePath": "routes/results.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 66,
+      "complexity": "simple",
+      "summary": "Express router managing accusation submissions, culprit verification, and case performance persistence.",
+      "tags": [
+        "api-handler",
+        "routes",
+        "verdicts",
+        "evaluation"
+      ]
+    },
+    {
+      "id": "file:server.js",
+      "type": "file",
+      "name": "server.js",
+      "path": "server.js",
+      "filePath": "server.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 180,
+      "complexity": "moderate",
+      "summary": "Express web server and API application configuring CORS, JSON parsing, security gates, and static files.",
+      "tags": [
+        "entry-point",
+        "server",
+        "express",
+        "api-handler",
+        "tested"
+      ]
+    },
+    {
+      "id": "file:tests/routes.test.js",
+      "type": "file",
+      "name": "routes.test.js",
+      "path": "tests/routes.test.js",
+      "filePath": "tests/routes.test.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 91,
+      "complexity": "moderate",
+      "summary": "Automated integration tests validating Express API health, auth guards, security protection, and static assets.",
+      "tags": [
+        "test",
+        "integration-test",
+        "api-test",
+        "security"
+      ]
+    },
+    {
+      "id": "file:cases.js",
+      "type": "file",
+      "name": "cases.js",
+      "path": "cases.js",
+      "filePath": "cases.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 1341,
+      "complexity": "complex",
+      "summary": "Primary case dataset defining suspects, forensic clues, timeline milestones, and solutions for all 5 cases.",
+      "tags": [
+        "data-model",
+        "puzzle-content",
+        "cases",
+        "game-data"
+      ]
+    },
+    {
+      "id": "file:mysterybox.js",
+      "type": "file",
+      "name": "mysterybox.js",
+      "path": "mysterybox.js",
+      "filePath": "mysterybox.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 395,
+      "complexity": "complex",
+      "summary": "Detective workstation client game engine managing timer, case notebooks, unlocked clues, and verdicts.",
+      "tags": [
+        "game-engine",
+        "client-state",
+        "workstation",
+        "browser"
+      ]
+    },
+    {
+      "id": "file:routes/feedback.js",
+      "type": "file",
+      "name": "feedback.js",
+      "path": "routes/feedback.js",
+      "filePath": "routes/feedback.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 66,
+      "complexity": "simple",
+      "summary": "Express router managing user feedback submissions, validation, rating constraints, and MongoDB storage.",
+      "tags": [
+        "api-handler",
+        "routes",
+        "feedback",
+        "validation"
+      ]
+    },
+    {
+      "id": "config:.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "path": ".env.example",
+      "filePath": ".env.example",
+      "language": "config",
+      "fileCategory": "config",
+      "lines": 14,
+      "complexity": "simple",
+      "summary": "Configuration template documenting server PORT and local or MongoDB Atlas connection strings.",
+      "tags": [
+        "configuration",
+        "environment",
+        "mongodb",
+        "example"
+      ]
+    },
+    {
+      "id": "document:CODE_GUIDE.md",
+      "type": "document",
+      "name": "CODE_GUIDE.md",
+      "path": "CODE_GUIDE.md",
+      "filePath": "CODE_GUIDE.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "lines": 47,
+      "complexity": "simple",
+      "summary": "Developer guide outlining project file layout, component interactions, and extension locations.",
+      "tags": [
+        "documentation",
+        "architecture",
+        "developer-guide"
+      ]
+    },
+    {
+      "id": "config:MysteryBox.postman_collection.json",
+      "type": "config",
+      "name": "MysteryBox.postman_collection.json",
+      "path": "MysteryBox.postman_collection.json",
+      "filePath": "MysteryBox.postman_collection.json",
+      "language": "json",
+      "fileCategory": "config",
+      "lines": 326,
+      "complexity": "complex",
+      "summary": "Complete Postman API collection with preconfigured requests, bodies, and automated test scripts.",
+      "tags": [
+        "api-schema",
+        "postman",
+        "testing",
+        "api-collection"
+      ]
+    },
+    {
+      "id": "config:MysteryBox.postman_environment.json",
+      "type": "config",
+      "name": "MysteryBox.postman_environment.json",
+      "path": "MysteryBox.postman_environment.json",
+      "filePath": "MysteryBox.postman_environment.json",
+      "language": "json",
+      "fileCategory": "config",
+      "lines": 19,
+      "complexity": "simple",
+      "summary": "Postman environment variables file for baseUrl and automated Bearer token storage.",
+      "tags": [
+        "configuration",
+        "postman",
+        "environment",
+        "variables"
+      ]
+    },
+    {
+      "id": "document:POSTMAN_GUIDE.md",
+      "type": "document",
+      "name": "POSTMAN_GUIDE.md",
+      "path": "POSTMAN_GUIDE.md",
+      "filePath": "POSTMAN_GUIDE.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "lines": 102,
+      "complexity": "simple",
+      "summary": "Step-by-step documentation for importing and executing API tests in Postman with automated authentication.",
+      "tags": [
+        "documentation",
+        "postman",
+        "guide",
+        "testing"
+      ]
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "path": "README.md",
+      "filePath": "README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "lines": 84,
+      "complexity": "simple",
+      "summary": "Primary repository documentation detailing project setup, Express & MongoDB architecture, and testing.",
+      "tags": [
+        "documentation",
+        "readme",
+        "getting-started"
+      ]
+    },
+    {
+      "id": "file:feedback.html",
+      "type": "file",
+      "name": "feedback.html",
+      "path": "feedback.html",
+      "filePath": "feedback.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 247,
+      "complexity": "moderate",
+      "summary": "Interactive detective feedback page featuring star rating picker, category selectors, and validation.",
+      "tags": [
+        "ui",
+        "feedback",
+        "form",
+        "markup"
+      ]
+    },
+    {
+      "id": "file:index.html",
+      "type": "file",
+      "name": "index.html",
+      "path": "index.html",
+      "filePath": "index.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 1121,
+      "complexity": "complex",
+      "summary": "Main detective puzzle workstation dashboard featuring evidence lockers, timers, notebooks, and case files.",
+      "tags": [
+        "ui",
+        "dashboard",
+        "workstation",
+        "entry-point"
+      ]
+    },
+    {
+      "id": "file:interrogation.html",
+      "type": "file",
+      "name": "interrogation.html",
+      "path": "interrogation.html",
+      "filePath": "interrogation.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 343,
+      "complexity": "moderate",
+      "summary": "Interactive interrogation room interface with 2-of-4 question selectors and animated response feeds.",
+      "tags": [
+        "ui",
+        "interrogation",
+        "suspects",
+        "markup"
+      ]
+    },
+    {
+      "id": "config:package.json",
+      "type": "config",
+      "name": "package.json",
+      "path": "package.json",
+      "filePath": "package.json",
+      "language": "json",
+      "fileCategory": "config",
+      "lines": 24,
+      "complexity": "simple",
+      "summary": "Node package manifest defining application dependencies (express, mongoose, cors, dotenv) and scripts.",
+      "tags": [
+        "configuration",
+        "package-manifest",
+        "dependencies",
+        "build-system"
+      ]
+    },
+    {
+      "id": "file:profile.html",
+      "type": "file",
+      "name": "profile.html",
+      "path": "profile.html",
+      "filePath": "profile.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 260,
+      "complexity": "moderate",
+      "summary": "Detective profile dashboard displaying player activity, solved cases, accuracy score, and logs.",
+      "tags": [
+        "ui",
+        "profile",
+        "stats",
+        "markup"
+      ]
+    },
+    {
+      "id": "file:solution.html",
+      "type": "file",
+      "name": "solution.html",
+      "path": "solution.html",
+      "filePath": "solution.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 172,
+      "complexity": "simple",
+      "summary": "Case resolution view displaying verdict outcomes, culprit reveals, and chronological breakdown.",
+      "tags": [
+        "ui",
+        "solution",
+        "verdict",
+        "markup"
+      ]
+    },
+    {
+      "id": "file:style.css",
+      "type": "file",
+      "name": "style.css",
+      "path": "style.css",
+      "filePath": "style.css",
+      "language": "css",
+      "fileCategory": "markup",
+      "lines": 669,
+      "complexity": "complex",
+      "summary": "Unified application stylesheet defining dark noir detective aesthetic, modal themes, and layout grids.",
+      "tags": [
+        "styling",
+        "css",
+        "themes",
+        "responsive-design"
+      ]
+    },
+    {
+      "id": "file:clue/A4P81.html",
+      "type": "file",
+      "name": "A4P81.html",
+      "path": "clue/A4P81.html",
+      "filePath": "clue/A4P81.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 202,
+      "complexity": "moderate",
+      "summary": "Clue dossier page for suspect background analysis and verified motive intelligence.",
+      "tags": [
+        "ui",
+        "clue",
+        "dossier",
+        "investigation"
+      ]
+    },
+    {
+      "id": "file:clue/K8Z41.html",
+      "type": "file",
+      "name": "K8Z41.html",
+      "path": "clue/K8Z41.html",
+      "filePath": "clue/K8Z41.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 198,
+      "complexity": "moderate",
+      "summary": "Clue dossier page detailing timeline reconstruction records and witness sightings.",
+      "tags": [
+        "ui",
+        "clue",
+        "timeline",
+        "investigation"
+      ]
+    },
+    {
+      "id": "file:clue/M9Q24.html",
+      "type": "file",
+      "name": "M9Q24.html",
+      "path": "clue/M9Q24.html",
+      "filePath": "clue/M9Q24.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 201,
+      "complexity": "moderate",
+      "summary": "Clue dossier page displaying keycard encoder transaction records and access logs.",
+      "tags": [
+        "ui",
+        "clue",
+        "audit-trail",
+        "investigation"
+      ]
+    },
+    {
+      "id": "file:clue/P3L67.html",
+      "type": "file",
+      "name": "P3L67.html",
+      "path": "clue/P3L67.html",
+      "filePath": "clue/P3L67.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 201,
+      "complexity": "moderate",
+      "summary": "Clue dossier page detailing telephone PBX logs, call times, and alibi statements.",
+      "tags": [
+        "ui",
+        "clue",
+        "phone-log",
+        "investigation"
+      ]
+    },
+    {
+      "id": "file:clue/X7K92.html",
+      "type": "file",
+      "name": "X7K92.html",
+      "path": "clue/X7K92.html",
+      "filePath": "clue/X7K92.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "lines": 191,
+      "complexity": "moderate",
+      "summary": "Clue dossier page presenting corridor CCTV blackout records and physical lock evidence.",
+      "tags": [
+        "ui",
+        "clue",
+        "cctv",
+        "investigation"
+      ]
+    },
+    {
+      "id": "file:data:data/feedback.json",
+      "type": "data",
+      "name": "feedback.json",
+      "path": "data/feedback.json",
+      "filePath": "data/feedback.json",
+      "language": "json",
+      "fileCategory": "data",
+      "lines": 3,
+      "complexity": "simple",
+      "summary": "Local JSON fallback data file storing feedback submissions.",
+      "tags": [
+        "data",
+        "json-store",
+        "fallback",
+        "persistence"
+      ]
+    },
+    {
+      "id": "file:data:data/interrogations.json",
+      "type": "data",
+      "name": "interrogations.json",
+      "path": "data/interrogations.json",
+      "filePath": "data/interrogations.json",
+      "language": "json",
+      "fileCategory": "data",
+      "lines": 3,
+      "complexity": "simple",
+      "summary": "Local JSON fallback data file storing interrogation session transcripts.",
+      "tags": [
+        "data",
+        "json-store",
+        "fallback",
+        "persistence"
+      ]
+    },
+    {
+      "id": "file:data:data/results.json",
+      "type": "data",
+      "name": "results.json",
+      "path": "data/results.json",
+      "filePath": "data/results.json",
+      "language": "json",
+      "fileCategory": "data",
+      "lines": 3,
+      "complexity": "simple",
+      "summary": "Local JSON fallback data file storing detective accusation results.",
+      "tags": [
+        "data",
+        "json-store",
+        "fallback",
+        "persistence"
+      ]
+    },
+    {
+      "id": "file:data:data/sessions.json",
+      "type": "data",
+      "name": "sessions.json",
+      "path": "data/sessions.json",
+      "filePath": "data/sessions.json",
+      "language": "json",
+      "fileCategory": "data",
+      "lines": 3,
+      "complexity": "simple",
+      "summary": "Local JSON fallback data file storing session token hashes.",
+      "tags": [
+        "data",
+        "json-store",
+        "fallback",
+        "persistence"
+      ]
+    },
+    {
+      "id": "file:data:data/users.json",
+      "type": "data",
+      "name": "users.json",
+      "path": "data/users.json",
+      "filePath": "data/users.json",
+      "language": "json",
+      "fileCategory": "data",
+      "lines": 3,
+      "complexity": "simple",
+      "summary": "Local JSON fallback data file storing user accounts.",
+      "tags": [
+        "data",
+        "json-store",
+        "fallback",
+        "persistence"
+      ]
+    },
+    {
+      "id": "file:auth.js",
+      "type": "file",
+      "name": "auth.js",
+      "path": "auth.js",
+      "filePath": "auth.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 348,
+      "complexity": "moderate",
+      "summary": "Client authentication helper displaying modal dialogs and injecting Bearer tokens into API requests.",
+      "tags": [
+        "authentication",
+        "ui-modal",
+        "api-client",
+        "session"
+      ]
+    },
+    {
+      "id": "function:auth.js:api",
+      "type": "function",
+      "name": "api",
+      "path": "auth.js",
+      "filePath": "auth.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "lines": 30,
+      "complexity": "simple",
+      "summary": "Shared fetch wrapper injecting Authorization Bearer tokens and standardizing error handling.",
+      "tags": [
+        "api-client",
+        "http",
+        "bearer-token"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:interrogations.js",
+      "target": "function:interrogations.js:getQuestions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:interrogations.js",
+      "target": "function:interrogations.js:getQuestions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:routes/interrogations.js",
+      "target": "file:cases.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/interrogations.js",
+      "target": "file:interrogations.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/interrogations.js",
+      "target": "file:middleware/auth.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/interrogations.js",
+      "target": "file:models/Interrogation.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/interrogations.js",
+      "target": "file:utils/helpers.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/profile.js",
+      "target": "file:middleware/auth.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/profile.js",
+      "target": "file:models/Feedback.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/profile.js",
+      "target": "file:models/Interrogation.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/profile.js",
+      "target": "file:models/Result.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/profile.js",
+      "target": "file:utils/helpers.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:models/Feedback.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:models/Interrogation.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:models/Result.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:models/Session.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:models/User.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:middleware/auth.js",
+      "target": "function:middleware/auth.js:authMiddleware",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:middleware/auth.js",
+      "target": "function:middleware/auth.js:authMiddleware",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:middleware/auth.js",
+      "target": "file:models/Session.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:middleware/auth.js",
+      "target": "file:models/User.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:middleware/auth.js",
+      "target": "file:utils/helpers.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/auth.js",
+      "target": "file:middleware/auth.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/auth.js",
+      "target": "file:models/Session.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/auth.js",
+      "target": "file:models/User.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/auth.js",
+      "target": "file:utils/helpers.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/helpers.test.js",
+      "target": "file:utils/helpers.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:utils/helpers.js",
+      "target": "file:tests/helpers.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:utils/helpers.js",
+      "target": "function:utils/helpers.js:hashPassword",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:utils/helpers.js",
+      "target": "function:utils/helpers.js:verifyPassword",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:utils/helpers.js",
+      "target": "file:models/Session.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:config/db.js",
+      "target": "function:config/db.js:connectDB",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:config/db.js",
+      "target": "function:config/db.js:connectDB",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:routes/results.js",
+      "target": "file:cases.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/results.js",
+      "target": "file:middleware/auth.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/results.js",
+      "target": "file:models/Result.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/results.js",
+      "target": "file:utils/helpers.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.js",
+      "target": "file:config/db.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.js",
+      "target": "file:routes/auth.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.js",
+      "target": "file:routes/feedback.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.js",
+      "target": "file:routes/interrogations.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.js",
+      "target": "file:routes/profile.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.js",
+      "target": "file:routes/results.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:server.js",
+      "target": "file:tests/routes.test.js",
+      "type": "tested_by",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:tests/routes.test.js",
+      "target": "file:server.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:mysterybox.js",
+      "target": "file:cases.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/feedback.js",
+      "target": "file:cases.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/feedback.js",
+      "target": "file:middleware/auth.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/feedback.js",
+      "target": "file:models/Feedback.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:routes/feedback.js",
+      "target": "file:utils/helpers.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "document:CODE_GUIDE.md",
+      "target": "file:server.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:POSTMAN_GUIDE.md",
+      "target": "config:MysteryBox.postman_collection.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "file:server.js",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:package.json",
+      "target": "file:server.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "file:config/db.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:index.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:interrogation.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:profile.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:feedback.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:clue/A4P81.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:clue/K8Z41.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:clue/M9Q24.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:clue/P3L67.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:clue/X7K92.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:data:data/feedback.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:data:data/interrogations.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:data:data/results.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:data:data/sessions.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:scripts/migrate-json-to-mongo.js",
+      "target": "file:data:data/users.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:auth.js",
+      "target": "function:auth.js:api",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:auth.js",
+      "target": "function:auth.js:api",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:auth.js",
+      "target": "file:routes/auth.js",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "document:POSTMAN_GUIDE.md",
+      "target": "config:MysteryBox.postman_environment.json",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:solution.html",
+      "target": "file:style.css",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:backend-core",
+      "name": "Backend & Database Core",
+      "description": "Express application setup, MongoDB database connection, authentication middleware, and security helpers.",
+      "nodeIds": [
+        "file:server.js",
+        "file:config/db.js",
+        "file:middleware/auth.js",
+        "file:utils/helpers.js"
+      ]
+    },
+    {
+      "id": "layer:api-routes",
+      "name": "REST API Routes",
+      "description": "Express modular routes handling authentication, suspect interrogations, accusation verdicts, feedback, and player profile.",
+      "nodeIds": [
+        "file:routes/auth.js",
+        "file:routes/interrogations.js",
+        "file:routes/results.js",
+        "file:routes/feedback.js",
+        "file:routes/profile.js"
+      ]
+    },
+    {
+      "id": "layer:data-models",
+      "name": "MongoDB Data Models",
+      "description": "Mongoose schemas and models managing users, active sessions with TTL expiration, interrogation sessions, results, and feedback.",
+      "nodeIds": [
+        "file:models/User.js",
+        "file:models/Session.js",
+        "file:models/Interrogation.js",
+        "file:models/Result.js",
+        "file:models/Feedback.js"
+      ]
+    },
+    {
+      "id": "layer:game-logic",
+      "name": "Game Logic & Puzzle Content",
+      "description": "Case definitions, timeline reconstructions, suspect interrogations bank, and client-side game engine state.",
+      "nodeIds": [
+        "file:cases.js",
+        "file:interrogations.js",
+        "file:mysterybox.js"
+      ]
+    },
+    {
+      "id": "layer:frontend-ui",
+      "name": "Frontend Workstation UI",
+      "description": "Interactive HTML workstation, suspect interrogation room, feedback form, player profile, client auth helper, and dark noir CSS.",
+      "nodeIds": [
+        "file:index.html",
+        "file:interrogation.html",
+        "file:profile.html",
+        "file:feedback.html",
+        "file:solution.html",
+        "file:auth.js",
+        "file:style.css"
+      ]
+    },
+    {
+      "id": "layer:case-clues",
+      "name": "Case Clue Dossiers",
+      "description": "Individual clue pages presenting keycard logs, telephone PBX records, CCTV blackouts, and witness alibis.",
+      "nodeIds": [
+        "file:clue/A4P81.html",
+        "file:clue/K8Z41.html",
+        "file:clue/M9Q24.html",
+        "file:clue/P3L67.html",
+        "file:clue/X7K92.html"
+      ]
+    },
+    {
+      "id": "layer:testing-and-tools",
+      "name": "Testing & Migration Scripts",
+      "description": "Automated unit tests, integration test suite, and legacy JSON-to-MongoDB data migration utility.",
+      "nodeIds": [
+        "file:tests/routes.test.js",
+        "file:tests/helpers.test.js",
+        "file:scripts/migrate-json-to-mongo.js"
+      ]
+    },
+    {
+      "id": "layer:config-and-docs",
+      "name": "Documentation & Configuration",
+      "description": "Package manifests, environment configuration, Postman collection & environment, architecture guides, and fallback storage.",
+      "nodeIds": [
+        "config:package.json",
+        "config:.env.example",
+        "config:MysteryBox.postman_collection.json",
+        "config:MysteryBox.postman_environment.json",
+        "document:README.md",
+        "document:POSTMAN_GUIDE.md",
+        "document:CODE_GUIDE.md",
+        "file:data:data/feedback.json",
+        "file:data:data/interrogations.json",
+        "file:data:data/results.json",
+        "file:data:data/sessions.json",
+        "file:data:data/users.json"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview & Setup",
+      "description": "Start with README and the Postman guide to understand the detective puzzle workstation, Express setup, MongoDB connection, and API testing workflow.",
+      "nodeIds": [
+        "document:README.md",
+        "document:POSTMAN_GUIDE.md",
+        "document:CODE_GUIDE.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Server & Database Architecture",
+      "description": "Explore server.js and db.js to see how Express boots, configures middleware, enforces security gates, and connects to MongoDB via Mongoose.",
+      "nodeIds": [
+        "file:server.js",
+        "file:config/db.js"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "MongoDB Models & TTL Expiration",
+      "description": "Examine the Mongoose schemas for User accounts, TTL-expiring Sessions, Interrogation transcripts, Accusation records, and Feedback.",
+      "nodeIds": [
+        "file:models/User.js",
+        "file:models/Session.js",
+        "file:models/Interrogation.js",
+        "file:models/Result.js",
+        "file:models/Feedback.js"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Security & Authentication Pipeline",
+      "description": "Inspect the scrypt password hashing utilities, timing-safe verification, and Bearer token auth middleware guarding protected endpoints.",
+      "nodeIds": [
+        "file:middleware/auth.js",
+        "file:utils/helpers.js"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Modular REST API Routes",
+      "description": "Trace the Express route handlers managing detective registration, suspect interrogation submissions, verdict accusations, and profile aggregation.",
+      "nodeIds": [
+        "file:routes/auth.js",
+        "file:routes/interrogations.js",
+        "file:routes/results.js",
+        "file:routes/feedback.js",
+        "file:routes/profile.js"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Interactive Workstation Frontend",
+      "description": "Explore the detective workstation interface, suspect interrogation room, feedback form, player profile, client auth helper, and dark noir CSS.",
+      "nodeIds": [
+        "file:index.html",
+        "file:interrogation.html",
+        "file:profile.html",
+        "file:feedback.html",
+        "file:solution.html",
+        "file:auth.js",
+        "file:style.css"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "Puzzle Data & Clue Dossiers",
+      "description": "Dive into cases.js and clue files to see how locked-room puzzles, timelines, keycard logs, and witness alibis are structured.",
+      "nodeIds": [
+        "file:cases.js",
+        "file:interrogations.js",
+        "file:clue/A4P81.html",
+        "file:clue/M9Q24.html",
+        "file:clue/X7K92.html"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "Automated Testing & Migration",
+      "description": "Review the automated test suite testing password crypto and API routes, plus the migration utility for legacy JSON data.",
+      "nodeIds": [
+        "file:tests/routes.test.js",
+        "file:tests/helpers.test.js",
+        "file:scripts/migrate-json-to-mongo.js"
+      ]
+    }
+  ]
+}

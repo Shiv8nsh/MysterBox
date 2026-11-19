@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback | MysteryBox</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="topbarMount"></div>
+
+  <div class="container-wide" style="max-width: 720px;">
+
+    <div class="card" id="formCard">
+      <h2>✉️ Case Feedback</h2>
+      <p class="mb-muted" style="margin-bottom:18px;">Found a bug, loved a case, or want a new mystery? Tell us. Your message is validated here, sent to the local server and stored in <code>data/feedback.json</code>.</p>
+
+      <div class="mb-auth-alert" id="formAlert" role="alert" hidden></div>
+
+      <form id="feedbackForm" novalidate>
+        <div class="mb-form-row">
+          <div class="mb-field">
+            <label for="fbName">Your name</label>
+            <input id="fbName" name="name" type="text" maxlength="60" autocomplete="name" />
+            <span class="mb-field-error" data-error-for="name"></span>
+          </div>
+          <div class="mb-field">
+            <label for="fbEmail">Email</label>
+            <input id="fbEmail" name="email" type="email" autocomplete="email" />
+            <span class="mb-field-error" data-error-for="email"></span>
+          </div>
+        </div>
+
+        <div class="mb-form-row">
+          <div class="mb-field">
+            <label for="fbCase">Which case? <span class="mb-muted">(optional)</span></label>
+            <select id="fbCase" name="caseId"><option value="">General / not about a case</option></select>
+            <span class="mb-field-error" data-error-for="caseId"></span>
+          </div>
+          <div class="mb-field">
+            <label for="fbCategory">Category</label>
+            <select id="fbCategory" name="category">
+              <option value="">Choose…</option>
+              <option>Bug report</option>
+              <option>Suggestion</option>
+              <option>Case review</option>
+              <option>Other</option>
+            </select>
+            <span class="mb-field-error" data-error-for="category"></span>
+          </div>
+        </div>
+
+        <div class="mb-field">
+          <label id="ratingLabel">How would you rate your experience?</label>
+          <div class="mb-rating" role="radiogroup" aria-labelledby="ratingLabel">
+            <input type="radio" name="rating" id="star5" value="5" /><label for="star5" title="5 - Brilliant">★</label>
+            <input type="radio" name="rating" id="star4" value="4" /><label for="star4" title="4 - Great">★</label>
+            <input type="radio" name="rating" id="star3" value="3" /><label for="star3" title="3 - Good">★</label>
+            <input type="radio" name="rating" id="star2" value="2" /><label for="star2" title="2 - Meh">★</label>
+            <input type="radio" name="rating" id="star1" value="1" /><label for="star1" title="1 - Poor">★</label>
+          </div>
+          <span class="mb-field-error" data-error-for="rating"></span>
+        </div>
+
+        <div class="mb-field">
+          <label for="fbMessage">Message <span class="mb-char-count" id="charCount">0 / 600</span></label>
+          <textarea id="fbMessage" name="message" rows="5" maxlength="600" placeholder="What happened, or what would you like to see?"></textarea>
+          <span class="mb-field-error" data-error-for="message"></span>
+        </div>
+
+        <div class="mb-field">
+          <label class="mb-check"><input type="checkbox" id="fbConsent" name="consent" />
+            <span>I am happy for this message to be stored in a local file on this computer.</span></label>
+          <span class="mb-field-error" data-error-for="consent"></span>
+        </div>
+
+        <button type="submit" class="btn" id="fbSubmit">Send Feedback →</button>
+      </form>
+    </div>
+
+    <div class="card hidden" id="thanksCard" style="text-align:center;">
+      <div style="font-size:3rem;">📬</div>
+      <h2>Thank you, detective!</h2>
+      <p>Your feedback has been saved.</p>
+      <p class="mb-muted">Reference: <strong id="refId"></strong></p>
+      <p style="margin-top:14px;">
+        <button type="button" class="btn btn-outline" id="againBtn">Send another</button>
+        <a class="btn" href="profile.html" style="margin-left:8px;">View my profile</a>
+      </p>
+    </div>
+
+  </div>
+
+  <footer>MysteryBox &mdash; Mystery Case Showcase</footer>
+
+  <script src="auth.js"></script>
+  <script src="cases.js"></script>
+  <script src="mysterybox.js"></script>
+  <script>
+    (function () {
+      var MB = window.MysteryBox;
+      var Auth = window.MBAuth;
+
+      var mount = document.getElementById('topbarMount');
+      mount.appendChild(MB.UI.renderTopBar({ activeClueId: 0, isCluePage: false }));
+      MB.UI.startTimerTicker();
+
+      var form = document.getElementById('feedbackForm');
+      var alertBox = document.getElementById('formAlert');
+      var message = document.getElementById('fbMessage');
+      var counter = document.getElementById('charCount');
+      var touched = {};
+
+      // populate the case dropdown + prefill from the signed-in user
+      var caseSel = document.getElementById('fbCase');
+      window.MysteryCases.getAllCases().forEach(function (c) {
+        var o = document.createElement('option');
+        o.value = c.id;
+        o.textContent = (c.number === '00' ? 'Demo' : 'Case ' + c.number) + ' - ' + c.title;
+        caseSel.appendChild(o);
+      });
+      caseSel.value = MB.getActiveCaseId();
+
+      Auth.ready.then(function (user) {
+        form.elements.name.value = user.name;
+        form.elements.email.value = user.email;
+      });
+
+      var rules = {
+        name: function (v) { return v.trim().length >= 2 ? '' : 'Enter your name (at least 2 characters).'; },
+        email: function (v) { return Auth.isEmail(v) ? '' : 'Enter a valid email address.'; },
+        category: function (v) { return v ? '' : 'Choose a category.'; },
+        rating: function () { return form.querySelector('input[name="rating"]:checked') ? '' : 'Pick a star rating.'; },
+        message: function (v) {
+          var n = v.trim().length;
+          return n >= 10 ? '' : 'Message must be at least 10 characters (' + n + ' so far).';
+        },
+        consent: function () { return form.elements.consent.checked ? '' : 'Please tick the box to continue.'; }
+      };
+
+      function valueOf(name) {
+        return name === 'rating' || name === 'consent' ? '' : form.elements[name].value;
+      }
+
+      function showError(name, msg) {
+        var span = form.querySelector('[data-error-for="' + name + '"]');
+        if (span) span.textContent = msg;
+        var input = form.elements[name];
+        if (input && input.classList) {
+          input.classList.toggle('is-invalid', !!msg);
+          if (msg) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+        }
+      }
+
+      function check(name) {
+        var msg = rules[name](valueOf(name));
+        showError(name, msg);
+        return msg;
+      }
+
+      Object.keys(rules).forEach(function (name) {
+        var fields = name === 'rating' ? form.querySelectorAll('input[name="rating"]') : [form.elements[name]];
+        Array.prototype.forEach.call(fields, function (el) {
+          el.addEventListener('blur', function () { touched[name] = true; check(name); });
+          el.addEventListener(el.type === 'checkbox' || el.type === 'radio' || el.tagName === 'SELECT' ? 'change' : 'input', function () {
+            if (touched[name] || el.type === 'radio' || el.type === 'checkbox') { touched[name] = true; check(name); }
+          });
+        });
+      });
+
+      message.addEventListener('input', function () {
+        counter.textContent = message.value.length + ' / 600';
+        counter.classList.toggle('is-near', message.value.length >= 540);
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        alertBox.hidden = true;
+
+        var firstBad = null;
+        Object.keys(rules).forEach(function (name) {
+          var msg = check(name);
+          if (msg && !firstBad) firstBad = name === 'rating' ? form.querySelector('input[name="rating"]') : form.elements[name];
+        });
+        if (firstBad) { firstBad.focus(); return; }
+
+        var btn = document.getElementById('fbSubmit');
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+
+        var rating = form.querySelector('input[name="rating"]:checked');
+        Auth.api('/api/feedback', {
+          method: 'POST',
+          body: {
+            name: form.elements.name.value,
+            email: form.elements.email.value,
+            caseId: form.elements.caseId.value,
+            category: form.elements.category.value,
+            rating: parseInt(rating.value, 10),
+            message: message.value,
+            consent: form.elements.consent.checked
+          }
+        }).then(function (data) {
+          document.getElementById('refId').textContent = data.feedback.id;
+          document.getElementById('formCard').classList.add('hidden');
+          document.getElementById('thanksCard').classList.remove('hidden');
+        }).catch(function (err) {
+          btn.disabled = false;
+          btn.textContent = 'Send Feedback →';
+          var mapped = false;
+          Object.keys(err.fields || {}).forEach(function (name) { showError(name, err.fields[name]); mapped = true; });
+          if (!mapped || err.status === 0) {
+            alertBox.textContent = err.message;
+            alertBox.hidden = false;
+          }
+        });
+      });
+
+      document.getElementById('againBtn').addEventListener('click', function () {
+        form.elements.message.value = '';
+        form.elements.category.value = '';
+        form.elements.consent.checked = false;
+        var r = form.querySelector('input[name="rating"]:checked');
+        if (r) r.checked = false;
+        counter.textContent = '0 / 600';
+        touched = {};
+        Object.keys(rules).forEach(function (n) { showError(n, ''); });
+        var btn = document.getElementById('fbSubmit');
+        btn.disabled = false;
+        btn.textContent = 'Send Feedback →';
+        document.getElementById('thanksCard').classList.add('hidden');
+        document.getElementById('formCard').classList.remove('hidden');
+      });
+    })();
+  </script>
+</body>
+</html>

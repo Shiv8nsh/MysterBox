@@ -1,0 +1,23 @@
+$kind: http-request
+name: Submit Accusation / Result
+description: Submits final case verdict, validates correctness against culpritId, and stores the result.
+url: "{{baseUrl}}/api/results"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "caseId": "case1",
+      "accusedId": "victor",
+      "proofIds": [
+        "ev_c1_duplicate",
+        "ev_c1_cctv"
+      ],
+      "theory": "Victor encoded a duplicate master keycard at 6:15 PM and entered Room 309 during the 7-minute blackout to poison Vance.",
+      "timeTaken": "14:32",
+      "accuracy": 95
+    }
+order: 1000

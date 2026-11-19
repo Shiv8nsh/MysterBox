@@ -1,0 +1,7 @@
+$kind: http-request
+description: Invalidates the current session token.
+url: "{{baseUrl}}/api/logout"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+order: 4000

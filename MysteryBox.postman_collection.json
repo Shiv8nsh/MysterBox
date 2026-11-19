@@ -1,0 +1,326 @@
+{
+  "info": {
+    "_postman_id": "mysterbox-api-collection-v1",
+    "name": "MysteryBox API",
+    "description": "Postman collection for MysteryBox Express API with MongoDB persistence.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "0. Health & Diagnostics",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            },
+            "description": "Checks server health, uptime, and MongoDB connection status."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.environment.set(\"token\", jsonData.token);",
+                  "    console.log(\"Saved auth token to environment:\", jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Detective Sherlock\",\n  \"email\": \"detective@example.com\",\n  \"password\": \"Sherlock123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "register"]
+            },
+            "description": "Registers a new detective account and automatically saves the auth token to the Postman environment."
+          },
+          "response": []
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.environment.set(\"token\", jsonData.token);",
+                  "    console.log(\"Saved auth token to environment:\", jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"detective@example.com\",\n  \"password\": \"Sherlock123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "login"]
+            },
+            "description": "Authenticates user credentials and returns a session token."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "me"]
+            },
+            "description": "Retrieves the currently authenticated user's profile info."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "logout"]
+            },
+            "description": "Invalidates the current session token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Interrogations",
+      "item": [
+        {
+          "name": "Get Interrogations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/interrogations?caseId=case1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "interrogations"],
+              "query": [
+                {
+                  "key": "caseId",
+                  "value": "case1"
+                }
+              ]
+            },
+            "description": "Fetches active interrogation logs for the authenticated detective on a given case."
+          },
+          "response": []
+        },
+        {
+          "name": "Ask Interrogation Questions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"caseId\": \"case1\",\n  \"suspectId\": \"victor\",\n  \"questionIds\": [\n    \"case1_victor_q1\",\n    \"case1_victor_q2\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interrogations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "interrogations"]
+            },
+            "description": "Asks 2 questions to a suspect. The question answers are recorded in MongoDB."
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Interrogations",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"caseId\": \"case1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/interrogations/reset",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "interrogations", "reset"]
+            },
+            "description": "Archives current interrogation transcripts so the detective can interrogate suspects afresh."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Accusations & Results",
+      "item": [
+        {
+          "name": "Submit Accusation / Result",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"caseId\": \"case1\",\n  \"accusedId\": \"victor\",\n  \"proofIds\": [\n    \"ev_c1_duplicate\",\n    \"ev_c1_cctv\"\n  ],\n  \"theory\": \"Victor encoded a duplicate master keycard at 6:15 PM and entered Room 309 during the 7-minute blackout to poison Vance.\",\n  \"timeTaken\": \"14:32\",\n  \"accuracy\": 95\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/results",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "results"]
+            },
+            "description": "Submits final case verdict, validates correctness against culpritId, and stores the result."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Feedback",
+      "item": [
+        {
+          "name": "Submit Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Detective Sherlock\",\n  \"email\": \"detective@example.com\",\n  \"caseId\": \"case1\",\n  \"category\": \"Case review\",\n  \"rating\": 5,\n  \"message\": \"The Room 309 case was very engaging with clever clues and solid timeline mechanics!\",\n  \"consent\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/feedback",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feedback"]
+            },
+            "description": "Submits detective review or bug feedback to MongoDB."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. Profile & Stats",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "profile"]
+            },
+            "description": "Fetches detective profile summary, cases solved count, interrogation count, verdict history, and feedback."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

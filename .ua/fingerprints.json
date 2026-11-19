@@ -1,0 +1,597 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "2d79db663fa7067a5bb05d13ec6d6908abfd7f52",
+  "generatedAt": "2026-11-19T04:55:34.998Z",
+  "files": {
+    ".env.example": {
+      "filePath": ".env.example",
+      "contentHash": "3534ef6724d8f11d3f509c1dc9e252d7a3b48609f66595999712ff8232f05e6e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 15,
+      "hasStructuralAnalysis": false
+    },
+    "CODE_GUIDE.md": {
+      "filePath": "CODE_GUIDE.md",
+      "contentHash": "876a1262653429d76096c07c0d772c76513c0761988f13b0efd7a3bf5548dca9",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 48,
+      "hasStructuralAnalysis": false
+    },
+    "MysteryBox.postman_collection.json": {
+      "filePath": "MysteryBox.postman_collection.json",
+      "contentHash": "e055dbec23d80e54ccba717fc5155d07283de6c2853635ec05f1b5717659fc3f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 327,
+      "hasStructuralAnalysis": false
+    },
+    "MysteryBox.postman_environment.json": {
+      "filePath": "MysteryBox.postman_environment.json",
+      "contentHash": "dedd60a793dd6a66830b1b9dce24086231ef2a07dbb856cffd05397949c6de6a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 20,
+      "hasStructuralAnalysis": false
+    },
+    "POSTMAN_GUIDE.md": {
+      "filePath": "POSTMAN_GUIDE.md",
+      "contentHash": "d8f3ae0c261dae7908c3583b10e9022bed5acfe190684f59f11d18dfd322e11a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 103,
+      "hasStructuralAnalysis": false
+    },
+    "README.md": {
+      "filePath": "README.md",
+      "contentHash": "27ec7470e24e013ddcd23e858ed2d5287364774fc987427109c3161c5a570f71",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 85,
+      "hasStructuralAnalysis": false
+    },
+    "auth.js": {
+      "filePath": "auth.js",
+      "contentHash": "dc21c5b7d785724e047648b84669e4f834025e3719e6322344c235563228b16a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 349,
+      "hasStructuralAnalysis": true
+    },
+    "cases.js": {
+      "filePath": "cases.js",
+      "contentHash": "43e2408be8ca2b08ba7f4bcd9fd2fef30c584151d15af528abcf8906c87c82d5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1342,
+      "hasStructuralAnalysis": true
+    },
+    "clue/A4P81.html": {
+      "filePath": "clue/A4P81.html",
+      "contentHash": "cf1c0d98b349e432f8f289748d79ef8ff526b8c72d0af4abeea6e0faf3e0a672",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 180,
+      "hasStructuralAnalysis": false
+    },
+    "clue/K8Z41.html": {
+      "filePath": "clue/K8Z41.html",
+      "contentHash": "5ed72c833baf4593d4ca0277315f56c2e19559922e9a77968743956f8943680b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 178,
+      "hasStructuralAnalysis": false
+    },
+    "clue/M9Q24.html": {
+      "filePath": "clue/M9Q24.html",
+      "contentHash": "9c5e6aef9ce67bd7f245216ccd534aea6f9374179a56a32c40391dbbf1fd9228",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 177,
+      "hasStructuralAnalysis": false
+    },
+    "clue/P3L67.html": {
+      "filePath": "clue/P3L67.html",
+      "contentHash": "335d099a4944c7469eacc3a8fec962f740be65d4beb05879112e94df15315f06",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 177,
+      "hasStructuralAnalysis": false
+    },
+    "clue/X7K92.html": {
+      "filePath": "clue/X7K92.html",
+      "contentHash": "9d0d30fd940435ee63a6e9958040f809957f9a47aebf2c0d50929af61be29351",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 177,
+      "hasStructuralAnalysis": false
+    },
+    "config/db.js": {
+      "filePath": "config/db.js",
+      "contentHash": "03afc14f3e3c5ac088fbff3487eab871bcdb2001a049bff33e53143819e52d69",
+      "functions": [
+        {
+          "name": "connectDB",
+          "params": [],
+          "exported": false,
+          "lineCount": 20
+        },
+        {
+          "name": "getDBStatus",
+          "params": [],
+          "exported": false,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 47,
+      "hasStructuralAnalysis": true
+    },
+    "data/feedback.json": {
+      "filePath": "data/feedback.json",
+      "contentHash": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "data/interrogations.json": {
+      "filePath": "data/interrogations.json",
+      "contentHash": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "data/results.json": {
+      "filePath": "data/results.json",
+      "contentHash": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "data/sessions.json": {
+      "filePath": "data/sessions.json",
+      "contentHash": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "data/users.json": {
+      "filePath": "data/users.json",
+      "contentHash": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 2,
+      "hasStructuralAnalysis": false
+    },
+    "feedback.html": {
+      "filePath": "feedback.html",
+      "contentHash": "32d2efb60a2a61a232e687201134c1db8bafd9a1f34c7a98bf278eebe375f45c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 239,
+      "hasStructuralAnalysis": false
+    },
+    "index.html": {
+      "filePath": "index.html",
+      "contentHash": "f6609faad90979366c3d89f1dfa76a11e4e31fcebceabc77889897cf8f9cf849",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1063,
+      "hasStructuralAnalysis": false
+    },
+    "interrogation.html": {
+      "filePath": "interrogation.html",
+      "contentHash": "df525e4425e6a21a7ee373645a02efd1909a347006c635268fcdf328d9813ed4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 323,
+      "hasStructuralAnalysis": false
+    },
+    "interrogations.js": {
+      "filePath": "interrogations.js",
+      "contentHash": "ed5051b214bf353479f6ddef24ae820c1f9546c727554e80da070e4b7b6c320c",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 299,
+      "hasStructuralAnalysis": true
+    },
+    "middleware/auth.js": {
+      "filePath": "middleware/auth.js",
+      "contentHash": "e831ec5853904d391ccec38dbbcdb215d5e84f136855f5a2448e5c1fa9a07a32",
+      "functions": [
+        {
+          "name": "authMiddleware",
+          "params": [
+            "req",
+            "res",
+            "next"
+          ],
+          "exported": false,
+          "lineCount": 29
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 36,
+      "hasStructuralAnalysis": true
+    },
+    "models/Feedback.js": {
+      "filePath": "models/Feedback.js",
+      "contentHash": "51bf29b194c1ff3f2eaf822c479a45d89c2eb74f014f941db71db0968695142d",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 55,
+      "hasStructuralAnalysis": true
+    },
+    "models/Interrogation.js": {
+      "filePath": "models/Interrogation.js",
+      "contentHash": "fbba02ec90eaa3179ec564c83cff352ea0d0d856222f03b445054066ae277373",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 52,
+      "hasStructuralAnalysis": true
+    },
+    "models/Result.js": {
+      "filePath": "models/Result.js",
+      "contentHash": "17d912a3d41ea8c3bd8b03acb1f1bd42f4787acb36cc1be160031ce165d243d4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 60,
+      "hasStructuralAnalysis": true
+    },
+    "models/Session.js": {
+      "filePath": "models/Session.js",
+      "contentHash": "fb6ee61792bbf873d0c80e0e084c19ed08bfe423283ae0ddf3c779555ae5bc0b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "models/User.js": {
+      "filePath": "models/User.js",
+      "contentHash": "d1a86f4aec0e9ce08fd6306da932de2e05c54d9ac46133e7f3292db0e35b8887",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 50,
+      "hasStructuralAnalysis": true
+    },
+    "mysterybox.js": {
+      "filePath": "mysterybox.js",
+      "contentHash": "131ad6a009ea815003e6d6e5e89b1701ce8b9777d78affa39957d18cb931d577",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 555,
+      "hasStructuralAnalysis": true
+    },
+    "package.json": {
+      "filePath": "package.json",
+      "contentHash": "0b0aef6877ef7b2bad55695893ac9263611c660c360e015f854932d5e7cf9b37",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": false
+    },
+    "profile.html": {
+      "filePath": "profile.html",
+      "contentHash": "b34fce86260482c00576efba8a6541b4ced69e964472760cf5f03434c14d9654",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 147,
+      "hasStructuralAnalysis": false
+    },
+    "routes/auth.js": {
+      "filePath": "routes/auth.js",
+      "contentHash": "c0d1db88ce04cd5ceb51bf794f090318d0dc10703a41a5ee2976276293048786",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 130,
+      "hasStructuralAnalysis": true
+    },
+    "routes/feedback.js": {
+      "filePath": "routes/feedback.js",
+      "contentHash": "e382cff353edace0cb201c5be4a9064a5a0d47966ba16e4b64087494da4197c6",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 56,
+      "hasStructuralAnalysis": true
+    },
+    "routes/interrogations.js": {
+      "filePath": "routes/interrogations.js",
+      "contentHash": "0939f530274a8c22a1ffbaec3cc27f17c8f594447d087faf2a30ab49d09e08ad",
+      "functions": [
+        {
+          "name": "getCase",
+          "params": [
+            "caseId"
+          ],
+          "exported": false,
+          "lineCount": 10
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 139,
+      "hasStructuralAnalysis": true
+    },
+    "routes/profile.js": {
+      "filePath": "routes/profile.js",
+      "contentHash": "26a8be16baab8a6873c7d022199545e335252a5c0663186c0ae4a6d5f2d63264",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "routes/results.js": {
+      "filePath": "routes/results.js",
+      "contentHash": "add7126445bcfa35fa9208f37369eb52cb6f5901b9a2647146669cf47ccd350b",
+      "functions": [
+        {
+          "name": "getCase",
+          "params": [
+            "caseId"
+          ],
+          "exported": false,
+          "lineCount": 10
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 63,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/migrate-json-to-mongo.js": {
+      "filePath": "scripts/migrate-json-to-mongo.js",
+      "contentHash": "00833e43607d15b1acf85210d4d54e41c74a28e69df7f316b6ea7609a9a029d8",
+      "functions": [
+        {
+          "name": "loadJson",
+          "params": [
+            "filename"
+          ],
+          "exported": false,
+          "lineCount": 11
+        },
+        {
+          "name": "migrate",
+          "params": [],
+          "exported": false,
+          "lineCount": 74
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 113,
+      "hasStructuralAnalysis": true
+    },
+    "server.js": {
+      "filePath": "server.js",
+      "contentHash": "44149e5e242699e8f05e716f45eabc70c8afb9034ed92cb65b87541a1763107e",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 182,
+      "hasStructuralAnalysis": true
+    },
+    "solution.html": {
+      "filePath": "solution.html",
+      "contentHash": "31bdcd6048f26acf0f8d348f042516d6c478dfd288ef2a1c03b0193846c31591",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 149,
+      "hasStructuralAnalysis": false
+    },
+    "style.css": {
+      "filePath": "style.css",
+      "contentHash": "327c84d4dd61686f17717c1ce6a390d02f2fb1d951f4ba4267066ba5ad329fc4",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1731,
+      "hasStructuralAnalysis": false
+    },
+    "tests/helpers.test.js": {
+      "filePath": "tests/helpers.test.js",
+      "contentHash": "5c621c73a50efd665ea3a9be8161f2f7d11fd475a8c81ce0960306929c84c054",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 88,
+      "hasStructuralAnalysis": true
+    },
+    "tests/routes.test.js": {
+      "filePath": "tests/routes.test.js",
+      "contentHash": "bb253142a948709a8fcf69132f0d614fe4637215284bb735f70b74c57b125f47",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 101,
+      "hasStructuralAnalysis": true
+    },
+    "utils/helpers.js": {
+      "filePath": "utils/helpers.js",
+      "contentHash": "e5e673842d0700dbdbc5c97199dc41f582794e2eb65c82267eedeb00f8c0ae9d",
+      "functions": [
+        {
+          "name": "clean",
+          "params": [
+            "value",
+            "max"
+          ],
+          "exported": false,
+          "lineCount": 6
+        },
+        {
+          "name": "newId",
+          "params": [
+            "prefix"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "sha256",
+          "params": [
+            "text"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "hashPassword",
+          "params": [
+            "password",
+            "salt"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "verifyPassword",
+          "params": [
+            "password",
+            "salt",
+            "hash"
+          ],
+          "exported": false,
+          "lineCount": 5
+        },
+        {
+          "name": "publicUser",
+          "params": [
+            "u"
+          ],
+          "exported": false,
+          "lineCount": 10
+        },
+        {
+          "name": "validateRegistration",
+          "params": [
+            "b"
+          ],
+          "exported": false,
+          "lineCount": 13
+        },
+        {
+          "name": "tooManyFailures",
+          "params": [
+            "email"
+          ],
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "recordFailure",
+          "params": [
+            "email"
+          ],
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "clearFailure",
+          "params": [
+            "email"
+          ],
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "createSession",
+          "params": [
+            "userId"
+          ],
+          "exported": false,
+          "lineCount": 14
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 116,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interrogation Room | MysteryBox</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="topbarMount"></div>
+
+  <div class="container-wide">
+
+    <div class="card">
+      <div class="mb-page-head">
+        <div>
+          <h2>🕵️ Interrogation Room</h2>
+          <p>Every suspect is willing to talk, but you only have time for <strong>two questions per suspect</strong>.
+             Pick the two that matter most - the answers can expose lies, confirm alibis or point you at someone else.
+             Everything you ask is saved to your profile and your case notes.</p>
+        </div>
+        <div>
+          <label for="caseSelect" class="mb-muted" style="display:block; margin-bottom:4px;">Case file</label>
+          <select id="caseSelect" class="mb-inline-select" aria-label="Select case"></select>
+        </div>
+      </div>
+
+      <div class="mb-progress-track" aria-hidden="true"><div class="mb-progress-fill" id="interroProgress"></div></div>
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:center;">
+        <span class="mb-muted" id="interroProgressText">Loading…</span>
+        <button type="button" class="btn btn-outline" id="resetInterroBtn" style="font-size:0.78rem; padding:5px 12px;">🔄 Start interrogations over</button>
+      </div>
+    </div>
+
+    <div class="mb-interro-layout">
+      <div class="mb-interro-list" id="suspectList" aria-label="Suspects"></div>
+      <div class="mb-interview" id="interview" aria-live="polite"></div>
+    </div>
+
+  </div>
+
+  <footer>MysteryBox &mdash; Mystery Case Showcase</footer>
+
+  <script src="auth.js"></script>
+  <script src="cases.js"></script>
+  <script src="interrogations.js"></script>
+  <script src="mysterybox.js"></script>
+  <script>
+    (function () {
+      var MB = window.MysteryBox;
+      var MC = window.MysteryCases;
+      var IQ = window.MysteryInterrogations;
+      var Auth = window.MBAuth;
+      var esc = Auth.esc;
+      var LIMIT = IQ.QUESTION_LIMIT;
+
+      var mount = document.getElementById('topbarMount');
+      function refreshTopBar() {
+        mount.innerHTML = '';
+        mount.appendChild(MB.UI.renderTopBar({ activeClueId: 0, isCluePage: false }));
+      }
+      refreshTopBar();
+      MB.UI.startTimerTicker();
+
+      var caseSelect = document.getElementById('caseSelect');
+      var listEl = document.getElementById('suspectList');
+      var interviewEl = document.getElementById('interview');
+      var sessions = {};          // suspectId -> saved session (for the current case)
+      var selectedSuspectId = null;
+      var busy = false;
+
+      // ---- case selector ---------------------------------------------------
+      MC.getAllCases().forEach(function (c) {
+        var opt = document.createElement('option');
+        opt.value = c.id;
+        opt.textContent = (c.number === '00' ? 'Demo' : 'Case ' + c.number) + ' - ' + c.title;
+        caseSelect.appendChild(opt);
+      });
+
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('case') && MC.CASES[params.get('case')]) MB.setActiveCaseId(params.get('case'));
+      caseSelect.value = MB.getActiveCaseId();
+      selectedSuspectId = params.get('suspect');
+
+      caseSelect.addEventListener('change', function () {
+        MB.setActiveCaseId(caseSelect.value);
+        selectedSuspectId = null;
+        refreshTopBar();
+        loadCase();
+      });
+
+      // ---- data ------------------------------------------------------------
+      function loadCase() {
+        var c = MB.getActiveCase();
+        listEl.innerHTML = '';
+        interviewEl.innerHTML = '<div class="mb-interview-empty">Loading…</div>';
+        Auth.api('/api/interrogations?caseId=' + encodeURIComponent(c.id)).then(function (data) {
+          sessions = {};
+          data.sessions.forEach(function (s) { sessions[s.suspectId] = s; });
+          if (selectedSuspectId && !c.suspects.some(function (s) { return s.id === selectedSuspectId; })) selectedSuspectId = null;
+          renderList();
+          renderInterview();
+        }).catch(function (err) {
+          interviewEl.innerHTML = '<div class="feedback error">' + esc(err.message) + '</div>';
+        });
+      }
+
+      // ---- suspect list ----------------------------------------------------
+      function renderList() {
+        var c = MB.getActiveCase();
+        var done = 0;
+        listEl.innerHTML = '';
+        c.suspects.forEach(function (s) {
+          var asked = !!sessions[s.id];
+          if (asked) done++;
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'mb-interro-suspect' + (s.id === selectedSuspectId ? ' is-selected' : '');
+          btn.setAttribute('aria-pressed', s.id === selectedSuspectId ? 'true' : 'false');
+          btn.innerHTML =
+            '<div class="mb-interro-avatar">' + esc(s.avatarIcon) + '</div>' +
+            '<div><div class="mb-interro-name">' + esc(s.name) + '</div><div class="mb-interro-role">' + esc(s.role) + '</div></div>' +
+            '<span class="mb-interro-status' + (asked ? ' is-done' : '') + '">' + (asked ? 'Questioned ✓' : 'Not questioned') + '</span>';
+          btn.addEventListener('click', function () {
+            if (busy) return;
+            selectedSuspectId = s.id;
+            renderList();
+            renderInterview();
+          });
+          listEl.appendChild(btn);
+        });
+
+        var total = c.suspects.length;
+        document.getElementById('interroProgress').style.width = Math.round((done / total) * 100) + '%';
+        document.getElementById('interroProgress').classList.toggle('is-done', done === total);
+        document.getElementById('interroProgressText').textContent = done + ' of ' + total + ' suspects questioned';
+      }
+
+      // ---- interview panel -------------------------------------------------
+      function renderInterview() {
+        var c = MB.getActiveCase();
+        var suspect = c.suspects.find(function (s) { return s.id === selectedSuspectId; });
+        if (!suspect) {
+          var allDone = Object.keys(sessions).length === c.suspects.length;
+          interviewEl.innerHTML =
+            '<div class="mb-interview-empty"><div class="big">🗣️</div>' +
+            '<h3>Select a suspect to begin</h3>' +
+            '<p style="margin-top:6px;">' + (allDone
+              ? 'You have questioned everyone. Review the transcripts, then head back to the workstation to file your accusation.'
+              : 'Choose who to question from the list. Remember: only ' + LIMIT + ' questions each.') + '</p>' +
+            (allDone ? '<p style="margin-top:14px;"><a class="btn" href="index.html#solution">⚖️ Go to Final Solution</a></p>' : '') +
+            '</div>';
+          return;
+        }
+
+        var head =
+          '<div class="mb-interview-head"><div class="mb-interro-avatar" style="width:56px;height:56px;font-size:1.8rem;">' + esc(suspect.avatarIcon) + '</div>' +
+          '<div><h3>' + esc(suspect.name) + '</h3><small>' + esc(suspect.role) + ' &bull; Stated alibi: <em>' + esc(suspect.statedAlibi) + '</em></small></div></div>';
+
+        if (sessions[suspect.id]) {
+          renderTranscript(suspect, head, sessions[suspect.id], false);
+        } else {
+          renderQuestionForm(suspect, head);
+        }
+      }
+
+      function renderQuestionForm(suspect, head) {
+        var c = MB.getActiveCase();
+        var bank = IQ.getQuestions(c.id, suspect.id);
+        if (!bank) {
+          interviewEl.innerHTML = head + '<div class="mb-banner">This suspect has refused to answer any questions.</div>';
+          return;
+        }
+
+        interviewEl.innerHTML = head +
+          '<form id="questionForm" novalidate>' +
+          '<p class="mb-q-intro">Choose exactly <strong>' + LIMIT + '</strong> of the ' + bank.length + ' questions below. ' +
+          '<span class="mb-q-counter" id="qCounter">0 of ' + LIMIT + ' selected</span></p>' +
+          bank.map(function (q) {
+            return '<label class="mb-q-option"><input type="checkbox" name="q" value="' + esc(q.id) + '" /><span>' + esc(q.question) + '</span></label>';
+          }).join('') +
+          '<div class="mb-field-error" id="qError" role="alert"></div>' +
+          '<div class="mb-interview-foot"><button type="submit" class="btn" id="askBtn">Ask these questions →</button>' +
+          '<span class="mb-muted">You cannot re-question this suspect, so choose carefully.</span></div>' +
+          '</form>';
+
+        var form = document.getElementById('questionForm');
+        var boxes = Array.prototype.slice.call(form.querySelectorAll('input[name="q"]'));
+        var counter = document.getElementById('qCounter');
+        var errorEl = document.getElementById('qError');
+
+        function sync() {
+          var checked = boxes.filter(function (b) { return b.checked; });
+          counter.textContent = checked.length + ' of ' + LIMIT + ' selected';
+          boxes.forEach(function (b) {
+            var lock = !b.checked && checked.length >= LIMIT;
+            b.disabled = lock;
+            b.parentNode.classList.toggle('is-checked', b.checked);
+            b.parentNode.classList.toggle('is-disabled', lock);
+          });
+          if (checked.length === LIMIT) errorEl.textContent = '';
+        }
+        boxes.forEach(function (b) { b.addEventListener('change', sync); });
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (busy) return;
+          var ids = boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; });
+          if (ids.length !== LIMIT) {
+            errorEl.textContent = 'Please select exactly ' + LIMIT + ' questions (you have selected ' + ids.length + ').';
+            return;
+          }
+          busy = true;
+          var btn = document.getElementById('askBtn');
+          btn.disabled = true;
+          btn.textContent = 'Questioning…';
+          Auth.api('/api/interrogations', { method: 'POST', body: { caseId: c.id, suspectId: suspect.id, questionIds: ids } })
+            .then(function (data) {
+              sessions[suspect.id] = data.session;
+              logToNotes(suspect, data.session);
+              renderList();
+              renderTranscript(suspect, head, data.session, true);
+            })
+            .catch(function (err) {
+              errorEl.textContent = err.message;
+              btn.disabled = false;
+              btn.textContent = 'Ask these questions →';
+              busy = false;
+            });
+        });
+      }
+
+      // Show the saved Q&A; animate it when it has just been recorded.
+      function renderTranscript(suspect, head, session, animate) {
+        var c = MB.getActiveCase();
+        interviewEl.innerHTML = head + '<div class="mb-transcript" id="transcript"></div><div id="afterTranscript"></div>';
+        var box = document.getElementById('transcript');
+
+        function addBubble(cls, label, text) {
+          var d = document.createElement('div');
+          d.className = 'mb-bubble ' + cls;
+          d.innerHTML = '<small>' + esc(label) + '</small><span>' + esc(text) + '</span>';
+          box.appendChild(d);
+          return d;
+        }
+
+        function finish() {
+          busy = false;
+          var remaining = c.suspects.filter(function (s) { return !sessions[s.id]; });
+          var after = document.getElementById('afterTranscript');
+          if (!after) return;
+          after.innerHTML =
+            '<div class="mb-banner">📝 This interview was saved to your profile and added to your case notes.</div>' +
+            '<div class="mb-interview-foot">' +
+            (remaining.length
+              ? '<button type="button" class="btn" id="nextSuspectBtn">Question ' + esc(remaining[0].name) + ' next →</button>'
+              : '<a class="btn" href="index.html#solution">⚖️ All suspects questioned - file your accusation</a>') +
+            '<a class="btn btn-outline" href="index.html#suspects">View suspect profiles</a></div>';
+          var next = document.getElementById('nextSuspectBtn');
+          if (next) next.addEventListener('click', function () {
+            selectedSuspectId = remaining[0].id;
+            renderList();
+            renderInterview();
+          });
+        }
+
+        if (!animate) {
+          session.exchanges.forEach(function (ex) {
+            addBubble('is-q', 'Detective', ex.question);
+            addBubble('is-a', suspect.name, ex.answer);
+          });
+          finish();
+          return;
+        }
+
+        var i = 0;
+        (function step() {
+          if (i >= session.exchanges.length) return finish();
+          var ex = session.exchanges[i++];
+          addBubble('is-q', 'Detective', ex.question);
+          var typing = document.createElement('div');
+          typing.className = 'mb-bubble is-a';
+          typing.innerHTML = '<small>' + esc(suspect.name) + '</small><span class="mb-typing"><i></i><i></i><i></i></span>';
+          box.appendChild(typing);
+          setTimeout(function () {
+            typing.remove();
+            addBubble('is-a', suspect.name, ex.answer);
+            setTimeout(step, 350);
+          }, 900);
+        })();
+      }
+
+      // Copy the interview into the detective's case notes (per-case notes).
+      function logToNotes(suspect, session) {
+        var lines = ['[' + MB.State.formatTime(MB.State.getElapsedSeconds()) + '] INTERROGATION - ' + suspect.name];
+        session.exchanges.forEach(function (ex) {
+          lines.push('  Q: ' + ex.question);
+          lines.push('  A: ' + ex.answer);
+        });
+        var current = MB.Notes.getNotes();
+        MB.Notes.saveNotes((current ? current + '\n' : '') + lines.join('\n') + '\n');
+        var floating = document.getElementById('mbNotesTextarea');
+        if (floating) floating.value = MB.Notes.getNotes();
+      }
+
+      // ---- reset -----------------------------------------------------------
+      document.getElementById('resetInterroBtn').addEventListener('click', function () {
+        var c = MB.getActiveCase();
+        if (!confirm('Start the interrogations for "' + c.title + '" over? Your earlier transcripts stay in your profile history.')) return;
+        Auth.api('/api/interrogations/reset', { method: 'POST', body: { caseId: c.id } }).then(function () {
+          sessions = {};
+          renderList();
+          renderInterview();
+        }).catch(function (err) { alert(err.message); });
+      });
+
+      Auth.ready.then(loadCase);
+    })();
+  </script>
+</body>
+</html>

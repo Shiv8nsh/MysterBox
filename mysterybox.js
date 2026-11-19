@@ -31,7 +31,7 @@
   function getActiveCaseId() {
     try {
       if (typeof localStorage !== 'undefined') {
-        var saved = localStorage.getItem('mb_active_case_id');
+        var saved = localStorage.getItem(scoped('mb_active_case_id'));
         if (saved) return saved;
       }
       return currentInMemoryCaseId || DEFAULT_CASE_ID;
@@ -44,7 +44,7 @@
     currentInMemoryCaseId = caseId;
     try {
       if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('mb_active_case_id', caseId);
+        localStorage.setItem(scoped('mb_active_case_id'), caseId);
       }
     } catch (e) {}
   }
@@ -60,10 +60,28 @@
     return null;
   }
 
+  // Signed-in detective (written by auth.js). Progress is stored per detective,
+  // so two people sharing one browser never see each other's cases.
+  function getAuthUser() {
+    try {
+      var raw = localStorage.getItem('mb_auth');
+      var parsed = raw ? JSON.parse(raw) : null;
+      return parsed && parsed.user ? parsed.user : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function scoped(key) {
+    if (key === 'mb_auth') return key;
+    var u = getAuthUser();
+    return u && u.id ? u.id + ':' + key : key;
+  }
+
   // Helper safe storage methods
   function getItem(key) {
     try {
-      return localStorage.getItem(key);
+      return localStorage.getItem(scoped(key));
     } catch (e) {
       return null;
     }
@@ -71,14 +89,20 @@
 
   function setItem(key, val) {
     try {
-      localStorage.setItem(key, val);
+      localStorage.setItem(scoped(key), val);
     } catch (e) {}
   }
 
   function removeItem(key) {
     try {
-      localStorage.removeItem(key);
+      localStorage.removeItem(scoped(key));
     } catch (e) {}
+  }
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
   // Storage key helper scoped to active case
@@ -343,6 +367,28 @@
         '  </div>',
         '</div>'
       ].join('\n');
+
+      // Site navigation (links all pages together) + signed-in detective chip
+      var here = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+      var links = [
+        ['index.html', '📁 Workstation'],
+        ['interrogation.html', '🕵️ Interrogation Room'],
+        ['profile.html', '👤 My Profile'],
+        ['feedback.html', '✉️ Feedback']
+      ];
+      var navHtml = links.map(function (l) {
+        var active = here === l[0] || (l[0] === 'index.html' && (here === '' || here === 'solution.html' || isCluePage));
+        return '<a href="' + rootPath + l[0] + '" class="mb-sitenav-link' + (active ? ' is-active' : '') + '">' + l[1] + '</a>';
+      }).join('');
+      var user = getAuthUser();
+      var userHtml = user
+        ? '<span class="mb-userchip" title="' + escapeHtml(user.email) + '">🟢 ' + escapeHtml(user.name) +
+          ' <button type="button" class="mb-logout-btn">Sign out</button></span>'
+        : '';
+      var nav = document.createElement('div');
+      nav.className = 'mb-sitenav-wrap';
+      nav.innerHTML = '<nav class="mb-sitenav" aria-label="Site">' + navHtml + '<span class="mb-sitenav-spacer"></span>' + userHtml + '</nav>';
+      bar.appendChild(nav);
 
       return bar;
     },

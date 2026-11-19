@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile | MysteryBox</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="topbarMount"></div>
+
+  <div class="container-wide">
+
+    <div class="card">
+      <div class="mb-profile-head">
+        <div class="mb-profile-avatar" id="avatar">?</div>
+        <div style="flex:1; min-width:200px;">
+          <h2 id="pName" style="margin-bottom:2px;">Loading…</h2>
+          <p class="mb-muted" id="pEmail" style="margin:0;"></p>
+          <p class="mb-muted" id="pMeta" style="margin:2px 0 0;"></p>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-outline" id="downloadBtn" style="padding:8px 16px; font-size:0.85rem;">⬇️ Download my data (JSON)</button>
+          <button type="button" class="btn mb-logout-btn" style="padding:8px 16px; font-size:0.85rem; background:#2c3e50; color:#fff; border:none;">Sign out</button>
+        </div>
+      </div>
+      <div class="mb-stat-grid" id="stats"></div>
+    </div>
+
+    <div class="card">
+      <h2>⚖️ Accusation History</h2>
+      <p class="mb-muted" style="margin-bottom:10px;">Every formal accusation you have filed, saved in <code>data/results.json</code>.</p>
+      <div id="results"></div>
+    </div>
+
+    <div class="card">
+      <h2>🕵️ Interrogation Log</h2>
+      <p class="mb-muted" style="margin-bottom:10px;">Every suspect you have questioned, saved in <code>data/interrogations.json</code>.</p>
+      <div id="interrogations"></div>
+      <p style="margin-top:12px;"><a class="btn" href="interrogation.html" style="padding:8px 18px; font-size:0.9rem;">Open the Interrogation Room →</a></p>
+    </div>
+
+    <div class="card">
+      <h2>✉️ Feedback You Sent</h2>
+      <div id="feedbackList"></div>
+      <p style="margin-top:12px;"><a class="btn btn-outline" href="feedback.html" style="padding:8px 18px; font-size:0.9rem;">Send new feedback</a></p>
+    </div>
+
+  </div>
+
+  <footer>MysteryBox &mdash; Mystery Case Showcase</footer>
+
+  <script src="auth.js"></script>
+  <script src="cases.js"></script>
+  <script src="mysterybox.js"></script>
+  <script>
+    (function () {
+      var MB = window.MysteryBox;
+      var Auth = window.MBAuth;
+      var esc = Auth.esc;
+      var profileData = null;
+
+      var mount = document.getElementById('topbarMount');
+      mount.appendChild(MB.UI.renderTopBar({ activeClueId: 0, isCluePage: false }));
+      MB.UI.startTimerTicker();
+
+      function fmt(iso) {
+        var d = new Date(iso);
+        return isNaN(d) ? '' : d.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+      }
+
+      function render(p) {
+        profileData = p;
+        var u = p.user;
+        document.getElementById('avatar').textContent = (u.name || '?').trim().charAt(0).toUpperCase();
+        document.getElementById('pName').textContent = u.name;
+        document.getElementById('pEmail').textContent = u.email;
+        document.getElementById('pMeta').textContent = 'Member since ' + fmt(u.createdAt) + ' • ' + u.loginCount + ' sign-in' + (u.loginCount === 1 ? '' : 's');
+
+        var s = p.stats;
+        document.getElementById('stats').innerHTML =
+          [['Cases solved', s.casesSolved], ['Accusations filed', s.accusations], ['Suspects questioned', s.interrogations], ['Feedback sent', s.feedback]]
+            .map(function (x) { return '<div class="mb-stat"><b>' + x[1] + '</b><span>' + x[0] + '</span></div>'; }).join('');
+
+        // accusations
+        var rEl = document.getElementById('results');
+        if (!p.results.length) {
+          rEl.innerHTML = '<p class="mb-empty">No accusations yet. Solve the clues in the workstation, then file your verdict.</p>';
+        } else {
+          rEl.innerHTML = '<div class="mb-table-wrap"><table class="mb-table"><thead><tr><th>When</th><th>Case</th><th>Accused</th><th>Result</th><th>Time</th></tr></thead><tbody>' +
+            p.results.slice().reverse().map(function (r) {
+              return '<tr><td>' + esc(fmt(r.submittedAt)) + '</td><td>' + esc(r.caseTitle) + '</td><td>' + esc(r.accusedName) + '</td>' +
+                '<td><span class="mb-pill ' + (r.correct ? 'ok' : 'bad') + '">' + (r.correct ? 'Correct' : 'Wrong') + '</span></td><td>' + esc(r.timeTaken || '-') + '</td></tr>';
+            }).join('') + '</tbody></table></div>';
+        }
+
+        // interrogations grouped by case
+        var iEl = document.getElementById('interrogations');
+        if (!p.interrogations.length) {
+          iEl.innerHTML = '<p class="mb-empty">You have not questioned anyone yet.</p>';
+        } else {
+          iEl.innerHTML = p.interrogations.slice().reverse().map(function (s) {
+            return '<details class="mb-log"><summary>' + esc(s.suspectName) + ' <span class="mb-muted">- ' + esc(s.caseTitle) + ' - ' + esc(fmt(s.askedAt)) +
+              (s.archivedAt ? ' (archived)' : '') + '</span></summary><div class="mb-log-body">' +
+              s.exchanges.map(function (ex) {
+                return '<p><strong>Q:</strong> ' + esc(ex.question) + '</p><p style="color:#475569; margin-bottom:12px;"><strong>A:</strong> ' + esc(ex.answer) + '</p>';
+              }).join('') + '</div></details>';
+          }).join('');
+        }
+
+        // feedback
+        var fEl = document.getElementById('feedbackList');
+        if (!p.feedback.length) {
+          fEl.innerHTML = '<p class="mb-empty">You have not sent any feedback yet.</p>';
+        } else {
+          fEl.innerHTML = p.feedback.slice().reverse().map(function (f) {
+            return '<details class="mb-log"><summary>' + esc(f.category) + ' - ' + '★'.repeat(f.rating) + ' <span class="mb-muted">' + esc(fmt(f.submittedAt)) + '</span></summary>' +
+              '<div class="mb-log-body"><p>' + esc(f.message) + '</p><p class="mb-muted">Reference: ' + esc(f.id) + '</p></div></details>';
+          }).join('');
+        }
+      }
+
+      document.getElementById('downloadBtn').addEventListener('click', function () {
+        if (!profileData) return;
+        var blob = new Blob([JSON.stringify(profileData, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'mysterybox_profile.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      Auth.ready.then(function () {
+        return Auth.api('/api/profile');
+      }).then(render).catch(function (err) {
+        document.getElementById('pName').textContent = 'Could not load profile';
+        document.getElementById('pEmail').textContent = err.message;
+      });
+    })();
+  </script>
+</body>
+</html>

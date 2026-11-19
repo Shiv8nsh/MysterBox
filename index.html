@@ -39,6 +39,7 @@
           </div>
           <div style="text-align: right;">
             <button class="btn" id="dossierStartBtn">Start Investigation →</button>
+            <a class="btn btn-outline" id="dossierInterrogateBtn" href="interrogation.html" style="margin-top:8px;">🕵️ Interrogate Suspects</a>
           </div>
         </div>
 
@@ -256,6 +257,7 @@
 
   <footer>MysteryBox &mdash; Mystery Case Showcase</footer>
 
+  <script src="auth.js"></script>
   <script src="cases.js"></script>
   <script src="mysterybox.js"></script>
   <script>
@@ -334,6 +336,8 @@
           li.innerHTML = "<strong>" + s.name + "</strong> – " + s.role;
           suspectsList.appendChild(li);
         });
+
+        document.getElementById("dossierInterrogateBtn").href = "interrogation.html?case=" + encodeURIComponent(c.id);
 
         var startBtn = document.getElementById("dossierStartBtn");
         startBtn.onclick = function () {
@@ -711,7 +715,8 @@
             '<div class="mb-suspect-section">',
             '  <h4>Connected Leads</h4>',
             '  <ul style="padding-left:18px; margin:4px 0; font-size:0.82rem; color:#444;">' + evItemsHtml + '</ul>',
-            '</div>'
+            '</div>',
+            '<a class="btn btn-outline" style="margin-top:auto; text-align:center; font-size:0.85rem; padding:8px 14px;" href="interrogation.html?case=' + encodeURIComponent(c.id) + '&suspect=' + encodeURIComponent(s.id) + '">🕵️ Interrogate ' + s.name.split(" ")[0] + '</a>'
           ].join("");
 
           container.appendChild(card);
@@ -918,8 +923,29 @@
           var checkedProof = Array.from(document.querySelectorAll("input[name='evProof']:checked")).map(function (c) { return c.value; });
           var feedback = document.getElementById("accusationFeedback");
 
+          function saveAccusation(correct) {
+            return window.MBAuth.api("/api/results", {
+              method: "POST",
+              body: {
+                caseId: c.id,
+                accusedId: accused,
+                proofIds: checkedProof,
+                theory: document.getElementById("theoryNotes").value,
+                timeTaken: MB.State.formatTime(MB.State.getElapsedSeconds()),
+                accuracy: MB.State.getAccuracy()
+              }
+            });
+          }
+
+          if (!accused) {
+            feedback.className = "feedback error";
+            feedback.innerHTML = "❌ <strong>Choose a suspect</strong> to accuse before filing charges.";
+            return;
+          }
+
           if (accused !== c.culpritId) {
             MB.State.recordAttempt(false);
+            saveAccusation(false).catch(function () {});
             var accusedSuspect = c.suspects.find(function (s) { return s.id === accused; });
             var reason = accusedSuspect ? accusedSuspect.statedAlibi : "Their alibi was verified.";
             feedback.className = "feedback error";
@@ -948,11 +974,10 @@
           });
 
           feedback.className = "feedback success";
-          feedback.innerHTML = "✅ <strong>CASE CLOSED!</strong> Accusation verified. Redirecting to Case Resolution...";
+          feedback.innerHTML = "✅ <strong>CASE CLOSED!</strong> Accusation verified and saved. Redirecting to Case Resolution...";
 
-          setTimeout(function () {
-            window.location.href = "solution.html";
-          }, 1200);
+          var goToSolution = function () { window.location.href = "solution.html"; };
+          saveAccusation(true).then(function () { setTimeout(goToSolution, 900); }, function () { setTimeout(goToSolution, 900); });
         });
       }
 
@@ -1013,6 +1038,7 @@
       document.getElementById("resetCaseBtn").addEventListener("click", function () {
         if (confirm("Reset clue progress and timer for the active case?")) {
           MB.State.resetActiveCase();
+          window.MBAuth.api("/api/interrogations/reset", { method: "POST", body: { caseId: MB.getActiveCaseId() } }).catch(function () {});
           refreshTopBar();
           renderDossier();
           renderCluesList();

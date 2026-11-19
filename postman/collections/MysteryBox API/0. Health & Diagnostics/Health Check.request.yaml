@@ -1,0 +1,5 @@
+$kind: http-request
+description: Checks server health, uptime, and MongoDB connection status.
+url: "{{baseUrl}}/api/health"
+method: GET
+order: 1000

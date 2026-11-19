@@ -1,0 +1,7 @@
+node_modules/
+*.corrupt-*
+*.tmp
+.env
+.ua/.trash-*
+.ua/intermediate/
+.ua/tmp/
