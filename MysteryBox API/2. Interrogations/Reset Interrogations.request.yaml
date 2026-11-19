@@ -1,0 +1,14 @@
+$kind: http-request
+description: Archives current interrogation transcripts so the detective can interrogate suspects afresh.
+url: "{{baseUrl}}/api/interrogations/reset"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "caseId": "case1"
+    }
+order: 3000

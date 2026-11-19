@@ -1,0 +1,20 @@
+$kind: http-request
+description: Submits detective review or bug feedback to MongoDB.
+url: "{{baseUrl}}/api/feedback"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "name": "Detective Sherlock",
+      "email": "detective@example.com",
+      "caseId": "case1",
+      "category": "Case review",
+      "rating": 5,
+      "message": "The Room 309 case was very engaging with clever clues and solid timeline mechanics!",
+      "consent": true
+    }
+order: 1000

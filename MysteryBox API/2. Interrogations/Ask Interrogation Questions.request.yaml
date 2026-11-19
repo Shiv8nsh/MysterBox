@@ -1,0 +1,19 @@
+$kind: http-request
+description: Asks 2 questions to a suspect. The question answers are recorded in MongoDB.
+url: "{{baseUrl}}/api/interrogations"
+method: POST
+headers:
+  Authorization: Bearer {{token}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "caseId": "case1",
+      "suspectId": "victor",
+      "questionIds": [
+        "case1_victor_q1",
+        "case1_victor_q2"
+      ]
+    }
+order: 2000

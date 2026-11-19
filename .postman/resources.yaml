@@ -4,10 +4,14 @@ workspace:
 
 localResources:
   collections:
-    - ../MysteryBox.postman_collection.json
+    - ../MysteryBox API
   environments:
-    - ../MysteryBox.postman_environment.json
+    - ../MysteryBox Local-1.environment.yaml
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
 
 cloudResources:
   collections:
     ../postman/collections/MysteryBox API: 67dee6ab-90c8-4a30-9c79-f3136a0a1f51
+    ../postman/collections/MysteryBox API Copy: 9556dc32-5d98-499d-a56c-7e33d49343ec
+    ../MysteryBox API: mysterbox-api-collection-v1

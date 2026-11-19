@@ -1,0 +1,7 @@
+$kind: http-request
+description: Fetches detective profile summary, cases solved count, interrogation count, verdict history, and feedback.
+url: "{{baseUrl}}/api/profile"
+method: GET
+headers:
+  Authorization: Bearer {{token}}
+order: 1000

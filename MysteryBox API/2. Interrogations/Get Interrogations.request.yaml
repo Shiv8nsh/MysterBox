@@ -1,0 +1,9 @@
+$kind: http-request
+description: Fetches active interrogation logs for the authenticated detective on a given case.
+url: "{{baseUrl}}/api/interrogations?caseId=case1"
+method: GET
+headers:
+  Authorization: Bearer {{token}}
+queryParams:
+  caseId: case1
+order: 1000
